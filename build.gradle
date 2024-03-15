@@ -5,6 +5,7 @@ plugins {
     id 'org.springframework.boot' version '3.2.3'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'org.jetbrains.kotlin.plugin.spring' version '1.9.22'
+    id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
 group = 'com.github.ryuzu'
@@ -20,6 +21,38 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven {
+        name = "jitpack"
+        url = "https://jitpack.io/"
+    }
+    maven {
+        name = "placeholderapi"
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+    maven {
+        name = "protocollib"
+        url = "https://repo.dmulloy2.net/repository/public/"
+    }
+    maven {
+        name = "fren_gor"
+        url = "https://nexus.frengor.com/repository/public/"
+    }
+    maven {
+        name = "oraxen"
+        url = "https://repo.oraxen.com/releases"
+    }
+    maven {
+        name = 'alessiodp-repo'
+        url = 'https://repo.alessiodp.com/releases/'
+    }
+    maven {
+        name = "codemc"
+        url = "https://repo.codemc.io/repository/maven-public/"
+    }
+    maven {
+        name = "bkcommonlib"
+        url = 'https://ci.mg-dev.eu/plugin/repository/everything'
+    }
 }
 
 dependencies {
@@ -27,9 +60,29 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
 
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    implementation 'com.github.hakan-krgn.spigot-injection:injection-core:0.1.5.1'
+    implementation 'com.github.hakan-krgn.spigot-injection:injection-listener:0.1.5.1'
+    implementation 'com.github.hakan-krgn.spigot-injection:injection-config:0.1.5.1'
+    implementation 'com.github.hakan-krgn.spigot-injection:injection-command:0.1.5.1'
+
+    implementation 'com.github.stefvanschie.inventoryframework:IF:0.10.13'
+    implementation("com.cjcrafter:weaponmechanics:3.3.0")
+    implementation 'com.github:shieldcommunity:2.2.9'
+    compileOnly 'me.clip:placeholderapi:2.11.5'
+    compileOnly 'com.comphenix.protocol:"ProtocolLib:5.1.0'
+    compileOnly 'com.frengor:ultimateadvancementapi:2.2.8'
+    compileOnly 'io.th0rgal:oraxen:1.171.0'
+    compileOnly 'com.alessiodp.parties:parties-api:3.2.15'
+    compileOnly 'com.github.decentsoftware-eu:decentholograms:2.8.6'
+    compileOnly 'io.lumine:Mythic-Dist:5.3.5'
+    compileOnly 'com.ticxo.modelengine:ModelEngine:R4.0.5'
+    compileOnly 'com.bergerkiller.bukkit:BKCommonLib:1.20.4-v1'
+
+    implementation(platform("com.intellectualsites.bom:bom-newest:1.42"))
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
 }
 
 def targetJavaVersion = 17
