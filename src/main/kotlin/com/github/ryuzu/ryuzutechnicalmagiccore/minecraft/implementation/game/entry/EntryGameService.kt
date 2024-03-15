@@ -3,7 +3,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.game.e
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.entry.AbstractEntryGameService
 
 class EntryGameService : AbstractEntryGameService() {
-    override fun countDownEffect() {
+    override fun countDownEffect(count: Long) {
         TODO("Not yet implemented")
     }
 
