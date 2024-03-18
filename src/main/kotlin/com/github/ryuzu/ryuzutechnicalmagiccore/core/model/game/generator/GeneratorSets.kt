@@ -1,10 +1,9 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.generator
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.ConfiguredLocation
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.generator.property.ItemGeneratorProperty
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.generator.property.StarGeneratorProperty
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator.ConfiguredItemGenerator
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator.ConfiguredStarGenerator
 
 data class GeneratorSets(
-    val starGenerators: HashMap<ConfiguredLocation, StarGeneratorProperty>,
-    val itemGenerators: HashMap<ConfiguredLocation, ItemGeneratorProperty>
+    val starGenerators: List<ConfiguredStarGenerator>,
+    val itemGenerators: List<ConfiguredItemGenerator>
 )

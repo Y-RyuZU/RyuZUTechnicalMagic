@@ -3,7 +3,38 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler
 import java.util.SortedSet
 
 abstract class AbstractSimpleScheduler : ISimpleScheduler {
-    override val tasks: SortedSet<TaskUnit> = sortedSetOf(compareBy { it.delay + it.period })
-    override var endTask: () -> Unit = {}
-    override var currentTick: Long = 0
+    val tasks: SortedSet<TaskUnit> = sortedSetOf(compareBy { it.delay + it.period })
+    var endTask: () -> Unit = {}
+    private var currentTick: Long = 0
+
+    override fun schedule(task: TaskUnit): ISimpleScheduler = apply { tasks.add(task) }
+
+    override fun end(task: () -> Unit): ISimpleScheduler = apply { endTask = task }
+
+    override fun cancel() = tasks.clear()
+
+    protected fun runnable() = Runnable {
+        val endTime = tasks.maxOfOrNull { it.delay + it.period } ?: 0
+
+        if (tasks.isEmpty()) {
+            this.cancel()
+            return@Runnable
+        }
+
+        tasks.removeIf { task ->
+            val isInTimeRange = currentTick in task.delay until task.delay + task.period
+            if (isInTimeRange && task.condition(currentTick))
+                task.task(this, currentTick)
+
+            currentTick == task.delay + task.period
+        }
+
+        if (currentTick > endTime) {
+            endTask()
+            this.cancel()
+            return@Runnable
+        }
+
+        currentTick++
+    }
 }

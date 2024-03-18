@@ -1,7 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.effect.particle
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.ConfiguredDoubleVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.ConfiguredIntVector
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 
 /*
     TODO: Add sculk_charge, sculk_shriek, and sculk_sensor particles
@@ -9,7 +8,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.Configu
 interface IConfiguredParticle {
     val id: String
     val count: Int
-    val extra: Float
+    val extra: Double
     val offset: ConfiguredDoubleVector
-    val delay: Int
+    val delay: Long
 }

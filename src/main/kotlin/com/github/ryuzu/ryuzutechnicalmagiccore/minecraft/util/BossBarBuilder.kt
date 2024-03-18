@@ -1,13 +1,18 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.RyuZUTechnicalMagicCore
+import com.xism4.sternalboard.SternalBoardHandler
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 import org.bukkit.boss.BossBar
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class BossBarBuilder {
+class BossBarBuilder : KoinComponent {
+    private val namespacedKey: NamespacedKey by inject()
+
     private var title: String = ""
     private var color: BarColor = BarColor.WHITE
     private var style: BarStyle = BarStyle.SOLID
@@ -34,7 +39,8 @@ class BossBarBuilder {
     }
 
     fun build(): BossBar {
-        val bossBar = Bukkit.createBossBar(NamespacedKey.fromString(RyuZUTechnicalMagicCore.toString())!!, title, color, style)
+        val bossBar =
+            Bukkit.createBossBar(namespacedKey, title, color, style)
         bossBar.progress = progress
         return bossBar
     }

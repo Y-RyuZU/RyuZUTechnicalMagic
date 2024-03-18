@@ -1,10 +1,13 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.game.entry
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.entry.AbstractEntryGameService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.GameMode
 
 class EntryGameService : AbstractEntryGameService() {
     override fun countDownEffect(count: Long) {
-        TODO("Not yet implemented")
+        sendCountDownMessage()
+        playCountDownSound()
+        showCountDownVisualEffect()
     }
 
     private fun sendCountDownMessage() {

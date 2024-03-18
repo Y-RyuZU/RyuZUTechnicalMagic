@@ -1,10 +1,11 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.util
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.ConfiguredLocation
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.ConfiguredIntVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.effect.EasingFunction
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredLocation
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntVector
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.effect.display.EasingFunction
+import java.util.UUID
 
-class TypedMap: HashMap<String, Any>() {
+class TypedMap(map: Map<String, Any> = hashMapOf()) : Map<String, Any> by map {
     @Throws(IllegalArgumentException::class)
     fun getString(key: String): String {
         val value = this[key]
@@ -50,5 +51,18 @@ class TypedMap: HashMap<String, Any>() {
     @Throws(IllegalArgumentException::class)
     fun getEasingFunction(key: String): EasingFunction {
         return EasingFunction.valueOf(getString(key))
+    }
+
+    @Throws(IllegalArgumentException::class)
+    fun getUUID(key: String): UUID {
+        return UUID.fromString(getString(key))
+    }
+
+    @Throws(IllegalArgumentException::class)
+    fun getUUIDs(key: String): List<UUID> {
+        val value = this[key]
+        require(value is List<*>) {"Value for given key is not a List"}
+        require(value.all { it is String }) {"Value for given key is not a List of String"}
+        return value.map { UUID.fromString(it as String) }
     }
 }
