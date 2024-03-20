@@ -1,49 +1,24 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode
 
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.ConfiguredGameMode
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredStage
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
+import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.named
 import java.util.*
 
 abstract class AbstractGameService(
-    protected open val players: MutableSet<IGamePlayer>
+    override val world: String,
+    protected open val stage: ConfiguredStage,
+    entryPlayers: Set<UUID>,
 ) : IGameService {
-    override fun start() {
-        teleportPlayersToGame()
-        sendGameStartMessage()
-        playGameStartSound()
-    }
-
-    override fun end() {
-        sendGameResultMessage()
-        returnPlayersToLobby()
-        giveRewards()
-    }
+    protected open val gameModeParameter: ConfiguredGameMode by inject { parametersOf(stage.gameProperty.getGameMode()) }
+    protected open val players: MutableSet<IGamePlayer> = entryPlayers.map { createPlayer(it) }.toMutableSet()
+    protected open abstract val gameData: GameData
+    protected open abstract fun createPlayer(player: UUID): IGamePlayer
 
     override fun joinGameMidway(player: UUID) {
-        teleportPlayersToGame()
-        sendGameStartMessage()
-        playGameStartSound()
+        players.add(createPlayer(player))
     }
-
-    override fun leaveGame(player: IGamePlayer) {
-        removePlayerFromGame(player)
-        sendPlayerResultMessage(player)
-        returnPlayerToLobby(player)
-    }
-
-    override fun second() {
-        renderGameStatus()
-    }
-
-    protected abstract fun teleportPlayersToGame()
-    protected abstract fun sendGameStartMessage()
-    protected abstract fun playGameStartSound()
-    protected abstract fun sendPlayerResultMessage(player: IGamePlayer)
-
-    protected abstract fun giveRewards()
-    protected abstract fun returnPlayersToLobby()
-    protected abstract fun removePlayerFromGame(player: IGamePlayer)
-    protected abstract fun returnPlayerToLobby(player: IGamePlayer)
-    protected abstract fun sendGameResultMessage()
-
-    protected abstract fun renderGameStatus()
 }

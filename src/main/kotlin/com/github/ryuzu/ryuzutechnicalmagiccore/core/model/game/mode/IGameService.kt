@@ -1,10 +1,10 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
+import org.koin.core.component.KoinComponent
 import java.util.UUID
 
-interface IGameService {
-    val gameData: GameData
+interface IGameService : KoinComponent {
     val world: String
 
     fun start()

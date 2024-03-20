@@ -6,7 +6,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*
 
-abstract class AbstractLevelService: ILevelService, KoinComponent {
+abstract class AbstractLevelService: ILevelService {
     private val normaTable: Map<LevelUpMission, Map<Int, Int>> by inject()
     private val levelMap: MutableMap<IActivePlayer, LevelData> = mutableMapOf()
 

@@ -86,8 +86,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     implementation 'com.github.hakan-krgn.spigot-injection:injection-core:0.1.5.1'
-    implementation 'com.github.hakan-krgn.spigot-injection:injection-listener:0.1.5.1'
-    implementation 'com.github.hakan-krgn.spigot-injection:injection-config:0.1.5.1'
     implementation 'com.github.hakan-krgn.spigot-injection:injection-command:0.1.5.1'
 
     implementation 'com.github.stefvanschie.inventoryframework:IF:0.10.13'
@@ -102,11 +100,11 @@ dependencies {
     compileOnly 'com.comphenix.protocol:ProtocolLib:5.1.0'
     compileOnly 'com.frengor:ultimateadvancementapi:2.2.8'
     compileOnly 'com.alessiodp.parties:parties-api:3.2.15'
-    compileOnly 'com.github.decentsoftware-eu:decentholograms:2.8.6'
     compileOnly 'io.lumine:Mythic-Dist:5.3.5'
     compileOnly 'com.ticxo.modelengine:ModelEngine:R4.0.4'
     compileOnly 'com.bergerkiller.bukkit:BKCommonLib:1.20.4-v1'
     compileOnly 'me.clip:placeholderapi:2.11.5'
+    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.9'
 
     implementation(platform("com.intellectualsites.bom:bom-newest:1.42"))
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")

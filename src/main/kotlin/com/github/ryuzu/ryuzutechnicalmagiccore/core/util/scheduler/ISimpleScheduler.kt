@@ -3,7 +3,8 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler
 import java.util.*
 
 interface ISimpleScheduler {
-    fun schedule(task: TaskUnit): ISimpleScheduler
+    fun schedule(vararg tasks: TaskUnit): ISimpleScheduler
+    fun schedule(tasks: Set<TaskUnit>): ISimpleScheduler
 
     fun schedule(
         delay: Long = 0,

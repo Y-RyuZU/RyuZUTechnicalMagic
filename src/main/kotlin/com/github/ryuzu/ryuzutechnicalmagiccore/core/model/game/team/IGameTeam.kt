@@ -1,6 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.team
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.team.ConfiguredTeam
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredTeam
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
 
 sealed interface IGameTeam{

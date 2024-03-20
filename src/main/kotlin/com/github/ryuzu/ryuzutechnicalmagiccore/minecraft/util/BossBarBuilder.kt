@@ -1,7 +1,5 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.RyuZUTechnicalMagicCore
-import com.xism4.sternalboard.SternalBoardHandler
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.boss.BarColor

@@ -7,7 +7,8 @@ abstract class AbstractSimpleScheduler : ISimpleScheduler {
     var endTask: () -> Unit = {}
     private var currentTick: Long = 0
 
-    override fun schedule(task: TaskUnit): ISimpleScheduler = apply { tasks.add(task) }
+    override fun schedule(vararg tasks: TaskUnit): ISimpleScheduler = apply { this.tasks.addAll(tasks) }
+    override fun schedule(tasks: Set<TaskUnit>): ISimpleScheduler = apply { this.tasks.addAll(tasks) }
 
     override fun end(task: () -> Unit): ISimpleScheduler = apply { endTask = task }
 

@@ -1,15 +1,18 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode
 
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredStage
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer.GamePlayer.IActivePlayer.ActivePlayer.ITeamGamePlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.team.IGameTeam
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.team.ConfiguredTeam
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredTeam
 import java.util.*
 
 abstract class AbstractTeamGameService(
-    override val players: MutableSet<IGamePlayer>,
+    override val world: String,
+    override val stage: ConfiguredStage,
+    entryPlayers: Set<UUID>,
     teamsProperties: Set<ConfiguredTeam>,
-) : ITeamGameService, AbstractGameService(players) {
+) : ITeamGameService, AbstractGameService(world, stage, entryPlayers) {
     private val teams: Set<IGameTeam> = teamsProperties.map { gameData.gameMode.createTeam(it) }.toSet()
 
     private fun selectTeamAlgorithm(player: IGamePlayer): IGameTeam {

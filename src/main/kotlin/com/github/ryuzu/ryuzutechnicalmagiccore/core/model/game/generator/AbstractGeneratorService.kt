@@ -2,19 +2,19 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.generator
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator.IConfiguredGenerator
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredGeneratorSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.ISimpleScheduler
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.scheduler.SimpleSchedulerFactory
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.scheduler.SimpleSchedulerFactory
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.MathUtility.Companion.nextGaussian
-import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.math.pow
 import kotlin.random.Random
 
 abstract class AbstractGeneratorService(
-    private val generatorSets: GeneratorSets,
+    private val generatorSet: ConfiguredGeneratorSet,
     private val gameService: IGameService
-) : IGeneratorService, KoinComponent {
+) : IGeneratorService {
     private val schedulerFactory: SimpleSchedulerFactory by inject()
 
     protected val scheduler: ISimpleScheduler =
@@ -22,7 +22,7 @@ abstract class AbstractGeneratorService(
             if (count % 20L == 0L) return@schedule
             val phase = gameService.getPhase().toDouble()
 
-            generatorSets.itemGenerators.forEach {
+            generatorSet.itemGenerators.forEach {
                 if (count % it.period == 0L)
                     generateItem(
                         gameService.world,
@@ -31,7 +31,7 @@ abstract class AbstractGeneratorService(
                         getRarityWithGaussian(it.rarity * it.multiply.pow(phase))
                     )
             }
-            generatorSets.starGenerators.forEach {
+            generatorSet.starGenerators.forEach {
                 if (count % it.period == 0L)
                     generateStar(gameService.world, it.getGeneratePoint(), it, Random.nextInt(it.min, it.max + 1))
             }

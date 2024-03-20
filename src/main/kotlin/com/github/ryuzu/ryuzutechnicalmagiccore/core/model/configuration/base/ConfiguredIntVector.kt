@@ -20,7 +20,7 @@ data class ConfiguredIntVector(val x: Int, val y: Int, val z: Int) {
         }
     }
 
-    fun toLocation(world: String): ConfiguredLocation {
-        return ConfiguredLocation(world, this)
+    fun toLocation(world: String): ConfiguredIntLocation {
+        return ConfiguredIntLocation(world, this)
     }
 }

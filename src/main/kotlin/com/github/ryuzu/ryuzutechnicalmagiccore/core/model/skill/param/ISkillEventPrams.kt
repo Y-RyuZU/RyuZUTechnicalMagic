@@ -1,7 +1,7 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.param
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredLocation
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer.GamePlayer.IActivePlayer.ActivePlayer.ITeamGamePlayer
 import java.util.UUID
@@ -17,12 +17,12 @@ sealed interface Initiator {
 }
 
 sealed interface ISkillEventPrams {
-    val location: ConfiguredLocation
+    val location: ConfiguredIntLocation
     val direction: ConfiguredDoubleVector
     val skillId: String
 
     data class SkillEventParams(
-        override val location: ConfiguredLocation,
+        override val location: ConfiguredIntLocation,
         override val direction: ConfiguredDoubleVector
     ) : ISkillEventPrams {
         override lateinit var skillId: String
@@ -34,7 +34,7 @@ sealed interface ISkillEventPrams {
         val slot: Int
 
         data class CasterEventParams(
-            override val location: ConfiguredLocation,
+            override val location: ConfiguredIntLocation,
             override val direction: ConfiguredDoubleVector,
             override val initiator: Initiator,
             override val itemId: String,
@@ -43,15 +43,15 @@ sealed interface ISkillEventPrams {
             override lateinit var skillId: String
 
             sealed interface IBlockEventParams : ICasterEventParams {
-                val block: ConfiguredLocation
+                val block: ConfiguredIntLocation
 
                 data class BlockEventParams(
-                    override val location: ConfiguredLocation,
+                    override val location: ConfiguredIntLocation,
                     override val direction: ConfiguredDoubleVector,
                     override val initiator: Initiator,
                     override val itemId: String,
                     override val slot: Int,
-                    override val block: ConfiguredLocation
+                    override val block: ConfiguredIntLocation
                 ) : IBlockEventParams {
                     override lateinit var skillId: String
                 }
@@ -61,7 +61,7 @@ sealed interface ISkillEventPrams {
                 val interlocutor: Initiator
 
                 data class InteractEventParams(
-                    override val location: ConfiguredLocation,
+                    override val location: ConfiguredIntLocation,
                     override val direction: ConfiguredDoubleVector,
                     override val initiator: Initiator,
                     override val itemId: String,

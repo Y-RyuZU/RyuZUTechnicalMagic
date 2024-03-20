@@ -1,8 +1,8 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.util
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredLocation
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.effect.display.EasingFunction
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.display.EasingFunction
 import java.util.UUID
 
 class TypedMap(map: Map<String, Any> = hashMapOf()) : Map<String, Any> by map {
@@ -39,8 +39,8 @@ class TypedMap(map: Map<String, Any> = hashMapOf()) : Map<String, Any> by map {
     }
 
     @Throws(IllegalArgumentException::class, NumberFormatException::class)
-    fun getLocation(key: String): ConfiguredLocation {
-        return ConfiguredLocation.fromString(getString(key))
+    fun getLocation(key: String): ConfiguredIntLocation {
+        return ConfiguredIntLocation.fromString(getString(key))
     }
 
     @Throws(IllegalArgumentException::class, NumberFormatException::class)
