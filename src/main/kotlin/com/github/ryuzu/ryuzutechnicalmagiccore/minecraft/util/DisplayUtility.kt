@@ -2,10 +2,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.display.IConfiguredDisplay
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toLocation
 import org.bukkit.entity.Display
-import org.bukkit.entity.EntityType
-import org.bukkit.entity.TextDisplay
 import org.bukkit.util.Transformation
 import org.joml.Vector3f
 

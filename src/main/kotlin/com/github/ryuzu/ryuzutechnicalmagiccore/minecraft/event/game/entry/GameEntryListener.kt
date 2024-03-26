@@ -3,7 +3,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.event.game.entry
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.gui.GuiAction
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.IGameManager
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.GameMode
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.gui.GuiType
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.gui.GuiType
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toIntConfigured
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui
 import org.bukkit.event.EventHandler
@@ -35,8 +35,8 @@ class GameEntryListener : Listener, KoinComponent {
             }
         } else {
             val changeGameModeActions: HashMap<GuiAction, () -> Unit> = hashMapOf(
-                GameMode.CARRY_TNT.getGuiAction() to { gameManager.changeGameMode(location, GameMode.CARRY_TNT) },
-                GameMode.CAPTURE_WOOL.getGuiAction() to { gameManager.changeGameMode(location, GameMode.CAPTURE_WOOL) },
+                GameMode.CarryTnt.getGuiAction() to { gameManager.changeGameMode(location, GameMode.CarryTnt) },
+                GameMode.CaptureWool.getGuiAction() to { gameManager.changeGameMode(location, GameMode.CaptureWool) },
             )
             val changeGameModeGui: ChestGui = get { parametersOf(GuiType.CHANGE_GAME_MODE_GUI, changeGameModeActions) }
 

@@ -47,24 +47,32 @@ repositories {
         url = 'https://repo.alessiodp.com/releases/'
     }
     maven {
-        name = "codemc"
+        name = "code-mc"
         url = "https://repo.codemc.io/repository/maven-public/"
     }
-    maven {
-        name = "bkcommonlib"
-        url = 'https://ci.mg-dev.eu/plugin/repository/everything'
-    }
+//    maven {
+//        name = "bkcommonlib"
+//        url = 'https://ci.mg-dev.eu/plugin/repository/everything'
+//    }
     maven {
         name = "worldguard"
         url = 'https://maven.enginehub.org/repo/'
     }
     maven {
-        name = "mythicmobs"
+        name = "mythic-mobs"
         url = 'https://mvn.lumine.io/repository/maven-public/'
     }
     maven {
         name = "papi"
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+    maven {
+        name = "spigot-update-checker"
+        url = "https://repo.jeff-media.com/public/"
+    }
+    maven {
+        name = "multi-verse"
+        url = "https://repo.onarandombox.com/content/groups/public/"
     }
 }
 
@@ -86,8 +94,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     implementation 'com.github.hakan-krgn.spigot-injection:injection-core:0.1.5.1'
+    implementation 'com.github.hakan-krgn.spigot-injection:injection-listener:0.1.5.1'
     implementation 'com.github.hakan-krgn.spigot-injection:injection-command:0.1.5.1'
 
+    implementation("com.jeff_media:SpigotUpdateChecker:3.0.3")
     implementation 'com.github.stefvanschie.inventoryframework:IF:0.10.13'
     implementation 'com.cjcrafter:weaponmechanics:3.3.0'
 
@@ -99,15 +109,16 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.11.5'
     compileOnly 'com.comphenix.protocol:ProtocolLib:5.1.0'
     compileOnly 'com.frengor:ultimateadvancementapi:2.2.8'
-    compileOnly 'com.alessiodp.parties:parties-api:3.2.15'
     compileOnly 'io.lumine:Mythic-Dist:5.3.5'
     compileOnly 'com.ticxo.modelengine:ModelEngine:R4.0.4'
-    compileOnly 'com.bergerkiller.bukkit:BKCommonLib:1.20.4-v1'
     compileOnly 'me.clip:placeholderapi:2.11.5'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.9'
-
+    compileOnly 'com.onarandombox.multiversecore:multiverse-core:4.3.12'
     implementation(platform("com.intellectualsites.bom:bom-newest:1.42"))
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
+
+    //    compileOnly 'com.alessiodp.parties:parties-api:3.2.15'
+    //    compileOnly 'com.bergerkiller.bukkit:BKCommonLib:1.20.4-v1'
 }
 
 def targetJavaVersion = 17
@@ -150,4 +161,12 @@ configurations.all {
 
 sourceSets.main {
     java.srcDirs("build/generated/ksp/main/kotlin")
+}
+
+tasks.findByName('shadowJar')?.configure {
+    relocate 'com.jeff_media', 'com.github.ryuzu.lib'
+}
+
+bootJar {
+    mainClass = 'com.github.ryuzu.ryuzutechnicalmagiccore.RyuZUTechnicalMagicCore'
 }

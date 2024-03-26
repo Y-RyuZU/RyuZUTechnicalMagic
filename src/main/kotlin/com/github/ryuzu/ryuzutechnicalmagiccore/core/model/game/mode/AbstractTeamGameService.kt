@@ -1,43 +1,80 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredStage
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer.GamePlayer.IActivePlayer.ActivePlayer.ITeamGamePlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.team.ConfiguredTeam
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer.GamePlayer.ITeamGamePlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.team.IGameTeam
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredTeam
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.entry.IEntryGameService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.CollectionUtility.Companion.getRandomKey
 import java.util.*
 
 abstract class AbstractTeamGameService(
-    override val world: String,
-    override val stage: ConfiguredStage,
-    entryPlayers: Set<UUID>,
-    teamsProperties: Set<ConfiguredTeam>,
-) : ITeamGameService, AbstractGameService(world, stage, entryPlayers) {
-    private val teams: Set<IGameTeam> = teamsProperties.map { gameData.gameMode.createTeam(it) }.toSet()
+    world: String,
+    stage: ConfiguredStage,
+    entryService: IEntryGameService,
+    entryPlayers: Set<IPlayer>,
+) : ITeamGameService, AbstractGameService(world, stage, entryService, entryPlayers) {
+    protected val teams: LinkedHashMap<String, IGameTeam> = LinkedHashMap(stage.teams.mapValues { createGameTeam(it.value) })
 
-    private fun selectTeamAlgorithm(player: IGamePlayer): IGameTeam {
-        return teams.random()
+    override fun createPlayer(player: IPlayer): IGamePlayer = ITeamGamePlayer.TeamGamePlayer(player)
+    override fun getGamePlayer(player: IPlayer): ITeamGamePlayer = players.first { it == player } as ITeamGamePlayer
+    protected abstract fun createGameTeam(config: ConfiguredTeam): IGameTeam
+
+    init {
+        require(teams.size == 2) { "Team count must be 2" }
     }
 
-    override fun joinTeam(player: ITeamGamePlayer) {
+    override fun isSameTeam(player1: IPlayer, player2: IPlayer): Boolean {
+        val gamePlayer1 = getGamePlayer(player1)
+        val gamePlayer2 = getGamePlayer(player2)
+        return gamePlayer1.team == gamePlayer2.team
+    }
+
+    override fun start() {
+        super.start()
+        players.forEach { joinTeam(it as ITeamGamePlayer) }
+    }
+
+    override fun joinGameMidway(player: IPlayer) {
+        super.joinGameMidway(player)
+        val gamePlayer = getGamePlayer(player)
+        joinTeam(gamePlayer)
+    }
+
+    override fun leaveGame(player: IPlayer) {
+        val gamePlayer = getGamePlayer(player)
+        leaveTeam(gamePlayer)
+        super.leaveGame(player)
+    }
+
+    private fun joinTeam(player: ITeamGamePlayer) {
         val team = selectTeamAlgorithm(player)
         team.players.add(player)
         player.team = team
+        teleportService.teleport(player.team.property.respawnPoint.toLocation(world), player)
     }
 
-    override fun leaveTeam(player: ITeamGamePlayer) {
+    private fun selectTeamAlgorithm(player: IGamePlayer): IGameTeam {
+        return teams[teams.keys.random()]!!
+    }
+
+    private fun leaveTeam(player: ITeamGamePlayer) {
         player.team.players.remove(player)
     }
 
-    override fun validatePlayer(player: UUID): ITeamGamePlayer {
-        val gamePlayer = players.firstOrNull { it.id == player }
-        require(gamePlayer is ITeamGamePlayer) { "Player must be an instance of GamePlayer.ActivePlayer.TeamGamePlayer" }
-        return gamePlayer
+    override fun respawnPlayer(player: IPlayer) {
+        val gamePlayer = getGamePlayer(player)
+        teleportService.teleport(gamePlayer.team.property.respawnPoint.toLocation(world), player)
     }
 
-    override fun joinGameMidway(player: UUID) {
-        super.joinGameMidway(player)
-        val gamePlayer = validatePlayer(player)
-        joinTeam(gamePlayer)
+    override val placeholders: HashMap<String, () -> String> = super.placeholders.apply {
+        teams.entries.forEachIndexed{ index, entry ->
+            put("%team${index}_player_count%") { entry.value.players.size.toString() }
+            put("%team${index}_name%") { entry.value.property.name }
+            if(entry.value is IGameTeam.IScoreGameTeam)
+                put("team${index}_score") { (entry.value as IGameTeam.IScoreGameTeam).score.toString() }
+        }
     }
 }

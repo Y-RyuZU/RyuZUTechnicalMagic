@@ -1,7 +1,5 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler
 
-import java.util.*
-
 interface ISimpleScheduler {
     fun schedule(vararg tasks: TaskUnit): ISimpleScheduler
     fun schedule(tasks: Set<TaskUnit>): ISimpleScheduler
@@ -14,9 +12,16 @@ interface ISimpleScheduler {
     ): ISimpleScheduler =
         schedule(TaskUnit(delay, period, condition, task))
 
-    fun end(task: () -> Unit): ISimpleScheduler
+    fun whileSchedule(
+        condition: (Long) -> Boolean = { true },
+        task: (ISimpleScheduler, Long) -> Unit
+    ): ISimpleScheduler =
+        schedule(0, Long.MAX_VALUE, condition, task)
 
-    fun runSync()
-    fun runAsync()
+    fun end(task: () -> Unit): ISimpleScheduler
+    fun finally(task: (Boolean) -> Unit): ISimpleScheduler
+
+    fun runSync(): ISimpleScheduler
+    fun runAsync(): ISimpleScheduler
     fun cancel()
 }

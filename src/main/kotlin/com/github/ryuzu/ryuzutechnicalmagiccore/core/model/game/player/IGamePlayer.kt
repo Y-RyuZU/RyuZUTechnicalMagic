@@ -1,76 +1,68 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.team.IGameTeam
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import java.util.*
 
-sealed interface IGamePlayer {
-    val id: UUID
+sealed interface IGamePlayer : IPlayer {
+    override val id: UUID
+    var star: Int
+    var kill: Int
+    var death: Int
 
     data class GamePlayer(
-        override val id: UUID,
-    ) : IGamePlayer {
+        val player: IPlayer,
+        override var star: Int = 0,
+        override var kill: Int = 0,
+        override var death: Int = 0,
+    ) : IGamePlayer, IPlayer by player {
+        sealed interface ITeamGamePlayer : IGamePlayer {
+            val assist: Int
+            var team: IGameTeam
 
-        sealed interface IActivePlayer : IGamePlayer {
-            var star: Int
-            var kill: Int
-            var death: Int
-
-            data class ActivePlayer(
-                override val id: UUID,
+            data class TeamGamePlayer(
+                val player: IPlayer,
                 override var star: Int = 0,
                 override var kill: Int = 0,
                 override var death: Int = 0,
-            ) : IActivePlayer {
+                override var assist: Int = 0,
+            ) : ITeamGamePlayer, IPlayer by player {
+                override lateinit var team: IGameTeam
 
-                sealed interface ITeamGamePlayer : IActivePlayer {
-                    val assist: Int
-                    var team: IGameTeam
-
-                    data class TeamGamePlayer(
-                        override val id: UUID,
+                sealed interface ICarryTntPlayer : ITeamGamePlayer {
+                    data class CarryTntPlayer(
+                        val player: IPlayer,
                         override var star: Int = 0,
                         override var kill: Int = 0,
                         override var death: Int = 0,
                         override var assist: Int = 0,
-                    ) : ITeamGamePlayer {
+                    ) : ICarryTntPlayer, IPlayer by player {
                         override lateinit var team: IGameTeam
-
-                        sealed interface ICarryTNTPlayer : ITeamGamePlayer {
-                            data class CarryTNTPlayer(
-                                override val id: UUID,
-                                override var star: Int = 0,
-                                override var kill: Int = 0,
-                                override var death: Int = 0,
-                                override var assist: Int = 0,
-                            ) : ICarryTNTPlayer {
-                                override lateinit var team: IGameTeam
-                            }
-                        }
-
-                        sealed interface ICarryMiniTNTPlayer : ITeamGamePlayer {
-                            val holdTNTAmount: Int
-
-                            data class CarryMiniTNTPlayer(
-                                override val id: UUID,
-                                override var star: Int = 0,
-                                override var kill: Int = 0,
-                                override var death: Int = 0,
-                                override var assist: Int = 0,
-                                override val holdTNTAmount: Int = 0,
-                            ) : ICarryMiniTNTPlayer {
-                                override lateinit var team: IGameTeam
-                            }
-                        }
                     }
                 }
 
-                data class BattleRoyalePlayer(
-                    override val id: UUID,
-                    override var star: Int = 0,
-                    override var kill: Int = 0,
-                    override var death: Int = 0,
-                ) : IActivePlayer
+                sealed interface ICarryMiniTntPlayer : ITeamGamePlayer {
+                    val holdTNTAmount: Int
+
+                    data class CarryMiniTntPlayer(
+                        val player: IPlayer,
+                        override var star: Int = 0,
+                        override var kill: Int = 0,
+                        override var death: Int = 0,
+                        override var assist: Int = 0,
+                        override val holdTNTAmount: Int = 0,
+                    ) : ICarryMiniTntPlayer, IPlayer by player {
+                        override lateinit var team: IGameTeam
+                    }
+                }
             }
         }
+
+        data class BattleRoyalePlayer(
+            val player: IPlayer,
+            override var star: Int = 0,
+            override var kill: Int = 0,
+            override var death: Int = 0,
+        ) : IGamePlayer, IPlayer by player
     }
 }

@@ -1,28 +1,40 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base
 
-data class ConfiguredDoubleLocation(val world: String, val vector: ConfiguredDoubleVector) {
-    companion object {
-        fun fromString(location: String): ConfiguredDoubleLocation {
-            val split = location.split(",")
+import com.fasterxml.jackson.annotation.JsonCreator
 
+data class ConfiguredDoubleLocation(val world: String, val vector: ConfiguredDoubleVector) {
+
+    @JsonCreator
+    constructor(location: String) : this(
+        world = fromStringWorld(location),
+        vector = fromStringVector(location)
+    )
+
+    companion object {
+        private fun fromStringWorld(location: String): String {
+            val split = location.split(",")
             if (split.size != 4) {
                 throw IllegalArgumentException("Invalid location format, expected 4 parts but got ${split.size}")
             }
-
-            // Ensure non-empty world name
-            val world = split[0].takeIf { it.isNotEmpty() }
+            return split[0].takeIf { it.isNotEmpty() }
                 ?: throw IllegalArgumentException("Invalid world name, should not be empty.")
+        }
 
+        private fun fromStringVector(location: String): ConfiguredDoubleVector {
+            val split = location.split(",")
+            if (split.size != 4) {
+                throw IllegalArgumentException("Invalid location format, expected 4 parts but got ${split.size}")
+            }
             val vectorString = split.subList(1, split.size).joinToString(",")
-
-            // Handle NumberFormatException from ConfiguredIntVector.fromString
-            val vector = try {
-                ConfiguredDoubleVector.fromString(vectorString)
+            return try {
+                ConfiguredDoubleVector(vectorString)
             } catch (e: NumberFormatException) {
                 throw NumberFormatException("Unable to parse vector values in location string.")
             }
-
-            return ConfiguredDoubleLocation(world, vector)
         }
+    }
+
+    fun toIntLocation(): ConfiguredIntLocation {
+        return ConfiguredIntLocation(world, vector.toIntVector())
     }
 }

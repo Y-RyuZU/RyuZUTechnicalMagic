@@ -1,10 +1,10 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.level
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer.GamePlayer.IActivePlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
 import org.koin.core.component.KoinComponent
 
 interface ILevelService : KoinComponent {
-    fun selectMission(player: IActivePlayer, mission: LevelUpMission)
-    fun checkNorma(player: IActivePlayer)
-    fun getLevelData(player: IActivePlayer): LevelData
+    fun selectMission(player: IGamePlayer, mission: LevelUpMission)
+    fun checkNorma(player: IGamePlayer)
+    fun getLevelData(player: IGamePlayer): LevelData
 }

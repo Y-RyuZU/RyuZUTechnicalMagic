@@ -5,9 +5,11 @@ import org.bukkit.NamespacedKey
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 import org.bukkit.boss.BossBar
+import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
+@Single
 class BossBarBuilder : KoinComponent {
     private val namespacedKey: NamespacedKey by inject()
 

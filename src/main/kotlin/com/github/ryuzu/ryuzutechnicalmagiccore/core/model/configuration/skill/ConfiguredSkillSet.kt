@@ -4,5 +4,5 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillTrigger
 
 data class ConfiguredSkillSet (
     val relations: LinkedHashSet<List<String>> = linkedSetOf(),
-    val skills: HashMap<SkillTrigger, List<String>> = hashMapOf()
+    val skills: HashMap<SkillTrigger, Set<String>> = hashMapOf()
 )

@@ -1,0 +1,25 @@
+package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler
+
+enum class UpdatePeriod {
+    TICK,
+    HALF_SECOND,
+    SECOND,
+    TWO_SECONDS,
+    FIVE_SECONDS,
+    TEN_SECONDS,
+    THIRTY_SECONDS,
+    MINUTE;
+
+    fun getPeriod(): Long {
+        return when (this) {
+            TICK -> 1
+            HALF_SECOND -> 10
+            SECOND -> 20
+            TWO_SECONDS -> 40
+            FIVE_SECONDS -> 100
+            TEN_SECONDS -> 200
+            THIRTY_SECONDS -> 600
+            MINUTE -> 1200
+        }
+    }
+}

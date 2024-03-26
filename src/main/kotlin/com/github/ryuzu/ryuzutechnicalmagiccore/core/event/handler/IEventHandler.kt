@@ -1,8 +1,7 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.IEvent
+import org.koin.core.component.KoinComponent
 
-interface IEventHandler {
-//    val eventHandlers: MutableMap<EventType, MutableList<IEvent>> = mutableMapOf()
-    fun handleEvent(evnet: IEvent)
+interface IEventHandler : KoinComponent {
 }

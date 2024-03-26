@@ -11,20 +11,21 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.GameMode
     JsonSubTypes.Type(value = IConfiguredStageGameModeProperty.ConfiguredStageCaptureWoolProperty::class, name = GameMode.CONST_CAPTURE_WOOL)
 )
 sealed interface IConfiguredStageGameModeProperty {
-    val starLostRate: Int
+    val starLostRate: Double
 
     fun getGameMode(): GameMode
     data class ConfiguredStageCarryTNTProperty(
-        override val starLostRate: Int,
+        override val starLostRate: Double,
         val tntSpawnPoint: ConfiguredIntVector,
+        val teamTNTLocations: HashMap<String, ConfiguredIntVector>
     ) : IConfiguredStageGameModeProperty {
-        override fun getGameMode(): GameMode = GameMode.CARRY_TNT
+        override fun getGameMode(): GameMode = GameMode.CarryTnt
     }
 
     data class ConfiguredStageCaptureWoolProperty(
-        override val starLostRate: Int,
+        override val starLostRate: Double,
         val woolLocations: List<ConfiguredIntVector>,
     ) : IConfiguredStageGameModeProperty {
-        override fun getGameMode(): GameMode = GameMode.CAPTURE_WOOL
+        override fun getGameMode(): GameMode = GameMode.CaptureWool
     }
 }

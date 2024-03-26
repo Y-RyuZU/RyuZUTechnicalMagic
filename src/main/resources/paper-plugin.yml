@@ -3,3 +3,14 @@ version: '${version}'
 main: com.github.ryuzu.ryuzutechnicalmagiccore.RyuZUTechnicalMagicCore
 api-version: '1.20'
 authors: [Y_RyuZU]
+softdepend:
+- ProtocolLib
+- PlaceholderAPI
+- FastAsyncWorldEdit
+- WorldGuard
+- Oraxen
+- MythicMobs
+- ModelEngine
+- UltimateAdvancementAPI
+- WeaponMechanics
+- Multiverse-Core

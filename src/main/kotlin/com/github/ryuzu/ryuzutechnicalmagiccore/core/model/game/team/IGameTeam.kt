@@ -1,11 +1,11 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.team
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredTeam
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.team.ConfiguredTeam
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer.GamePlayer.ITeamGamePlayer
 
 sealed interface IGameTeam{
     val property: ConfiguredTeam
-    val players: MutableList<IGamePlayer>
+    val players: MutableSet<ITeamGamePlayer>
 
     sealed interface IScoreGameTeam : IGameTeam {
         override val property: ConfiguredTeam
@@ -14,13 +14,14 @@ sealed interface IGameTeam{
         data class CaptureWool(
             override val property: ConfiguredTeam,
             override var score: Int = 0,
-            override val players: MutableList<IGamePlayer> = mutableListOf(),
+            override val players: MutableSet<ITeamGamePlayer> = mutableSetOf(),
             var captureArea: Byte = 0,
         ) : IScoreGameTeam
-    }
 
-    data class CarryTNTTeam(
-        override val property: ConfiguredTeam,
-        override val players: MutableList<IGamePlayer> = mutableListOf(),
-    ) : IGameTeam
+        data class CarryTntTeam(
+            override val property: ConfiguredTeam,
+            override val players: MutableSet<ITeamGamePlayer> = mutableSetOf(),
+            override var score: Int = 0,
+        ) : IScoreGameTeam
+    }
 }

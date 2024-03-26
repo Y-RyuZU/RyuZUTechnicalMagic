@@ -1,49 +1,86 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.level
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.level.LevelUpMission.*
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer.GamePlayer.IActivePlayer
-import org.koin.core.component.KoinComponent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.general.ConfiguredGeneralParameter
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.level.LevelUpMission.KILL
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.level.LevelUpMission.STAR
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.StringUtility.Companion.replacePlaceholders
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.message.MessageActionData
 import org.koin.core.component.inject
-import java.util.*
 
-abstract class AbstractLevelService: ILevelService {
-    private val normaTable: Map<LevelUpMission, Map<Int, Int>> by inject()
-    private val levelMap: MutableMap<IActivePlayer, LevelData> = mutableMapOf()
+abstract class AbstractLevelService : ILevelService {
+    private val parameter: ConfiguredGeneralParameter by inject()
+    private val levelMap: MutableMap<IGamePlayer, LevelData> = mutableMapOf()
 
-    override fun selectMission(player: IActivePlayer, mission: LevelUpMission) {
-        val levelData = levelMap[player] ?: LevelData(mission, 1, getNorma(player, 1, mission))
-        levelMap[player] = LevelData(mission, levelData.level, getNorma(player, levelData.level, mission))
+    override fun selectMission(player: IGamePlayer, mission: LevelUpMission) {
+        if (levelMap[player] == null)
+            levelMap[player] = LevelData(mission, 1, getNorma(1, mission))
+        else {
+            val levelData = levelMap[player]!!
+            levelMap[player] = LevelData(mission, levelData.level, getNorma(levelData.level, mission))
+            parameter.levelParameter.effects.particles["SelectMission"]?.let { player.spawnParticle(it) }
+            parameter.levelParameter.effects.sounds["SelectMission"]?.let { player.playSound(it) }
+        }
     }
 
-    override fun checkNorma(player: IActivePlayer) {
+    override fun checkNorma(player: IGamePlayer) {
         val data = getLevelData(player)
 
         if (canLevelUp(player)) {
-            levelMap[player] = data.copy(level = data.level + 1, norma = getNorma(player, data.level + 1, data.mission))
-            successLevelUpEffect(data)
-        } else
-            failLevelUpEffect(data)
+            levelMap[player] = data.copy(level = data.level + 1, norma = getNorma(data.level + 1, data.mission))
+            parameter.levelParameter.effects.particles["SuccessLevelUp"]?.let { player.spawnParticle(it) }
+            parameter.levelParameter.effects.sounds["SuccessLevelUp"]?.let { player.playSound(it) }
+
+            val placeholders: Map<String, String> = mapOf(
+                "%next_star_norma%" to getNorma(data.level + 1, STAR).toString(),
+                "%next_kill_norma%" to getNorma(data.level + 1, KILL).toString()
+            )
+
+            player.sendMessage(
+                parameter.levelParameter.successNormaCheckMessages.replacePlaceholders(placeholders), mapOf(
+                    parameter.levelParameter.selectStarNormaMessage to MessageActionData({
+                        selectMission(
+                            player,
+                            STAR
+                        )
+                    }),
+                    parameter.levelParameter.selectKillNormaMessage to MessageActionData({
+                        selectMission(
+                            player,
+                            KILL
+                        )
+                    })
+                )
+            )
+        } else {
+            parameter.levelParameter.effects.particles["FailLevelUp"]?.let { player.spawnParticle(it) }
+            parameter.levelParameter.effects.sounds["FailLevelUp"]?.let { player.playSound(it) }
+            player.sendMessage(parameter.levelParameter.failNormaCheckMessages)
+        }
     }
 
-    override fun getLevelData(player: IActivePlayer): LevelData =
+    override fun getLevelData(player: IGamePlayer): LevelData =
         levelMap[player] ?: throw IllegalArgumentException("Player not found")
 
-    private fun getNorma(player: IActivePlayer, level: Int, norma: LevelUpMission): Int =
-        normaTable[norma]?.get(level) ?: 1
+    private fun getNorma(level: Int, mission: LevelUpMission): Int {
+        val normaParameter = parameter.levelParameter.normaParameter[level]!!
+        return when (mission) {
+            STAR -> normaParameter.star
+            KILL -> normaParameter.kill
+        }
+    }
 
-    private fun canLevelUp(player: IActivePlayer): Boolean {
+    private fun canLevelUp(player: IGamePlayer): Boolean {
         val levelData = getLevelData(player)
         return levelData.norma <= getCurrentNorma(player)
     }
 
-    private fun getCurrentNorma(player: IActivePlayer): Int {
+    private fun getCurrentNorma(player: IGamePlayer): Int {
         return when (levelMap[player]?.mission) {
             STAR -> player.star
             KILL -> player.kill
             null -> TODO()
         }
     }
-
-    protected abstract fun failLevelUpEffect(data: LevelData)
-    protected abstract fun successLevelUpEffect(data: LevelData)
 }

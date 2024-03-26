@@ -1,20 +1,33 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base
 
+import com.fasterxml.jackson.annotation.JsonCreator
+
 data class ConfiguredScalableColor(val color: ConfiguredColor, val size: Float = 1.0f) {
+
+    @JsonCreator
+    constructor(scalableColor: String) : this(
+        color = fromStringColor(scalableColor),
+        size = fromStringSize(scalableColor)
+    )
+
     companion object {
-        fun fromString(vector: String): ConfiguredScalableColor {
-            val split = vector.split(",")
 
+        private fun fromStringColor(scalableColor: String): ConfiguredColor {
+            val split = scalableColor.split(",")
             if (split.size != 4) {
-                throw IllegalArgumentException("Invalid vector format, expected 4 parts but got ${split.size}")
+                throw IllegalArgumentException("Invalid scalable color format, expected 4 parts but got ${split.size}")
             }
-
-            val size = split[3].toFloatOrNull()
-                ?: throw NumberFormatException("Invalid vector format, expected float value but got ${split[3]}")
-
             val rgbString = split.take(3).joinToString("-")
-            val color = ConfiguredColor.fromString(rgbString)
-            return ConfiguredScalableColor(color, size)
+            return ConfiguredColor(rgbString)
+        }
+
+        private fun fromStringSize(scalableColor: String): Float {
+            val split = scalableColor.split(",")
+            if (split.size != 4) {
+                throw IllegalArgumentException("Invalid scalable color format, expected 4 parts but got ${split.size}")
+            }
+            return split[3].toFloatOrNull()
+                ?: throw NumberFormatException("Invalid scalable color format, expected float value but got ${split[3]}")
         }
     }
 }

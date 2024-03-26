@@ -7,19 +7,19 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillId
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillTrigger
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.param.ISkillEventPrams
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.TypedMap
-import org.koin.core.component.KoinComponent
+import org.koin.core.annotation.Single
 import org.koin.core.component.inject
 import org.koin.core.parameter.parameterSetOf
 import org.reflections.Reflections
 import java.util.*
 import kotlin.collections.HashMap
 
-abstract class SkillService : ISkillService, KoinComponent {
-    private val itemSkillBinder: HashMap<String, ConfiguredSkillSet> by inject { parameterSetOf(ConfiguredSkillSet::class.java) }
+@Single
+class SkillService : ISkillService {
+    private val skillSets: HashMap<String, ConfiguredSkillSet> by inject { parameterSetOf(ConfiguredSkillSet::class.java) }
     private val skills: HashMap<String, ConfiguredSkillParams> by inject()
     private val skillClasses: Map<String, ISkill> = getSkillClasses()
-    private val relationQueue: MutableMap<UUID, MutableMap<Int, MutableMap<String, MutableMap<String, () -> TypedMap>>>> =
-        mutableMapOf()
+    private val states = mutableMapOf<UUID, MutableList<SkillState>>()
 
     private fun getSkillClasses(): Map<String, ISkill> {
         val skills = mutableMapOf<String, ISkill>()
@@ -35,46 +35,92 @@ abstract class SkillService : ISkillService, KoinComponent {
         return skills
     }
 
-    private fun getSkill(id: String): MutableSet<ConfiguredSkillParams>? =
-        SkillTrigger.values().mapNotNull { getSkill(id, it) }.flatten().toMutableSet()
-
     override fun bindSkillToItem(itemId: String, skillSet: ConfiguredSkillSet) {
-        itemSkillBinder[itemId] = skillSet
+        skillSets[itemId] = skillSet
     }
 
     override fun registerSkill(skillId: String, skillParams: ConfiguredSkillParams) {
         skills[skillId] = skillParams
     }
 
-    override fun use(skillId: String, eventParams: ISkillEventPrams) {
-        skillClasses[skillId]?.use(skills[skillId]!!, eventParams, TypedMap())
-    }
-
-
-    override fun use(trigger: SkillTrigger, eventParams: ISkillEventPrams.ICasterEventParams) {
-        itemSkillBinder[eventParams.itemId]?.skills?.get(trigger)?.forEach {
-            val skill = skills[it]
-            getContexts(eventParams)
-                .ifEmpty { listOf(TypedMap()) }
-                .forEach { context: TypedMap -> skillClasses[it]?.use(skill!!, eventParams, context) }
+    override fun use(eventParams: ISkillEventPrams) {
+        val boundSkills: Set<String> = getFirstSkillIds(eventParams.skillSetId, eventParams.skillTrigger) ?: return
+        getSkillsConfig(boundSkills).forEach {
+            val nextSkillIds = getNextSkillIds(eventParams.skillSetId, eventParams.skillId)
+            if(nextSkillIds.isEmpty())
+                use(it.id, eventParams)
+            else
+                use(it.id, eventParams, SkillState(nextSkillIds))
         }
     }
 
-    private fun getContexts(eventParams: ISkillEventPrams.ICasterEventParams): List<TypedMap> =
-        getBeforeSkills(eventParams).map {
-            relationQueue[eventParams.initiator.id]?.get(eventParams.slot)?.get(eventParams.itemId)?.get(it)?.invoke()
-                ?: TypedMap()
-        }
+    private fun getSkillsConfig(skillIds: Set<String>): Set<ConfiguredSkillParams> = skillIds.mapNotNull { skills[it] }.toSet()
 
-    private fun getBeforeSkills(eventParams: ISkillEventPrams.ICasterEventParams): List<String> {
-        val relations = itemSkillBinder[eventParams.itemId]?.relations.orEmpty()
-        val containingRelations = relations.filter { it.contains(eventParams.skillId) }
-        return containingRelations.mapNotNull { it.previousTo(eventParams.skillId) }
+    private fun use(skillClassId: String, eventParams: ISkillEventPrams, state: SkillState? = null) {
+        val data = TypedMap()
+        skillClasses[skillClassId]?.use(skills[skillClassId]!!, eventParams, data , state?.setEventParams(eventParams)?.setDataCaller { data })
     }
 
-    private fun List<String>.previousTo(item: String): String? {
+    private fun getFirstSkillIds(skillSetId: String, skillTrigger: SkillTrigger): Set<String>? {
+        val skillSet = skillSets[skillSetId] ?: return null
+        val skills = skillSet.skills[skillTrigger] ?: return null
+
+        return skills.filter { skillId -> skillSet.relations.any{ it.first() == skillId} }.toSet()
+    }
+
+    private fun getNextSkillIds(skillSetId: String, skillId: String): Map<SkillTrigger, String> {
+        val nextSkillIds = getNextSkillIdsFromSkillSet(skillSetId, skillId)
+        return associateByTrigger(skillSetId, nextSkillIds)
+    }
+
+    private fun getNextSkillIdsFromSkillSet(skillSetId: String, skillId: String): Set<String> {
+        return skillSets[skillSetId]
+            ?.relations
+            ?.filter { it.contains(skillId) }
+            ?.mapNotNull { it.nextTo(skillId) }
+            ?.toSet()
+            ?: emptySet()
+    }
+
+    private fun associateByTrigger(skillSetId: String, skillIds: Set<String>): Map<SkillTrigger, String> {
+        return skillIds.associateBy { getTrigger(skillSetId, it) }.toMap()
+    }
+
+    private fun getTrigger(skillSetId: String, skillId: String): SkillTrigger {
+        return skillSets[skillSetId]?.skills?.filterValues { it.contains(skillId) }?.keys?.first()
+            ?: throw IllegalArgumentException("Skill not found")
+    }
+
+    private fun List<String>.nextTo(item: String): String? {
         val index = indexOf(item)
-        return getOrNull(index - 1)
+        return getOrNull(index + 1)
     }
 
+
+    override fun addState(id: UUID, state: SkillState) {
+        val hasStates = states.getOrPut(id) { mutableListOf() }
+        hasStates.add(state)
+    }
+
+    override fun getSkillSetIds(id: UUID, skillTrigger: SkillTrigger): List<String>? {
+        val hasStates = getStates(id, skillTrigger) ?: return null
+        return hasStates.map { it.eventParams.skillSetId }
+    }
+
+    override fun transitionState(id: UUID, eventParams: ISkillEventPrams.ICasterEventParams) {
+        val hasStates = getStates(id, eventParams.skillTrigger) ?: return
+        hasStates.forEach {
+            val nextSkillIds = getNextSkillIds(eventParams.skillSetId, eventParams.skillId)
+            use(eventParams.skillId, eventParams, SkillState(nextSkillIds, it))
+        }
+        states[id]?.removeAll(hasStates)
+    }
+
+    private fun getStates(id: UUID, skillTrigger: SkillTrigger): List<SkillState>? {
+        return states[id]?.filter{ it.nextSkillIds.contains(skillTrigger) }
+    }
+
+    override fun clearStates(id: UUID) {
+        states.remove(id)
+    }
 }

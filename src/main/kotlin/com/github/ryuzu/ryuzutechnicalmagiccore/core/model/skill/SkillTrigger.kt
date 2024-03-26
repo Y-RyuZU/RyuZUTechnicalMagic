@@ -23,4 +23,5 @@ enum class SkillTrigger(@JsonValue val trigger: String) {
     SHIELD("onShield"),
     DAMAGED("onDamaged"),
     DEATH("onDeath"),
+    SYSTEM("onSystem"),
 }

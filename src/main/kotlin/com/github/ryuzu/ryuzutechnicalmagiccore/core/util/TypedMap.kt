@@ -40,12 +40,12 @@ class TypedMap(map: Map<String, Any> = hashMapOf()) : Map<String, Any> by map {
 
     @Throws(IllegalArgumentException::class, NumberFormatException::class)
     fun getLocation(key: String): ConfiguredIntLocation {
-        return ConfiguredIntLocation.fromString(getString(key))
+        return ConfiguredIntLocation(getString(key))
     }
 
     @Throws(IllegalArgumentException::class, NumberFormatException::class)
     fun getVector(key: String): ConfiguredIntVector {
-        return ConfiguredIntVector.fromString(getString(key))
+        return ConfiguredIntVector(getString(key))
     }
 
     @Throws(IllegalArgumentException::class)
