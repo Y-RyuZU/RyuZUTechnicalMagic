@@ -5,6 +5,8 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.TypedMap
 
 data class ConfiguredSkillParams (
     val id: String,
+    val coolTime: Long = 0,
+    val relationExpirationTime: Long = 0,
     val effects: ConfiguredEffect,
     val performance: TypedMap
 )

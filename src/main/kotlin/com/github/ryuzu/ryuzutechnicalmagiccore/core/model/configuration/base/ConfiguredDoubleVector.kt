@@ -1,10 +1,11 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import org.joml.Vector3d
 import kotlin.math.sqrt
 import kotlin.random.Random
 
-data class ConfiguredDoubleVector(val x: Double, val y: Double, val z: Double) {
+data class ConfiguredDoubleVector(val x: Double, val y: Double, val z: Double) : Vector3d(x, y, z) {
 
     @JsonCreator
     constructor(vector: String) : this(
@@ -14,7 +15,6 @@ data class ConfiguredDoubleVector(val x: Double, val y: Double, val z: Double) {
     )
 
     companion object {
-
         private fun fromStringPart(vector: String, index: Int): Double {
             val split = vector.split(",")
 

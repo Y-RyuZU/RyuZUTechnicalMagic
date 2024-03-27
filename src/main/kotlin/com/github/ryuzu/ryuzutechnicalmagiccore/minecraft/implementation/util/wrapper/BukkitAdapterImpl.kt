@@ -11,4 +11,7 @@ class BukkitAdapterImpl : IBukkitAdapter {
         return player.toPlayer().name
     }
 
+    override fun isSneaking(player: IPlayer): Boolean {
+        return player.toPlayer().isSneaking
+    }
 }

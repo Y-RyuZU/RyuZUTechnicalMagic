@@ -32,6 +32,7 @@ data class Player(
     private val particleService: IParticleService by inject()
 
     override fun getName(): String = bukkitAdapter.getName(this)
+    override fun isSneaking(): Boolean = bukkitAdapter.isSneaking(this)
 
     override fun playSound(soundSets: Set<ConfiguredSoundSet>) {
         soundService.playSound(soundSets, this)
@@ -75,6 +76,10 @@ data class Player(
 
     override fun getDoubleLocation(): ConfiguredDoubleLocation {
         return locationService.getDoubleLocation(this)
+    }
+
+    override fun getDirection(): ConfiguredDoubleVector {
+        return locationService.getDirection(this)
     }
 
     override fun changeGameMode(gameMode: Int) {

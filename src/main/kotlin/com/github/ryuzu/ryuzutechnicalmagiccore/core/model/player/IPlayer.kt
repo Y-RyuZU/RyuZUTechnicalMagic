@@ -14,6 +14,7 @@ interface IPlayer {
     val id: UUID
 
     fun getName(): String
+    fun isSneaking(): Boolean
     fun playSound(vararg soundSets: ConfiguredSoundSet)
     fun playSound(soundSets: Set<ConfiguredSoundSet>)
     fun teleport(location: ConfiguredIntLocation)
@@ -21,6 +22,7 @@ interface IPlayer {
     fun sendMessage(messages: List<String>, actionPlaceholder: Map<String, MessageActionData> = mapOf())
     fun getIntLocation(): ConfiguredIntLocation
     fun getDoubleLocation(): ConfiguredDoubleLocation
+    fun getDirection(): ConfiguredDoubleVector
     fun changeGameMode(gameMode: Int)
     fun changeGameMode(gameMode: Int, lock: Boolean)
     fun sendTitle(title: String?, subtitle: String?)

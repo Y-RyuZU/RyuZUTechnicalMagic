@@ -1,6 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.IEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.IEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.IEventHandler
 
 interface IEventListenerCollector {

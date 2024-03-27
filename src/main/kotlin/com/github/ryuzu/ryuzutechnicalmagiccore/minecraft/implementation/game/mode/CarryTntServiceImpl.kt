@@ -1,7 +1,7 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.game.mode
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.PlayerQuitEvent
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.PlayerRightClickBlockEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.click.PlayerRightClickBlockEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.EventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.IEventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher.IEventListenerCollector
@@ -73,7 +73,7 @@ class CarryTntServiceImpl(
     fun onClickTnt(event: PlayerRightClickBlockEvent) {
         if(!isGamePlayer(event.player)) return
         val player = getGamePlayer(event.player)
-        tryCarryTNT(event.block, player)
+        tryCarryTNT(event.location, player)
     }
 
     @EventHandler

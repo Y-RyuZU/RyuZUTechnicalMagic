@@ -1,6 +1,7 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.wrapper.location
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.location.ILocationService
@@ -18,4 +19,6 @@ class LocationService : ILocationService {
     override fun getDoubleLocation(player: IPlayer): ConfiguredDoubleLocation =
         player.toPlayer().getLocation().toDoubleConfigured()
 
+    override fun getDirection(player: IPlayer): ConfiguredDoubleVector =
+        player.toPlayer().getLocation().getDirection().toDoubleConfigured()
 }

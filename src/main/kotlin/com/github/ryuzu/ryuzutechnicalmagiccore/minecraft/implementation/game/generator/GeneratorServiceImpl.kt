@@ -1,6 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.game.generator
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.PlayerItemPickUpEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerItemPickUpEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.EventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.IEventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher.IEventListenerCollector

@@ -1,10 +1,18 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.event
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.*
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.EntityDeathEventHandler
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.click.PlayerLeftClickAirEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.click.PlayerLeftClickBlockEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.click.PlayerRightClickAirEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.click.PlayerRightClickBlockEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.*
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerItemPickUpEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerMaterialPickUpEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.EventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher.IEventListenerCollector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.Player
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillTrigger
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.service.ISkillService
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.model.item.IItemProvider
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toIntConfigured
 import com.hakan.basicdi.annotations.Component
@@ -13,9 +21,8 @@ import io.papermc.paper.event.entity.EntityPortalReadyEvent
 import org.bukkit.Material
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventPriority
-import org.bukkit.event.entity.EntityDamageEvent
+import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityPickupItemEvent
-import org.bukkit.event.player.PlayerAttemptPickupItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -24,24 +31,53 @@ import org.koin.core.component.inject
 class BukkitEventAdapter : KoinComponent {
     private val eventListenerCollector: IEventListenerCollector by inject()
     private val itemProvider: IItemProvider by inject()
+    private val skillService: ISkillService by inject()
 
     @EventListener
-    fun onRightClickBlock(bukkitEvent: PlayerInteractEvent) {
-        if(bukkitEvent.action != org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK) return
-        val event = PlayerRightClickBlockEvent(
-            Player(bukkitEvent.player.uniqueId),
-            bukkitEvent.clickedBlock!!.location.toIntConfigured()
-        )
+    fun onClick(bukkitEvent: PlayerInteractEvent) {
+        val player = Player(bukkitEvent.player.uniqueId)
+
+        val item: String? = if (bukkitEvent.item == null) null else itemProvider.getId(bukkitEvent.item!!)
+
+        val event = when (bukkitEvent.action) {
+            Action.RIGHT_CLICK_AIR -> PlayerRightClickAirEvent(
+                player, item
+            )
+            Action.LEFT_CLICK_AIR -> PlayerLeftClickAirEvent(
+                player, item
+            )
+            Action.RIGHT_CLICK_BLOCK -> PlayerRightClickBlockEvent(
+                player, item,
+                bukkitEvent.clickedBlock!!.location.toIntConfigured(),
+                bukkitEvent.clickedBlock!!.type.name
+            )
+            Action.LEFT_CLICK_BLOCK -> PlayerLeftClickBlockEvent(
+                player, item,
+                bukkitEvent.clickedBlock!!.location.toIntConfigured(),
+                bukkitEvent.clickedBlock!!.type.name
+            )
+            else -> return
+        }
         eventListenerCollector.publish(event)
     }
 
-    @EventListener(ignoreCancelled = true, priority = EventPriority.HIGH)
-    fun onDeath(bukkitEvent: EntityDamageEvent) {
-        if(bukkitEvent.entity !is org.bukkit.entity.Player) return
-        if (bukkitEvent.damage < (bukkitEvent.entity as LivingEntity).health) return
-        val event = EntityDeathEvent(Player(bukkitEvent.entity.uniqueId)).apply { lastDamage = bukkitEvent.damage}
+    @EventListener(priority = EventPriority.HIGH)
+    fun onDamage(bukkitEvent: org.bukkit.event.entity.EntityDamageEvent) {
+        val entity = bukkitEvent.entity
+        if (entity !is LivingEntity) return
+        var event: IEntityDamageEvent = EntityDamageEvent(
+            entity.uniqueId,
+            bukkitEvent.damage
+        )
+        if (entity is org.bukkit.entity.Player) event = PlayerDamageEvent(
+            event,
+            Player(entity.uniqueId)
+        )
+        if (bukkitEvent.damage > entity.health) event = EntityDeathEvent(event)
+        if (event is PlayerDamageEvent && bukkitEvent.damage > entity.health)
+            event = PlayerDeathEvent(event)
+
         eventListenerCollector.publish(event)
-        bukkitEvent.isCancelled = true
     }
 
     @EventHandler
@@ -53,17 +89,16 @@ class BukkitEventAdapter : KoinComponent {
 
     @EventHandler
     fun onPickup(bukkitEvent: EntityPickupItemEvent) {
-        if(bukkitEvent.entity !is org.bukkit.entity.Player) return
+        if (bukkitEvent.entity !is org.bukkit.entity.Player) return
         val player = Player(bukkitEvent.entity.uniqueId)
         val bukkitItem = bukkitEvent.item.itemStack
         val id = itemProvider.getId(bukkitItem)
-        if(id == null) {
+        if (id == null) {
             val event = PlayerMaterialPickUpEvent(player, bukkitItem.type.name, bukkitEvent.item.uniqueId)
             eventListenerCollector.publish(event)
             bukkitEvent.isCancelled = event.isCancelled
             bukkitEvent.item.itemStack.type = Material.valueOf(event.material)
-        }
-        else {
+        } else {
             val event = PlayerItemPickUpEvent(player, id, bukkitEvent.item.uniqueId)
             eventListenerCollector.publish(event)
             bukkitEvent.isCancelled = event.isCancelled
@@ -73,7 +108,7 @@ class BukkitEventAdapter : KoinComponent {
 
     @EventHandler
     fun onPortalReady(bukkitEvent: EntityPortalReadyEvent) {
-        if(bukkitEvent.entity !is org.bukkit.entity.Player) return
+        if (bukkitEvent.entity !is org.bukkit.entity.Player) return
         val event = PlayerPortalReadyEvent(Player(bukkitEvent.entity.uniqueId))
         eventListenerCollector.publish(event)
         bukkitEvent.isCancelled = event.isCancelled

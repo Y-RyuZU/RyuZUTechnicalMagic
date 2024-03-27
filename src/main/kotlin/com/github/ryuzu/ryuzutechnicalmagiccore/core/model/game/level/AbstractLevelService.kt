@@ -3,7 +3,6 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.level
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.general.ConfiguredGeneralParameter
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.level.LevelUpMission.KILL
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.level.LevelUpMission.STAR
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.StringUtility.Companion.replacePlaceholders
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.message.MessageActionData

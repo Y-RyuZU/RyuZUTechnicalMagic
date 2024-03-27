@@ -1,26 +1,17 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.wrapper.scoreboard
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.ConfiguredScoreboard
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.bossbar.ConfiguredBossBar
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.StringUtility.Companion.replacePlaceholders
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.StringUtility.Companion.replaceLambdaPlaceholders
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.bossbar.AbstractBossBarService
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.bossbar.IBossBarService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.scoreboard.AbstractScoreboardService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.scoreboard.IScoreboardService
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.BossBarBuilder
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ColorUtility
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.PlayerUtility.Companion.toPlayer
 import net.kyori.adventure.text.Component
 import net.megavex.scoreboardlibrary.api.ScoreboardLibrary
 import net.megavex.scoreboardlibrary.api.sidebar.Sidebar
-import org.bukkit.boss.BarColor
-import org.bukkit.boss.BarStyle
-import org.bukkit.boss.BossBar
 import org.koin.core.annotation.Factory
 import org.koin.core.component.inject
-import java.util.*
 
 @Factory
 class ScoreboardServiceImpl : AbstractScoreboardService() {
@@ -36,9 +27,9 @@ class ScoreboardServiceImpl : AbstractScoreboardService() {
     }
 
     override fun update(title: String, lines: List<String>, placeholders: Map<String, () -> String>) {
-        scoreboard.title(Component.text(title.replacePlaceholders(placeholders)))
+        scoreboard.title(Component.text(title.replaceLambdaPlaceholders(placeholders)))
 
-        lines.replacePlaceholders(placeholders).forEachIndexed { index, line ->
+        lines.replaceLambdaPlaceholders(placeholders).forEachIndexed { index, line ->
             scoreboard.line(index, Component.text(line))
         }
     }

@@ -2,19 +2,17 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.w
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.bossbar.ConfiguredBossBar
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.StringUtility.Companion.replacePlaceholders
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.StringUtility.Companion.replaceLambdaPlaceholders
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.bossbar.AbstractBossBarService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.bossbar.IBossBarService
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.BossBarBuilder
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ColorUtility
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.PlayerUtility.Companion.toPlayer
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 import org.bukkit.boss.BossBar
 import org.koin.core.annotation.Factory
 import org.koin.core.component.inject
-import java.util.*
 
 @Factory
 class BossBarServiceImpl : AbstractBossBarService() {
@@ -33,7 +31,7 @@ class BossBarServiceImpl : AbstractBossBarService() {
     }
 
     override fun update(title: String, placeholders: Map<String, () -> String>) {
-        bossBar.setTitle(title.replacePlaceholders(placeholders))
+        bossBar.setTitle(title.replaceLambdaPlaceholders(placeholders))
     }
 
     override fun destroy() {

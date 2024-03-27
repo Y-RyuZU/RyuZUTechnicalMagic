@@ -1,11 +1,9 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.EntityDeathEvent
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.IEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.IEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.EventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.IEventHandler
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.lang.reflect.Method
 
 class EventPublisherImpl<T: IEvent>(

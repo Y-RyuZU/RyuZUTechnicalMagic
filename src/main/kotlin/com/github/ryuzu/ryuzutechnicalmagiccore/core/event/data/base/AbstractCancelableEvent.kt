@@ -1,4 +1,4 @@
-package com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data
+package com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base
 
 
 abstract class AbstractCancelableEvent : ICancelableEvent, AbstractEvent() {
