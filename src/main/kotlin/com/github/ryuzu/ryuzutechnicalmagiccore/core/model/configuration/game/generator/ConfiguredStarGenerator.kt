@@ -3,7 +3,6 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.g
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntVector
 
 data class ConfiguredStarGenerator(
-    override val vector: ConfiguredIntVector,
     override val period: Int,
     override val offY: Double,
     override val radius: Double,

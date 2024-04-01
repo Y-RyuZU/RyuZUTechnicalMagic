@@ -1,21 +1,23 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.module
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.skill.ConfiguredSkillParams
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.skill.ConfiguredSkillSet
 import org.koin.core.annotation.Module
+import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 import java.io.File
 
 @Module
 class ConfiguredSkillSetModule :
-    AbstractConfigurationModule<HashMap<String, ConfiguredSkillParams>, ConfiguredSkillParams>() {
-    companion object {
-        private const val SKILLS_PATH = "skills"
-    }
+    AbstractConfigurationModule<Map<String, ConfiguredSkillSet>, Map<String, ConfiguredSkillSet>>() {
+    override val folderName: String = "skill-sets"
 
-    @Single
-    override fun loadConfig(): HashMap<String, ConfiguredSkillParams> = super.loadConfig()
+    @Single(createdAtStart = true)
+    @Named("SkillSetConfig")
+    override fun loadConfig(): Map<String, ConfiguredSkillSet> = super.loadConfig()
 
-    override fun processFile(file: File): ConfiguredSkillParams {
-        return mapper.readValue(File(file, SKILLS_PATH), ConfiguredSkillParams::class.java)
+    override fun processFile(file: File): Map<String, ConfiguredSkillSet> {
+        val mapType = mapper.typeFactory
+            .constructMapType(Map::class.java, String::class.java, ConfiguredSkillSet::class.java)
+        return mapper.readValue(file, mapType)
     }
 }

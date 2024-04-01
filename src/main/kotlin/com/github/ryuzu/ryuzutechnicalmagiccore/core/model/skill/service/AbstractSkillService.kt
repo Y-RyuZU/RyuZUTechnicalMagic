@@ -18,7 +18,7 @@ import kotlin.collections.HashMap
 abstract class AbstractSkillService : ISkillService {
     private val coolTimeService: ICoolTimeService by inject()
 
-    private val skillSets: HashMap<String, ConfiguredSkillSet> by inject { parameterSetOf(ConfiguredSkillSet::class.java) }
+    private val skillSets: HashMap<String, ConfiguredSkillSet> by inject()
     private val skills: HashMap<String, ConfiguredSkillParams> by inject()
     private val skillClasses: Map<String, ISkill> = getSkillClasses()
     private val states = mutableMapOf<IPlayer, MutableList<SkillState>>()

@@ -9,6 +9,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.Co
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.general.ConfiguredGeneralParameter
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.AbstractGeneratorService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.IGeneratorService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.StarStockData
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.model.item.IItemProvider
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toLocation
@@ -18,11 +19,14 @@ import org.bukkit.Location
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Item
 import org.bukkit.inventory.ItemStack
+import org.koin.core.annotation.InjectedParam
+import org.koin.core.annotation.Single
 import org.koin.core.component.inject
 import java.util.UUID
 import kotlin.random.Random
 
-class GeneratorServiceImpl(gameService: IGameService) : AbstractGeneratorService(gameService), IEventHandler {
+@Single([IGeneratorService::class])
+class GeneratorServiceImpl(@InjectedParam gameService: IGameService) : AbstractGeneratorService(gameService), IEventHandler {
     private val itemProvider: IItemProvider by inject()
     private val eventListenerCollector: IEventListenerCollector by inject()
 
@@ -51,12 +55,12 @@ class GeneratorServiceImpl(gameService: IGameService) : AbstractGeneratorService
     }
 
     init {
-        eventListenerCollector.unregisterEventListener(this)
+        eventListenerCollector.registerEventListener(this)
     }
 
     override fun stop() {
         super.stop()
-        eventListenerCollector.registerEventListener(this)
+        eventListenerCollector.unregisterEventListener(this)
     }
 
     @EventHandler

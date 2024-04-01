@@ -3,49 +3,39 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.w
 import com.github.ryuzu.ryuzutechnicalmagiccore.RyuZUTechnicalMagicCore
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.AbstractSimpleScheduler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.ISimpleScheduler
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
+import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitRunnable
+import org.bukkit.scheduler.BukkitTask
 import org.koin.core.annotation.Factory
+import org.koin.core.annotation.InjectedParam
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-@Factory
-class SimpleSchedulerImpl : AbstractSimpleScheduler(), KoinComponent {
+@Factory([ISimpleScheduler::class])
+class SimpleSchedulerImpl(@InjectedParam updatePeriod: UpdatePeriod) : AbstractSimpleScheduler(updatePeriod), KoinComponent {
     private val instance: RyuZUTechnicalMagicCore by inject()
 
-    private val bukkitRunnable: BukkitRunnable = object : BukkitRunnable() {
-        override fun run() = runnable().run()
-    }
+    private val bukkitScheduler = Bukkit.getScheduler()
+    private lateinit var bukkitTask: BukkitTask
 
-    override fun cancel() {
-        super.cancel()
-        bukkitRunnable.cancel()
+    override fun stop() {
+        bukkitTask.cancel()
     }
 
     override fun runSync(): ISimpleScheduler {
-        runCommon {
-            if(getEndTime() == 0L)
-                bukkitRunnable.runTask(instance)
-            else
-                bukkitRunnable.runTaskTimer(instance, 0, 1)
-        }
+        bukkitTask = if(getEndTime() == 1L)
+            bukkitScheduler.runTask(instance, runnable())
+        else
+            bukkitScheduler.runTaskTimer(instance, runnable(), 0, updatePeriod.getPeriod())
         return this
     }
 
     override fun runAsync(): ISimpleScheduler {
-        runCommon {
-            if(getEndTime() == 0L)
-                bukkitRunnable.runTaskAsynchronously(instance)
-            else
-                bukkitRunnable.runTaskTimerAsynchronously(instance, 0, 1)
-        }
-        return this
-    }
-
-    private fun runCommon(runTask: () -> Unit) {
-        val endTime = tasks.maxOfOrNull { it.delay + it.period } ?: 0
-        if (endTime == 0L)
-            runnable().run()
+        bukkitTask = if(getEndTime() == 1L)
+            bukkitScheduler.runTaskAsynchronously(instance, runnable())
         else
-            runTask.invoke()
+            bukkitScheduler.runTaskTimerAsynchronously(instance, runnable(), 0, updatePeriod.getPeriod())
+        return this
     }
 }

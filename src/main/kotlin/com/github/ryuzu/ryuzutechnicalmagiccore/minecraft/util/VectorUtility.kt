@@ -7,9 +7,9 @@ class VectorUtility {
     companion object {
         fun Vector.getDegreeFrom3Points(a: Vector, c: Vector): Double {
             val b = this
-            val ab = b.clone().subtract(a)
-            val bc = c.clone().subtract(b)
-            val cosTheta = ab.dot(bc) / (ab.length() * bc.length())
+            val ba = b.clone().subtract(a)
+            val bc = b.clone().subtract(c)
+            val cosTheta = ba.dot(bc) / (ba.length() * bc.length())
             return Math.toDegrees(acos(cosTheta))
         }
     }

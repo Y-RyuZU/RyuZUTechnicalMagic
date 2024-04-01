@@ -22,4 +22,17 @@ enum class UpdatePeriod {
             MINUTE -> 1200
         }
     }
+
+    fun getCondition(): (Long) -> Boolean {
+        return when (this) {
+            TICK -> { _ -> true }
+            HALF_SECOND -> { count -> count % 10 == 0L }
+            SECOND -> { count -> count % 20 == 0L }
+            TWO_SECONDS -> { count -> count % 40 == 0L }
+            FIVE_SECONDS -> { count -> count % 100 == 0L }
+            TEN_SECONDS -> { count -> count % 200 == 0L }
+            THIRTY_SECONDS -> { count -> count % 600 == 0L }
+            MINUTE -> { count -> count % 1200 == 0L }
+        }
+    }
 }

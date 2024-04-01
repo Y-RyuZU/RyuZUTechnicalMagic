@@ -2,6 +2,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.entry.ConfiguredEntry
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.display.IConfiguredDisplay
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.entry.IEntryGameService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.GameMode
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
@@ -14,7 +15,7 @@ import java.util.*
 import org.koin.core.component.get
 import org.koin.core.parameter.parametersOf
 
-@Single
+@Single([IGameManager::class], true)
 class GameManager : IGameManager {
     private val structureService: IStructureService by inject()
     private val blockService: IBlockService by inject()
@@ -23,10 +24,14 @@ class GameManager : IGameManager {
     private val entries: ConfiguredEntry by inject()
     private val services: Map<ConfiguredIntLocation, IEntryGameService> =
         entries.worlds.map { world ->
+            structureService.read(world, entries.structure)
             entries.points.map { point ->
-                structureService.read(world, entries.structure)
                 blockService.setBlock(point.toLocation(world), entries.block)
-                textDisplayService.displayText(entries.display, point.copy(y = point.y + 1).toLocation(world))
+                entries.effects.displays["EntryGateText"]?.forEach {
+                    it.displays.forEach { display ->
+                        textDisplayService.displayText(display as IConfiguredDisplay.ConfiguredTextDisplay, point.copy(y = point.y + 1).toLocation(world))
+                    }
+                }
                 ConfiguredIntLocation(world, point)
             }
         }.flatten().associateWith { get<IEntryGameService> { parametersOf(it) } }
@@ -60,7 +65,6 @@ class GameManager : IGameManager {
     }
 
     private fun createEntryGameService(location: ConfiguredIntLocation): IEntryGameService {
-
         return get<IEntryGameService> { parametersOf(location) }
     }
 }

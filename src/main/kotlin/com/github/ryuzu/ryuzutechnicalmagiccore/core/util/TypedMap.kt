@@ -5,7 +5,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.Co
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.display.EasingFunction
 import java.util.UUID
 
-class TypedMap(map: Map<String, Any> = hashMapOf()) : Map<String, Any> by map {
+class TypedMap(map: MutableMap<String, Any> = mutableMapOf()) : MutableMap<String, Any> by map {
     @Throws(IllegalArgumentException::class)
     fun getString(key: String): String {
         val value = this[key]

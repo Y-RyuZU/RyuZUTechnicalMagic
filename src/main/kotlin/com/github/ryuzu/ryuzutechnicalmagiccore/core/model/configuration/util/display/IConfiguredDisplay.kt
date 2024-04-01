@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "Type")
 @JsonSubTypes(
-    JsonSubTypes.Type(value = IConfiguredDisplay.ConfiguredItemDisplay::class, name = "Block"),
-    JsonSubTypes.Type(value = IConfiguredDisplay.ConfiguredBlockDisplay::class, name = "Item"),
-    JsonSubTypes.Type(value = IConfiguredDisplay.ConfiguredTextDisplay::class, name = "Text")
+    JsonSubTypes.Type(value = IConfiguredDisplay.ConfiguredItemDisplay::class, name = "BLOCK"),
+    JsonSubTypes.Type(value = IConfiguredDisplay.ConfiguredBlockDisplay::class, name = "ITEM"),
+    JsonSubTypes.Type(value = IConfiguredDisplay.ConfiguredTextDisplay::class, name = "TEXT")
 )
 interface IConfiguredDisplay {
     val billboard: String
@@ -38,7 +38,7 @@ interface IConfiguredDisplay {
         override val shadowRadius: Float = 0F,
         override val shadowStrength: Float = 1F,
         override val viewRange: Float = 1F,
-        override val transformation: ConfiguredTransformation,
+        override val transformation: ConfiguredTransformation = ConfiguredTransformation(),
         override val animation: List<ConfiguredAnimationDisplay>
     ) : IConfiguredDisplay
 
@@ -55,7 +55,7 @@ interface IConfiguredDisplay {
         override val shadowRadius: Float = 0F,
         override val shadowStrength: Float = 1F,
         override val viewRange: Float = 1F,
-        override val transformation: ConfiguredTransformation,
+        override val transformation: ConfiguredTransformation = ConfiguredTransformation(),
         override val animation: List<ConfiguredAnimationDisplay>
     ) : IConfiguredDisplay
 
@@ -72,8 +72,8 @@ interface IConfiguredDisplay {
         override val shadowRadius: Float = 0F,
         override val shadowStrength: Float = 1F,
         override val viewRange: Float = 1F,
-        override val transformation: ConfiguredTransformation,
-        override val animation: List<ConfiguredAnimationDisplay>,
+        override val transformation: ConfiguredTransformation = ConfiguredTransformation(),
+        override val animation: List<ConfiguredAnimationDisplay> = emptyList(),
         val texts: List<String>,
         val alignment: String = "CENTER",
         val background: String = "GRAY",

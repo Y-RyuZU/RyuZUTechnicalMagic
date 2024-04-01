@@ -5,10 +5,10 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.Co
 
 data class ConfiguredColorParticle(
     override val id: String,
-    override val count: Int,
-    override val extra: Double,
-    override val offset: ConfiguredDoubleVector,
-    override val delay: Long,
+    override val count: Int = 1,
+    override val extra: Double = 0.0,
+    override val offset: ConfiguredDoubleVector = ConfiguredDoubleVector(),
+    override val delay: Long = 0,
     val color: ConfiguredScalableColor,
     val size: Float
 ) : IConfiguredParticle

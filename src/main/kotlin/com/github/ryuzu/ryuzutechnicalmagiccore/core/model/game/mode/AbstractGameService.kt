@@ -23,6 +23,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.teleport.ITele
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.title.ITitleService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.SimpleSchedulerFactory
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.block.IBlockService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.structure.IStructureService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
@@ -30,12 +31,13 @@ import java.util.*
 
 abstract class AbstractGameService(
     override val world: String,
+    protected val config: ConfiguredGameMode,
     protected val stage: ConfiguredStage,
     protected val entryService: IEntryGameService,
     entryPlayers: Set<IPlayer>,
 ) : IGameService, KoinComponent {
-    private val generatorService: IGeneratorService by inject { parametersOf(this) }
-    private val levelService: ILevelService by inject { parametersOf(this) }
+    protected val generatorService: IGeneratorService by inject { parametersOf(this) }
+    protected val levelService: ILevelService by inject { parametersOf(this) }
     protected val schedulerFactory: SimpleSchedulerFactory by inject()
     protected val messageService: IMessageService by inject()
     protected val titleService: ITitleService by inject()
@@ -45,9 +47,9 @@ abstract class AbstractGameService(
     protected val gameModeService: IGameModeService by inject()
     protected val locationService: ILocationService by inject()
     protected val blockService: IBlockService by inject()
+    protected val structureService: IStructureService by inject()
 
     protected val parameter: ConfiguredGeneralParameter by inject()
-    protected val config: ConfiguredGameMode by inject { parametersOf(stage.gameProperty.getGameMode()) }
     protected val players: MutableSet<IGamePlayer> = entryPlayers.map { createPlayer(it) }.toMutableSet()
 
     protected abstract val gameModeParameter: IConfiguredGameModeParameter
@@ -64,7 +66,7 @@ abstract class AbstractGameService(
         config.effects.particles["GameStart"]?.let { particleService.spawnParticle(it, players) }
         createBossBar()
         createScoreBoard()
-        scheduler = schedulerFactory.createScheduler().whileSchedule { _, count -> gameData.time = count }.runSync()
+        scheduler = schedulerFactory.createScheduler().whileSchedule { _, count -> gameData.time = count }
     }
 
     override fun joinGameMidway(player: IPlayer) {
@@ -84,26 +86,7 @@ abstract class AbstractGameService(
         )
         generatorService.stop()
         scheduler.cancel()
-    }
-
-    override fun onPlayerDeath(eventParams: IDamageEventParams) {
-        val gamePlayer = getGamePlayer(Player(eventParams.entity))
-        gamePlayer.death++
-        generatorService.generateStar(
-            locationService.getIntLocation(gamePlayer).toDoubleLocation(),
-            (gamePlayer.star * stage.gameProperty.starLostRate).toInt(),
-            parameter.generatorParameter.starLostScatter * eventParams.amount
-        )
-        gamePlayer.star *= (1.0 - stage.gameProperty.starLostRate).toInt()
-
-        val respawnInterval = 5L
-        schedulerFactory.createScheduler().schedule { _, count ->
-            gameModeService.changeGameMode(3, gamePlayer, true)
-            titleService.sendTitle(null, "Respawn in ${respawnInterval - count}", gamePlayer)
-        }.schedule(respawnInterval) { _, _ ->
-            gameModeService.changeGameMode(0, gamePlayer, false)
-            respawnPlayer(gamePlayer)
-        }
+        structureService.delete(world)
     }
 
     override fun leaveGame(player: IPlayer) {
@@ -111,9 +94,9 @@ abstract class AbstractGameService(
     }
 
     override fun getGamePlayer(player: IPlayer): IGamePlayer = players.first { it == player }
-    override fun isGamePlayer(player: IPlayer): Boolean = players.any { it == player }
+    override fun isGamePlayer(player: IPlayer): Boolean = players.any { it.id == player.id }
 
-    protected open val placeholders: HashMap<String, () -> String> = hashMapOf<String, () -> String>().apply {
+    protected open val placeholders: MutableMap<String, () -> String> = mutableMapOf<String, () -> String>().apply {
         put("%time%") { gameData.time.tickToFormattedTime() }
         put("%phase%") { getPhase().toString() }
         put("%stage%") { stage.display.name }

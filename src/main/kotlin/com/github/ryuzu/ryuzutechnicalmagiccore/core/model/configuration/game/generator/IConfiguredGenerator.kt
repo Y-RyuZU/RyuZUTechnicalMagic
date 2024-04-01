@@ -9,14 +9,13 @@ import kotlin.math.sin
 import kotlin.random.Random
 
 interface IConfiguredGenerator {
-    val vector: ConfiguredIntVector
     val period: Int
     val offY: Double
     val radius: Double
     val maxStock: Int
     val multiply: Double
 
-    fun getGeneratePoint(): ConfiguredDoubleVector {
+    fun getGeneratePoint(vector: ConfiguredIntVector): ConfiguredDoubleVector {
         val xRadius = Random.nextGaussian() * radius
         val zRadius = Random.nextGaussian() * radius
         val angle = Random.nextDouble() * 2 * PI

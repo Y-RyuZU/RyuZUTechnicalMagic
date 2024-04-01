@@ -1,29 +1,36 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.game.mode
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.PlayerQuitEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.block.PlayerBlockPlaceEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.click.PlayerRightClickBlockEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.PlayerDeathEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.EventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.IEventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher.IEventListenerCollector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.ConfiguredGameMode
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredStage
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.entry.IEntryGameService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.carrytnt.AbstractCarryTntService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.carrytnt.ICarryTntService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toBlockLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toMiddleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.PlayerUtility.Companion.toPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.VectorUtility.Companion.getDegreeFrom3Points
+import org.koin.core.annotation.Factory
+import org.koin.core.annotation.InjectedParam
 import org.koin.core.component.inject
-import java.util.*
 
+@Factory([ICarryTntService::class])
 class CarryTntServiceImpl(
-    world: String,
-    stage: ConfiguredStage,
-    entryService: IEntryGameService,
-    entryPlayers: Set<IPlayer>,
-) : AbstractCarryTntService(world, stage, entryService, entryPlayers), IEventHandler {
+    @InjectedParam world: String,
+    @InjectedParam config: ConfiguredGameMode,
+    @InjectedParam stage: ConfiguredStage,
+    @InjectedParam entryService: IEntryGameService,
+    @InjectedParam entryPlayers: Set<IPlayer>,
+) : AbstractCarryTntService(world, config, stage, entryService, entryPlayers), IEventHandler {
     private val eventListenerCollector: IEventListenerCollector by inject()
 
     init {
@@ -43,42 +50,66 @@ class CarryTntServiceImpl(
         return player.getTargetBlock(null, 5).location == tntLocation.toBlockLocation()
     }
 
-    override fun getFirstTeamTntTargetPointDistance(): Int {
+    override fun getFirstTeamTntTargetPointDistance(): Double {
         val tntPoint = (gameData.holdPlayer?.toPlayer()?.location ?: tntBlockLocation?.toLocation(world)
             ?.toMiddleLocation())?.toVector()!!
-        val ownPoint =
+        val firstTeamPoint =
             gameModeProperty.teamTNTLocations[teams.keys.first()]?.toLocation(world)?.toMiddleLocation()?.toVector()!!
-        val targetPoint =
+        val secondTeamPoint =
             gameModeProperty.teamTNTLocations[teams.keys.last()]?.toLocation(world)?.toMiddleLocation()?.toVector()!!
-        val ownPointDistance = tntPoint.distance(ownPoint)
-        val targetPointDistance = tntPoint.distance(targetPoint)
+        val firstTeamPointDistance = tntPoint.distance(firstTeamPoint)
+        val secondTeamPointDistance = tntPoint.distance(secondTeamPoint)
 
-        if(ownPointDistance == 0.0)
-            return 100
-        else if(targetPointDistance == 0.0)
-            return 0
+        if (firstTeamPointDistance == 0.0)
+            return 1.0
+        else if (secondTeamPointDistance == 0.0)
+            return 0.0
 
-        val targetPointDegree = targetPoint.getDegreeFrom3Points(ownPoint, tntPoint)
-        val ownPointDegree = ownPoint.getDegreeFrom3Points(targetPoint, tntPoint)
+        val firstTeamPointDegree = firstTeamPoint.getDegreeFrom3Points(tntPoint, secondTeamPoint)
+        val secondTeamPointDegree = secondTeamPoint.getDegreeFrom3Points(tntPoint, firstTeamPoint)
 
-        if (ownPointDegree > 90)
-            return 100
-        else if (targetPointDegree > 90)
-            return 0
+        if (firstTeamPointDegree > 90)
+            return 1.0
+        else if (secondTeamPointDegree > 90)
+            return 0.0
         else
-            return ((targetPointDistance / (ownPointDistance + targetPointDistance)) * 100).toInt()
+            return secondTeamPointDistance / (firstTeamPointDistance + secondTeamPointDistance)
     }
 
     @EventHandler
     fun onClickTnt(event: PlayerRightClickBlockEvent) {
-        if(!isGamePlayer(event.player)) return
+        if (event.offHand) return
+        if (!isGamePlayer(event.player)) return
         val player = getGamePlayer(event.player)
-        tryCarryTNT(event.location, player)
+
+        tryCarryTnt(event.location, player)
+    }
+
+    @EventHandler
+    fun onPlaceTnt(event: PlayerBlockPlaceEvent) {
+        if (!isGamePlayer(event.player)) return
+        val player = getGamePlayer(event.player)
+        if (!isHoldPlayer(player)) return
+
+        placeTnt(event.location, player)
     }
 
     @EventHandler
     fun onQuit(event: PlayerQuitEvent) {
-        if(!isGamePlayer(event.player)) return
+        if (!isGamePlayer(event.player)) return
+
         leaveGame(event.player)
+    }
+
+    @EventHandler
+    fun onDeath(event: PlayerDeathEvent) {
+        println("onDeath")
+        if (!isGamePlayer(event.player)) return
+        println("onDeath2")
+        val player = getGamePlayer(event.player)
+        if (!isHoldPlayer(player)) return
+        println("onDeath3")
+
+        lostTNT(getGamePlayer(event.player))
     }
 }

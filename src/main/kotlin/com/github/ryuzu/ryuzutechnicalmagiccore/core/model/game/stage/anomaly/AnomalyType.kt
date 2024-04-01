@@ -7,7 +7,7 @@ enum class AnomalyType {
     Rain;
 
     companion object {
-        const val CONST_METEOR = "METEOR"
-        const val CONST_FREEZE = "FREEZE"
+        const val CONST_METEOR = "Meteor"
+        const val CONST_FREEZE = "Freeze"
     }
 }

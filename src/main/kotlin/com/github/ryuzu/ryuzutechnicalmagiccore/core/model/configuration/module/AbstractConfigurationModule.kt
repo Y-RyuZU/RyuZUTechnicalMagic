@@ -5,34 +5,29 @@ import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import java.io.File
 
-abstract class AbstractConfigurationModule<T, U>: IConfigurationModule<T, U> {
-    protected val folder: File by inject(named("folder"))
+abstract class AbstractConfigurationModule<T, U> : IConfigurationModule<T, U> {
+    private val base: File by inject(named("dataFolder"))
     protected val mapper: ObjectMapper by inject()
+    protected open val folderName: String = ""
     protected open val fileName: String? = null
 
-    private fun listAllFilesInFolder(folder: File): List<File> {
-        val result = mutableListOf<File>()
-
-        folder.walk().forEach {
-            if (it.isFile) result.add(it)
-        }
-
-        return result
-    }
-
     override fun loadConfig(): T {
+        val folder = File(base, folderName)
+        if(!folder.exists())
+            folder.mkdirs()
+
         val selectedFiles = if (fileName != null) {
-            folder.listFiles { file -> file.extension == "yml" && file.nameWithoutExtension == fileName }?.toList() ?: emptyList()
-        } else {
+            val file = File(folder, "$fileName.yml")
+            if (file.exists())
+                listOf(file)
+            else
+                throw IllegalStateException("Configuration file not found: ${file.path}")
+        }
+        else
             listAllFilesInFolder(folder).filter { it.extension == "yml" }
-        }
 
-        if (selectedFiles.isEmpty()) {
-            throw IllegalStateException("No configuration files found in directory: ${folder.path}")
-        }
-
-        val allConfigurations = selectedFiles.map { file ->
-            processFile(file)
+        val allConfigurations: List<U> = selectedFiles.map {
+            processFile(it)
         }
 
         return when {
@@ -44,6 +39,7 @@ abstract class AbstractConfigurationModule<T, U>: IConfigurationModule<T, U> {
                 }
                 resultMap as T
             }
+
             allConfigurations.all { it is Set<*> } -> {
                 val resultSet = mutableSetOf<Any>()
                 allConfigurations.forEach { config ->
@@ -52,6 +48,7 @@ abstract class AbstractConfigurationModule<T, U>: IConfigurationModule<T, U> {
                 }
                 resultSet as T
             }
+
             allConfigurations.all { it is List<*> } -> {
                 val resultList = mutableListOf<Any>()
                 allConfigurations.forEach { config ->
@@ -60,6 +57,7 @@ abstract class AbstractConfigurationModule<T, U>: IConfigurationModule<T, U> {
                 }
                 resultList as T
             }
+
             else -> {
                 allConfigurations.first() as T
             }
@@ -67,4 +65,14 @@ abstract class AbstractConfigurationModule<T, U>: IConfigurationModule<T, U> {
     }
 
     protected abstract fun processFile(file: File): U
+
+    private fun listAllFilesInFolder(folder: File): List<File> {
+        val result = mutableListOf<File>()
+
+        folder.walk().forEach {
+            if (it.isFile) result.add(it)
+        }
+
+        return result
+    }
 }

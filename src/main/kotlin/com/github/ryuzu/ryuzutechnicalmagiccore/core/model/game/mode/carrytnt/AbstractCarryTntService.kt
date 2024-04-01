@@ -2,6 +2,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.carrytnt
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.ConfiguredGameMode
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.IConfiguredGameModeParameter
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredStage
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer.GamePlayer.ITeamGamePlayer.TeamGamePlayer.ICarryTntPlayer
@@ -12,6 +13,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.AbstractTea
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameData
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.team.IGameTeam
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.team.IGameTeam.AbstractScoreGameTeam.CarryTntTeam
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.ISimpleScheduler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
@@ -20,17 +22,16 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.bossbar.IBossB
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.scoreboard.IScoreboardService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.scoreboard.ScoreboardFactory
 import org.koin.core.component.inject
-import java.util.*
-import kotlin.collections.HashMap
 import kotlin.collections.LinkedHashMap
 import kotlin.math.max
 
 abstract class AbstractCarryTntService(
     world: String,
+    config: ConfiguredGameMode,
     stage: ConfiguredStage,
     entryService: IEntryGameService,
     entryPlayers: Set<IPlayer>,
-) : ICarryTntService, AbstractTeamGameService(world, stage, entryService, entryPlayers) {
+) : ICarryTntService, AbstractTeamGameService(world, config, stage, entryService, entryPlayers) {
     override val gameData: IGameData.ITeamGameData.CarryTntData = IGameData.ITeamGameData.CarryTntData()
     override val gameModeParameter: IConfiguredGameModeParameter.ConfiguredCarryTNTParameter =
         config.parameter as IConfiguredGameModeParameter.ConfiguredCarryTNTParameter
@@ -42,30 +43,44 @@ abstract class AbstractCarryTntService(
     private val scoreboardFactory: ScoreboardFactory by inject()
     private lateinit var scoreboard: IScoreboardService
     private val bossBarFactory: BossBarFactory by inject()
-    private val bossBars: LinkedHashMap<IGameTeam.IScoreGameTeam.CarryTntTeam, IBossBarService> = linkedMapOf()
+    private val bossBars: LinkedHashMap<CarryTntTeam, IBossBarService> = linkedMapOf()
 
     override fun createPlayer(player: IPlayer): IGamePlayer = ICarryTntPlayer.CarryTntPlayer(player)
-    override fun getGamePlayer(player: IPlayer): ICarryTntPlayer = players.first { it == player } as ICarryTntPlayer
-    override fun createGameTeam(config: ConfiguredTeam): IGameTeam = IGameTeam.IScoreGameTeam.CarryTntTeam(config)
+    override fun getGamePlayer(player: IPlayer): ICarryTntPlayer =
+        players.first { it.id == player.id } as ICarryTntPlayer
+
+    override fun createGameTeam(config: ConfiguredTeam): IGameTeam = CarryTntTeam(config)
 
     override fun start() {
         super.start()
         scheduler.whileSchedule { _, count ->
-            val firstTeam = teams.values.first() as IGameTeam.IScoreGameTeam.CarryTntTeam
-            val secondTeam = teams.values.last() as IGameTeam.IScoreGameTeam.CarryTntTeam
+            val firstTeam = teams.values.first() as CarryTntTeam
+            val secondTeam = teams.values.last() as CarryTntTeam
             val firstTeamTntTargetPointDistance = getFirstTeamTntTargetPointDistance()
-            bossBars[firstTeam]?.progress(firstTeamTntTargetPointDistance.toDouble() / 100)
-            bossBars[secondTeam]?.progress((100 - firstTeamTntTargetPointDistance.toDouble()) / 100)
-            firstTeam.score = max(firstTeam.score, firstTeamTntTargetPointDistance)
-            secondTeam.score = max(secondTeam.score, 100 - firstTeamTntTargetPointDistance)
-            if(count == gameModeParameter.duration) end()
+            bossBars[firstTeam]?.progress(1 - firstTeamTntTargetPointDistance.toFloat())
+            bossBars[secondTeam]?.progress(firstTeamTntTargetPointDistance.toFloat())
+
+
+            if (gameData.holdPlayer?.team == firstTeam)
+                firstTeam.score = max(firstTeam.score, ((1 - firstTeamTntTargetPointDistance - 0.5) * 200).toInt())
+            else if(gameData.holdPlayer?.team == secondTeam)
+                secondTeam.score = max(secondTeam.score, ((firstTeamTntTargetPointDistance - 0.5) * 200).toInt())
+
+            if (count == gameModeParameter.duration * UpdatePeriod.MINUTE.getPeriod()) end()
+        }.runSync()
+
+        teams.values.forEach {
+            bossBars[it as CarryTntTeam]?.addPlayers(it.players)
         }
+        scoreboard.addPlayers(players)
+
+        blockService.setBlock(tntBlockLocation!!.toLocation(world), "TNT")
     }
 
     override fun end() {
-        super.end()
         bossBars.values.forEach { it.destroy() }
         scoreboard.destroy()
+        super.end()
     }
 
     override fun joinGameMidway(player: IPlayer) {
@@ -84,13 +99,15 @@ abstract class AbstractCarryTntService(
         super.leaveGame(player)
     }
 
-    override fun tryCarryTNT(location: ConfiguredIntLocation, player: ICarryTntPlayer) {
-        if (tntBlockLocation != player.getIntLocation().vector) return
+    override fun tryCarryTnt(location: ConfiguredIntLocation, player: ICarryTntPlayer) {
+        if (tntBlockLocation != location.vector) return
         if (tryCarryTNTScheduler != null) return
         tryCarryTNTScheduler =
-            schedulerFactory.createScheduler().schedule(period = gameModeParameter.getTNTDuration) { scheduler, _ ->
+            schedulerFactory.createScheduler().schedule(0, gameModeParameter.getTNTDuration) { scheduler, _ ->
                 if (!checkTntAcquisitionStatus(location, player)) scheduler.cancel()
-                titleService.sendTitle(null, "CARRYING TNT!", player.team.players)
+            }.schedule(0, gameModeParameter.getTNTDuration, UpdatePeriod.SECOND.getCondition()) { _, _ ->
+                player.sendTitle(null, "CARRYING TNT!")
+                config.effects.sounds["CarryTnt"]?.let { player.playSound(it) }
             }.finally { tryCarryTNTScheduler = null }.end { getTnt(player) }.runSync()
     }
 
@@ -101,10 +118,11 @@ abstract class AbstractCarryTntService(
         titleService.sendTitle(null, "LOST TNT!", player.team.players)
         config.effects.sounds["LostTnt"]?.let { soundService.playSound(it, players) }
         config.effects.particles["LostTnt"]?.let { particleService.spawnParticle(it, player) }
-        bossBars.values.forEach{ it.color("WHITE") }
+        bossBars.values.forEach { it.color("WHITE") }
     }
 
-    override fun placeTNT(location: ConfiguredIntLocation, player: ICarryTntPlayer) {
+    override fun placeTnt(location: ConfiguredIntLocation, player: ICarryTntPlayer) {
+        if(getEnemyPoint(player.team as CarryTntTeam) != location.vector) return
         blockService.setBlock(location.vector.toLocation(world), "TNT")
         titleService.sendTitle(null, "PLACED TNT!", player.team.players)
         config.effects.sounds["PlaceTNT"]?.let { soundService.playSound(it, players) }
@@ -130,31 +148,36 @@ abstract class AbstractCarryTntService(
         gameData.holdPlayer = player
         blockService.setBlock(tntBlockLocation!!.toLocation(world), "AIR")
         tntBlockLocation = null
-        bossBars.values.forEach{ it.color(player.team.property.id) }
+        bossBars.values.forEach { it.color(player.team.property.id.uppercase()) }
     }
+
+    protected fun getEnemyPoint(team: CarryTntTeam): ConfiguredIntVector {
+        val enemy = teams.values.first { it != team } as CarryTntTeam
+        return gameModeProperty.teamTNTLocations[enemy.property.id]!!
+    }
+
 
     override fun createBossBar() {
         teams.values.forEach {
-            bossBars[it as IGameTeam.IScoreGameTeam.CarryTntTeam] = bossBarFactory.createBossBarService().createBossBar(
+            bossBars[it as CarryTntTeam] = bossBarFactory.createBossBarService().createBossBar(
                 stage.display.bossBar,
                 placeholders,
                 UpdatePeriod.TICK
-            ).apply { addPlayers(it.players) }
+            )
+            bossBars[it]!!.progress(0.5F)
         }
     }
 
     override fun createScoreBoard() {
-        scoreboard = scoreboardFactory.createScoreboardService().createScoreboard(config.display.scoreboard, placeholders)
-        scoreboard.addPlayers(players)
+        scoreboard =
+            scoreboardFactory.createScoreboardService().createScoreboard(config.display.scoreboard, placeholders)
     }
 
-    override val placeholders: HashMap<String, () -> String> = super.placeholders.apply {
-        put("%team1_tnt_distance%") { getFirstTeamTntTargetPointDistance().toString() }
-        put("%team2_tnt_distance%") { (100 - getFirstTeamTntTargetPointDistance()).toString() }
-        put("%team1_score%") { (teams.values.first() as IGameTeam.IScoreGameTeam.CarryTntTeam).score.toString() }
-        put("%team2_score%") { (teams.values.last() as IGameTeam.IScoreGameTeam.CarryTntTeam).score.toString() }
+    override val placeholders: MutableMap<String, () -> String> = super.placeholders.apply {
+//        put("%team1_tnt_distance%") { getFirstTeamTntTargetPointDistance().toString() }
+//        put("%team2_tnt_distance%") { (100 - getFirstTeamTntTargetPointDistance()).toString() }
         put("%tnt_holder%") { gameData.holdPlayer?.getName() ?: "None" }
     }
 
-    protected abstract fun getFirstTeamTntTargetPointDistance(): Int
+    protected abstract fun getFirstTeamTntTargetPointDistance(): Double
 }

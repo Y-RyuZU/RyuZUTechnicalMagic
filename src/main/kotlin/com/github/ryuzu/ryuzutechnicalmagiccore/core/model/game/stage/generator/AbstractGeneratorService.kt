@@ -18,30 +18,30 @@ abstract class AbstractGeneratorService(
     private val generatorSet: ConfiguredGeneratorSet by inject { parametersOf(gameService.world) }
     private val schedulerFactory: SimpleSchedulerFactory by inject()
 
-    private val starStocks: HashMap<ConfiguredStarGenerator, StarStockData> = hashMapOf()
-    private val itemStocks: HashMap<ConfiguredItemGenerator, MutableSet<UUID>> = hashMapOf()
+    private val starStocks: MutableMap<ConfiguredStarGenerator, StarStockData> = mutableMapOf()
+    private val itemStocks: MutableMap<ConfiguredItemGenerator, MutableSet<UUID>> = mutableMapOf()
 
     protected val scheduler: ISimpleScheduler =
         schedulerFactory.createScheduler().whileSchedule { _, count ->
             if (count % 20L == 0L) return@whileSchedule
             val phase = gameService.getPhase().toDouble()
 
-            generatorSet.itemGenerators.forEach {
-                if (it.maxStock <= (itemStocks.getOrPut(it) { mutableSetOf() }.size)) return@forEach
-                val location = it.getGeneratePoint().toLocation(gameService.world)
-                if (count % it.period == 0L)
-                    if (Random.nextDouble() > it.unique)
-                        itemStocks[it]?.add(generateItem(location, getRarityWithGaussian(phase)))
+            generatorSet.item.entries.forEach { (vector, item) ->
+                if (item.maxStock <= (itemStocks.getOrPut(item) { mutableSetOf() }.size)) return@forEach
+                val location = item.getGeneratePoint(vector).toLocation(gameService.world)
+                if (count % item.period == 0L)
+                    if (Random.nextDouble() > item.unique)
+                        itemStocks[item]?.add(generateItem(location, getRarityWithGaussian(phase)))
                     else
                         generateHyper(location)
             }
-            generatorSet.starGenerators.forEach {
-                if (it.maxStock <= (starStocks.getOrPut(it) { StarStockData() }.getStock())) return@forEach
-                if (count % it.period == 0L)
-                    starStocks[it]?.addStock(
+            generatorSet.star.entries.forEach {(vector, star) ->
+                if (star.maxStock <= (starStocks.getOrPut(star) { StarStockData() }.getStock())) return@forEach
+                if (count % star.period == 0L)
+                    starStocks[star]?.addStock(
                         generateStar(
-                            it.getGeneratePoint().toLocation(gameService.world),
-                            Random.nextInt(it.min, it.max + 1)
+                            star.getGeneratePoint(vector).toLocation(gameService.world),
+                            Random.nextInt(star.min, star.max + 1)
                         )
                     )
             }

@@ -9,6 +9,7 @@ import java.util.*
 class PlayerRightClickBlockEvent(
     override var player: IPlayer,
     override var item: String?,
+    override val offHand: Boolean,
     override var location: ConfiguredIntLocation,
     override var block: String,
     override var entity: UUID = player.id,

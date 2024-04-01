@@ -1,11 +1,13 @@
 plugins {
     id 'java'
+    id 'application'
     id 'org.jetbrains.kotlin.jvm'
 
     id 'org.springframework.boot' version '3.2.3'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'org.jetbrains.kotlin.plugin.spring' version '1.9.22'
-    id "com.github.johnrengelman.shadow" version "7.1.2"
+//    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id "io.github.goooler.shadow" version "8.1.7"
     id 'com.google.devtools.ksp' version "1.9.23-1.0.19"
 }
 
@@ -25,10 +27,6 @@ repositories {
     maven {
         name = "jitpack"
         url = "https://jitpack.io/"
-    }
-    maven {
-        name = "placeholderapi"
-        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
     maven {
         name = "protocollib"
@@ -71,7 +69,7 @@ repositories {
         url = "https://repo.jeff-media.com/public/"
     }
     maven {
-        name = "multi-verse"
+        name = "multiverse-core"
         url = "https://repo.onarandombox.com/content/groups/public/"
     }
 }
@@ -84,7 +82,7 @@ dependencies {
 
     implementation "io.insert-koin:koin-core:3.5.3"
     implementation "io.insert-koin:koin-annotations:1.3.1"
-    implementation "io.insert-koin:koin-ksp-compiler:1.3.1"
+    ksp "io.insert-koin:koin-ksp-compiler:1.3.1"
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.0")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.17.0")
@@ -104,6 +102,7 @@ dependencies {
     implementation "com.github.megavexnetwork.scoreboard-library:scoreboard-library-api:2.1.3"
     runtimeOnly "com.github.megavexnetwork.scoreboard-library:scoreboard-library-implementation:2.1.3"
     implementation "com.github.megavexnetwork.scoreboard-library:scoreboard-library-extra-kotlin:2.1.3"
+    runtimeOnly "com.github.megavexnetwork.scoreboard-library:scoreboard-library-modern:2.1.3"
 
     compileOnly 'io.th0rgal:oraxen:1.170.0'
     compileOnly 'me.clip:placeholderapi:2.11.5'
@@ -111,7 +110,6 @@ dependencies {
     compileOnly 'com.frengor:ultimateadvancementapi:2.2.8'
     compileOnly 'io.lumine:Mythic-Dist:5.3.5'
     compileOnly 'com.ticxo.modelengine:ModelEngine:R4.0.4'
-    compileOnly 'me.clip:placeholderapi:2.11.5'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.9'
     compileOnly 'com.onarandombox.multiversecore:multiverse-core:4.3.12'
     implementation(platform("com.intellectualsites.bom:bom-newest:1.42"))
@@ -121,7 +119,8 @@ dependencies {
     //    compileOnly 'com.bergerkiller.bukkit:BKCommonLib:1.20.4-v1'
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 21
+def mainClassName = 'com.github.ryuzu.ryuzutechnicalmagiccore.RyuZUTechnicalMagicCore'
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     if (JavaVersion.current() < javaVersion) {
@@ -146,17 +145,11 @@ processResources {
     }
 }
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(targetJavaVersion)
 }
 
 tasks.named('test') {
     useJUnitPlatform()
-}
-
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        println("The dependency: ${details.requested} is resolved to version: ${details.getTarget().version}")
-    }
 }
 
 sourceSets.main {
@@ -168,5 +161,18 @@ tasks.findByName('shadowJar')?.configure {
 }
 
 bootJar {
-    mainClass = 'com.github.ryuzu.ryuzutechnicalmagiccore.RyuZUTechnicalMagicCore'
+    mainClass = mainClassName
+}
+
+application {
+    mainClass.set(mainClassName)
+}
+
+shadowJar {
+    archiveBaseName.set('RyuZUTechnicalMagicCore')
+    archiveVersion.set('')
+    archiveClassifier.set(null)
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
 }

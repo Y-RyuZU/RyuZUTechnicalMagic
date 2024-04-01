@@ -1,4 +1,4 @@
-package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.game.skill
+package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.skill
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.click.*
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.*
@@ -7,16 +7,21 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.IEventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher.IEventListenerCollector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillTrigger
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.service.AbstractSkillService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.service.ICoolTimeService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.service.ISkillService
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toIntConfigured
 import org.bukkit.event.block.Action
 import org.koin.core.annotation.Single
 import org.koin.core.component.inject
 
-@Single
+@Single([ISkillService::class])
 class SkillServiceImpl : AbstractSkillService(), IEventHandler {
     private val skillService: ISkillService by inject()
     private val eventListenerCollector: IEventListenerCollector by inject()
+
+    init {
+        eventListenerCollector.registerEventListener(this)
+    }
 
     @EventHandler
     fun onClick(event: IPlayerClickEvent) {

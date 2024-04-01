@@ -5,6 +5,5 @@ import org.koin.core.annotation.Single
 import org.springframework.data.mongodb.repository.MongoRepository
 import java.util.UUID
 
-@Single
 interface PlayerDataRepository : MongoRepository<PlayerPersistentDataEntity, UUID> {
 }

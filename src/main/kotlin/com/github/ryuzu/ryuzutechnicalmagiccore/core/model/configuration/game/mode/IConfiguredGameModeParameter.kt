@@ -10,14 +10,20 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 )
 sealed interface IConfiguredGameModeParameter {
     val duration: Long
+    val maximumPlayerCount: Int
+    val minimumPlayerCount: Int
 
     data class ConfiguredCarryTNTParameter(
         override val duration: Long,
+        override val maximumPlayerCount: Int,
+        override val minimumPlayerCount: Int,
         val getTNTDuration: Long,
     ) : IConfiguredGameModeParameter
 
     data class ConfiguredCaptureWoolParameter(
         override val duration: Long,
+        override val maximumPlayerCount: Int,
+        override val minimumPlayerCount: Int,
         val captureDuration: Long,
     ) : IConfiguredGameModeParameter
 }

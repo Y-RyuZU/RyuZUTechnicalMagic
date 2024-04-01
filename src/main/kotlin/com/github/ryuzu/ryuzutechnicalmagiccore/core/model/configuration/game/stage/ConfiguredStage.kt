@@ -5,10 +5,10 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.ge
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.team.ConfiguredTeam
 
 data class ConfiguredStage(
-    val id: String,
+    val structure: String,
     val gameProperty: IConfiguredStageGameModeProperty,
     val display: ConfiguredStageDisplay,
     val generators: ConfiguredGeneratorSet,
-    val teams: LinkedHashMap<String, ConfiguredTeam>,
+    val teams: List<ConfiguredTeam>,
     val anomaly: Set<IConfiguredAnomalyParameter>
 )

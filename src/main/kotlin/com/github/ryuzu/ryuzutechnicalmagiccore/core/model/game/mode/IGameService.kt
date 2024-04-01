@@ -11,7 +11,6 @@ interface IGameService {
 
     fun start()
     fun end()
-    fun onPlayerDeath(eventParams: IDamageEventParams)
     fun joinGameMidway(player: IPlayer)
     fun leaveGame(player: IPlayer)
     fun getPhase(): Int

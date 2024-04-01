@@ -6,12 +6,12 @@ import org.koin.core.annotation.Single
 import java.io.File
 
 @Module
-class ConfiguredGameParameterModule :
+class ConfiguredGeneralParameterModule :
     AbstractConfigurationModule<ConfiguredGeneralParameter, ConfiguredGeneralParameter>() {
 
-    override val fileName: String = "game"
+    override val fileName: String = "general"
 
-    @Single
+    @Single(createdAtStart = true)
     override fun loadConfig(): ConfiguredGeneralParameter = super.loadConfig()
 
     override fun processFile(file: File): ConfiguredGeneralParameter {

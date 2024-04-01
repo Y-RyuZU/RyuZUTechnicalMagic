@@ -5,5 +5,5 @@ data class ConfiguredGeneratorParameter(
     val bigStarItem: String,
     val starLostScatter: Double = 0.2,
     val hyperItem: String,
-    val itemTable: HashMap<Int, LinkedHashSet<String>>
+    val itemTable: Map<Int, LinkedHashSet<String>>
 )

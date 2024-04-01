@@ -21,16 +21,11 @@ class DisplayUtility {
             display.shadowStrength = config.shadowStrength
             display.viewRange = config.viewRange
             display.transformation = Transformation(
-                config.transformation.translation.toVector(),
+                config.transformation.translation.toFloat(),
                 config.transformation.yawPitchRoll,
-                config.transformation.scale.toVector(),
+                config.transformation.scale.toFloat(),
                 config.transformation.yawPitchRoll2
             )
-        }
-
-
-        private fun ConfiguredDoubleVector.toVector(): Vector3f {
-            return Vector3f(this.x.toFloat(), this.y.toFloat(), this.z.toFloat())
         }
     }
 }

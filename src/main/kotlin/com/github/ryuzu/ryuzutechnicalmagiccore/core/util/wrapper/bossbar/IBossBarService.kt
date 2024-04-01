@@ -13,6 +13,6 @@ interface IBossBarService : KoinComponent {
     fun removePlayers(players: Set<IPlayer>)
     fun removePlayers(vararg players: IPlayer) = removePlayers(players.toSet())
     fun destroy()
-    fun progress(progress: Double)
+    fun progress(progress: Float)
     fun color(color: String)
 }

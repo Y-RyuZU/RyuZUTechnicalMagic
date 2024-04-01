@@ -5,5 +5,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.ICancelable
 import java.util.*
 
 class EntityDeathEvent(
-    eventProps: IEntityDamageEvent
-) : IEntityDeathEvent, IEntityDamageEvent by eventProps
+    override var entity: UUID,
+    override var lastDamage: Double,
+    eventProps: ICancelableEvent = DefaultCancelableEventProperties()
+) : IEntityDeathEvent, ICancelableEvent by eventProps

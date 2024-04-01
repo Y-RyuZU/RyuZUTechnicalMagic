@@ -6,5 +6,5 @@ data class ConfiguredReward(
     val message: String,
     val exp: Int,
     val gold: Int,
-    val items: HashMap<String, Int>
+    val items: Map<String, Int>
 )

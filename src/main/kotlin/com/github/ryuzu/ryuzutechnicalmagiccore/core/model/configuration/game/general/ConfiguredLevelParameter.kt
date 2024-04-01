@@ -8,5 +8,5 @@ data class ConfiguredLevelParameter(
     val failNormaCheckMessages: List<String>,
     val selectStarNormaMessage: String,
     val selectKillNormaMessage: String,
-    val normaParameter: HashMap<Int, ConfiguredNormaParameter>,
+    val normaParameter: Map<Int, ConfiguredNormaParameter>,
 )

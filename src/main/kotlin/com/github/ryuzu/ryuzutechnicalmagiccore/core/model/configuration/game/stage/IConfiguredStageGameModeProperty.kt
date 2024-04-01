@@ -17,7 +17,7 @@ sealed interface IConfiguredStageGameModeProperty {
     data class ConfiguredStageCarryTNTProperty(
         override val starLostRate: Double,
         val tntSpawnPoint: ConfiguredIntVector,
-        val teamTNTLocations: HashMap<String, ConfiguredIntVector>
+        val teamTNTLocations: Map<String, ConfiguredIntVector>
     ) : IConfiguredStageGameModeProperty {
         override fun getGameMode(): GameMode = GameMode.CarryTnt
     }

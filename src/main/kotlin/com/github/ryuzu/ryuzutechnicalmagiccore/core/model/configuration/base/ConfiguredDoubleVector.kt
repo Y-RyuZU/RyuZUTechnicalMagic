@@ -2,10 +2,11 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import org.joml.Vector3d
+import org.joml.Vector3f
 import kotlin.math.sqrt
 import kotlin.random.Random
 
-data class ConfiguredDoubleVector(val x: Double, val y: Double, val z: Double) : Vector3d(x, y, z) {
+data class ConfiguredDoubleVector(val x: Double = 0.0, val y: Double = 0.0, val z: Double = 0.0) : Vector3d(x, y, z) {
 
     @JsonCreator
     constructor(vector: String) : this(
@@ -13,6 +14,22 @@ data class ConfiguredDoubleVector(val x: Double, val y: Double, val z: Double) :
         fromStringPart(vector, 1),
         fromStringPart(vector, 2)
     )
+
+    override fun toString(): String {
+        return "$x,$y,$z"
+    }
+
+    fun toIntVector(): ConfiguredIntVector {
+        return ConfiguredIntVector(x.toInt(), y.toInt(), z.toInt())
+    }
+
+    fun toLocation(world: String): ConfiguredDoubleLocation {
+        return ConfiguredDoubleLocation(world, this)
+    }
+
+    fun toFloat(): Vector3f {
+        return Vector3f(x.toFloat(), y.toFloat(), z.toFloat())
+    }
 
     companion object {
         private fun fromStringPart(vector: String, index: Int): Double {
@@ -37,13 +54,5 @@ data class ConfiguredDoubleVector(val x: Double, val y: Double, val z: Double) :
             // 大きさで各成分を割り、正規化されたベクトルを生成
             return ConfiguredDoubleVector(x/magnitude, y/magnitude, z/magnitude)
         }
-    }
-
-    fun toIntVector(): ConfiguredIntVector {
-        return ConfiguredIntVector(x.toInt(), y.toInt(), z.toInt())
-    }
-
-    fun toLocation(world: String): ConfiguredDoubleLocation {
-        return ConfiguredDoubleLocation(world, this)
     }
 }

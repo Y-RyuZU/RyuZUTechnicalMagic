@@ -12,11 +12,9 @@ abstract class AbstractBossBarService : IBossBarService {
     private lateinit var scheduler: ISimpleScheduler
 
     override fun createBossBar(bossBar: ConfiguredBossBar, placeholders: Map<String, () -> String>, period: UpdatePeriod): IBossBarService {
-        scheduler = schedulerFactory.createScheduler().whileSchedule { _, count ->
-            if(count % period.getPeriod() == 0L) {
-                val frame = ((count / period.getPeriod()) % bossBar.titles.size).toInt()
-                update(bossBar.titles[frame], placeholders)
-            }
+        scheduler = schedulerFactory.createScheduler(period).whileSchedule { _, count ->
+            val frame = ((count / period.getPeriod()) % bossBar.titles.size).toInt()
+            update(bossBar.titles[frame], placeholders)
         }.runSync()
         return this
     }

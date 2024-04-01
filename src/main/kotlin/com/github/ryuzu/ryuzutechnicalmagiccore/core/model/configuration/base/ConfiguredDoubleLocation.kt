@@ -10,6 +10,14 @@ data class ConfiguredDoubleLocation(val world: String, val vector: ConfiguredDou
         vector = fromStringVector(location)
     )
 
+    override fun toString(): String {
+        return "$world,${vector}"
+    }
+
+    fun toIntLocation(): ConfiguredIntLocation {
+        return ConfiguredIntLocation(world, vector.toIntVector())
+    }
+
     companion object {
         private fun fromStringWorld(location: String): String {
             val split = location.split(",")
@@ -32,9 +40,5 @@ data class ConfiguredDoubleLocation(val world: String, val vector: ConfiguredDou
                 throw NumberFormatException("Unable to parse vector values in location string.")
             }
         }
-    }
-
-    fun toIntLocation(): ConfiguredIntLocation {
-        return ConfiguredIntLocation(world, vector.toIntVector())
     }
 }

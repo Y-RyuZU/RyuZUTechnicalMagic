@@ -9,7 +9,7 @@ import java.io.File
 class ConfiguredEntryModule : AbstractConfigurationModule<ConfiguredEntry, ConfiguredEntry>() {
     override val fileName: String = "entry"
 
-    @Single
+    @Single(createdAtStart = true)
     override fun loadConfig(): ConfiguredEntry = super.loadConfig()
 
     override fun processFile(file: File): ConfiguredEntry {

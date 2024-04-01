@@ -4,9 +4,11 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.wr
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import org.koin.core.parameter.parametersOf
 
 
 @Single
 class SimpleSchedulerFactory : KoinComponent {
-    fun createScheduler(): ISimpleScheduler = get()
+    fun createScheduler(updatePeriod: UpdatePeriod = UpdatePeriod.TICK): ISimpleScheduler =
+        get { parametersOf(updatePeriod) }
 }

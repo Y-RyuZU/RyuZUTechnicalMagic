@@ -1,3 +1,8 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage
 
-interface IEntityDeathEvent : IEntityDamageEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.ICancelableEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.IEntityEvent
+
+interface IEntityDeathEvent : IEntityEvent, ICancelableEvent {
+    var lastDamage: Double
+}

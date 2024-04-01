@@ -1,9 +1,8 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator.ConfiguredItemGenerator
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator.ConfiguredStarGenerator
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntVector
 
 data class ConfiguredGeneratorSet(
-    val starGenerators: Set<ConfiguredStarGenerator>,
-    val itemGenerators: Set<ConfiguredItemGenerator>
+    val star: Map<ConfiguredIntVector, ConfiguredStarGenerator>,
+    val item: Map<ConfiguredIntVector, ConfiguredItemGenerator>
 )

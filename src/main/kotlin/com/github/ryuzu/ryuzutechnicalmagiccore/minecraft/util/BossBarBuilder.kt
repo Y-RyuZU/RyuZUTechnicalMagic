@@ -1,10 +1,9 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util
 
+import net.kyori.adventure.bossbar.BossBar
+import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
-import org.bukkit.boss.BarColor
-import org.bukkit.boss.BarStyle
-import org.bukkit.boss.BossBar
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -14,34 +13,32 @@ class BossBarBuilder : KoinComponent {
     private val namespacedKey: NamespacedKey by inject()
 
     private var title: String = ""
-    private var color: BarColor = BarColor.WHITE
-    private var style: BarStyle = BarStyle.SOLID
-    private var progress: Double = 1.0
+    private var color: BossBar.Color = BossBar.Color.WHITE
+    private var style: BossBar.Overlay = BossBar.Overlay.PROGRESS
+    private var progress: Float = 1F
 
     fun title(title: String): BossBarBuilder {
         this.title = title
         return this
     }
 
-    fun color(color: BarColor): BossBarBuilder {
+    fun color(color: BossBar.Color): BossBarBuilder {
         this.color = color
         return this
     }
 
-    fun style(style: BarStyle): BossBarBuilder {
+    fun style(style: BossBar.Overlay): BossBarBuilder {
         this.style = style
         return this
     }
 
-    fun progress(progress: Double): BossBarBuilder {
-        this.progress = progress.coerceIn(0.0, 1.0) // Ensure progress is within 0.0 and 1.0.
+    fun progress(progress: Float): BossBarBuilder {
+        this.progress = progress.coerceIn(0F, 1F) // Ensure progress is within 0.0 and 1.0.
         return this
     }
 
     fun build(): BossBar {
-        val bossBar =
-            Bukkit.createBossBar(namespacedKey, title, color, style)
-        bossBar.progress = progress
+        val bossBar = BossBar.bossBar(Component.text(title), progress, color, style)
         return bossBar
     }
 }

@@ -7,33 +7,27 @@ import org.koin.core.component.KoinComponent
 import java.lang.reflect.Method
 
 class EventPublisherImpl<T: IEvent>(
-    private val listeners: MutableList<IEventHandler>,
     private val clazz: Class<T>
 ) : IEventPublisher, KoinComponent {
-    private var methods: MutableList<Method> = mutableListOf()
+    private var methods: LinkedHashMap<Method, IEventHandler> = linkedMapOf()
 
-    fun registerMethods() {
-        val methods = mutableListOf<Method>()
-        for (listener in listeners) {
-            listener::class.java.methods.forEach { method ->
-                if (method.isAnnotationPresent(EventHandler::class.java) && method.parameterTypes.firstOrNull() == clazz)
-                    methods.add(method)
-            }
-        }
-        this.methods = methods.sortedBy { it.getAnnotation(EventHandler::class.java).priority }.toMutableList()
-    }
-
-    fun unregisterMethods(listener: IEventHandler) {
+    override fun registerMethods(listener: IEventHandler) {
         listener::class.java.methods.forEach { method ->
             if (method.isAnnotationPresent(EventHandler::class.java) && method.parameterTypes.firstOrNull() == clazz)
-                methods.remove(method)
+                methods[method] = listener
         }
+        this.methods = methods.entries.sortedBy { it.key.getAnnotation(EventHandler::class.java).priority }.associate { it.toPair() }.toMutableMap() as LinkedHashMap<Method, IEventHandler>
+    }
+
+    override fun unregisterMethods(listener: IEventHandler) {
+        val entriesToRemove = methods.filter { it.value == listener && it.key.isAnnotationPresent(EventHandler::class.java) && it.key.parameterTypes.firstOrNull() == clazz }
+        entriesToRemove.forEach { (key, _) -> methods.remove(key) }
     }
 
     override fun <T : IEvent> publish(event: T) {
-        for (method in methods) {
-            method.invoke(event)
-            if(event.shouldNotify) break
+        for ((method, listener) in methods) {
+            method.invoke(listener, event)
+            if(!event.shouldNotify) break
         }
     }
 }

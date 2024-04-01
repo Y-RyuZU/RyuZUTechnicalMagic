@@ -13,11 +13,9 @@ abstract class AbstractScoreboardService : IScoreboardService {
     private lateinit var scheduler: ISimpleScheduler
 
     override fun createScoreboard(scoreboard: List<ConfiguredScoreboard>, placeholders: Map<String, () -> String>, period: UpdatePeriod): IScoreboardService {
-        scheduler = schedulerFactory.createScheduler().whileSchedule{ _, count ->
-            if(count % period.getPeriod() == 0L) {
-                val frame = ((count / period.getPeriod()) % scoreboard.size).toInt()
-                update(scoreboard[frame].title, scoreboard[frame].lines, placeholders)
-            }
+        scheduler = schedulerFactory.createScheduler(period).whileSchedule{ _, count ->
+            val frame = ((count / period.getPeriod()) % scoreboard.size).toInt()
+            update(scoreboard[frame].title, scoreboard[frame].lines, placeholders)
         }.runSync()
         return this
     }

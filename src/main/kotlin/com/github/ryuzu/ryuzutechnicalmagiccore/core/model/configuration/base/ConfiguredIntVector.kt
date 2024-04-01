@@ -11,6 +11,18 @@ data class ConfiguredIntVector(val x: Int, val y: Int, val z: Int) {
         z = fromStringPart(vector, 2)
     )
 
+    fun toLocation(world: String): ConfiguredIntLocation {
+        return ConfiguredIntLocation(world, this)
+    }
+
+    fun toDoubleVector(): ConfiguredDoubleVector {
+        return ConfiguredDoubleVector(x.toDouble(), y.toDouble(), z.toDouble())
+    }
+
+    override fun toString(): String {
+        return "$x,$y,$z"
+    }
+
     companion object {
 
         private fun fromStringPart(vector: String, index: Int): Int {
@@ -23,13 +35,5 @@ data class ConfiguredIntVector(val x: Int, val y: Int, val z: Int) {
             return split[index].toIntOrNull()
                 ?: throw NumberFormatException("Invalid vector format, expected integer values but got {${split[0]}, ${split[1]}, ${split[2]}}")
         }
-    }
-
-    fun toLocation(world: String): ConfiguredIntLocation {
-        return ConfiguredIntLocation(world, this)
-    }
-
-    fun toDoubleVector(): ConfiguredDoubleVector {
-        return ConfiguredDoubleVector(x.toDouble(), y.toDouble(), z.toDouble())
     }
 }

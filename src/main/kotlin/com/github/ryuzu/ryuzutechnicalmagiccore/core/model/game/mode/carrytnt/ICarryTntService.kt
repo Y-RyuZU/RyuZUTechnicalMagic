@@ -5,9 +5,9 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.ITeamGameSe
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer.GamePlayer.ITeamGamePlayer.TeamGamePlayer.ICarryTntPlayer
 
 interface ICarryTntService : ITeamGameService {
-    fun tryCarryTNT(location: ConfiguredIntLocation, player: ICarryTntPlayer)
+    fun tryCarryTnt(location: ConfiguredIntLocation, player: ICarryTntPlayer)
     fun lostTNT(player: ICarryTntPlayer)
-    fun placeTNT(location: ConfiguredIntLocation, player: ICarryTntPlayer)
+    fun placeTnt(location: ConfiguredIntLocation, player: ICarryTntPlayer)
     fun isHoldPlayer(player: ICarryTntPlayer): Boolean
     fun isTNTPoint(location: ConfiguredIntLocation): Boolean
     fun isTNTExplodePoint(location: ConfiguredIntLocation): Boolean

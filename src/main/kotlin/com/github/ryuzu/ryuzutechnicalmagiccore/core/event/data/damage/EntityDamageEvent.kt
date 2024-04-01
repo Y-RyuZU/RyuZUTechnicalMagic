@@ -8,4 +8,4 @@ class EntityDamageEvent(
     override var entity: UUID,
     override var damage: Double,
     eventProps: ICancelableEvent = DefaultCancelableEventProperties()
-) : IEntityDeathEvent, ICancelableEvent by eventProps
+) : IEntityDamageEvent, ICancelableEvent by eventProps

@@ -9,6 +9,7 @@ import java.util.*
 class PlayerRightClickAirEvent(
     override var player: IPlayer,
     override var item: String?,
+    override val offHand: Boolean,
     override var entity: UUID = player.id,
     eventProps: ICancelableEvent = DefaultCancelableEventProperties()
 ) : IPlayerRightClickEvent, IPlayerClickAirEvent, ICancelableEvent by eventProps

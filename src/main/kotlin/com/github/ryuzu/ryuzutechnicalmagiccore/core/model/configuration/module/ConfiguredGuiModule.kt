@@ -1,21 +1,25 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.module
 
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.anomaly.ConfiguredAnomaly
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.gui.ConfiguredGui
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.anomaly.AnomalyType
 import org.koin.core.annotation.Module
+import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 import java.io.File
 
 @Module
 class ConfiguredGuiModule :
-    AbstractConfigurationModule<HashMap<String, ConfiguredGui>, ConfiguredGui>() {
-    companion object {
-        private const val GUIS_PATH = "guis"
-    }
+    AbstractConfigurationModule<Map<String, ConfiguredGui>, Map<String, ConfiguredGui>>() {
+    override val folderName: String = "guis"
 
-    @Single
-    override fun loadConfig(): HashMap<String, ConfiguredGui> = super.loadConfig()
+    @Single(createdAtStart = true)
+    @Named("GuiConfig")
+    override fun loadConfig(): Map<String, ConfiguredGui> = super.loadConfig()
 
-    override fun processFile(file: File): ConfiguredGui {
-        return mapper.readValue(File(file, GUIS_PATH), ConfiguredGui::class.java)
+    override fun processFile(file: File): Map<String, ConfiguredGui> {
+        val mapType = mapper.typeFactory
+            .constructMapType(Map::class.java, String::class.java, ConfiguredGui::class.java)
+        return mapper.readValue(file, mapType)
     }
 }

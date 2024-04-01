@@ -5,8 +5,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.pa
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.sound.ConfiguredSoundSet
 
 data class ConfiguredEffect(
-    val displays: HashMap<String, Set<ConfiguredDisplaySet>>,
-    val particles: HashMap<String, Set<ConfiguredParticleSet>>,
-    val sounds: HashMap<String, Set<ConfiguredSoundSet>>,
-    val items: HashMap<String, String>
+    val displays: Map<String, Set<ConfiguredDisplaySet>> = emptyMap(),
+    val particles: Map<String, Set<ConfiguredParticleSet>> = emptyMap(),
+    val sounds: Map<String, Set<ConfiguredSoundSet>> = emptyMap(),
 )

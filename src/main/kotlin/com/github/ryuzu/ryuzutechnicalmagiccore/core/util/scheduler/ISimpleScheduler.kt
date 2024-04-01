@@ -6,7 +6,7 @@ interface ISimpleScheduler {
 
     fun schedule(
         delay: Long = 0,
-        period: Long = 0,
+        period: Long = 1,
         condition: (Long) -> Boolean = { true },
         task: (ISimpleScheduler, Long) -> Unit
     ): ISimpleScheduler =

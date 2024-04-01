@@ -7,5 +7,4 @@ interface IEventListenerCollector {
     fun registerEventListener(listener: IEventHandler)
     fun unregisterEventListener(listener: IEventHandler)
     fun publish(event: IEvent)
-    fun registerAllMethods()
 }

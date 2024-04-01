@@ -1,5 +1,5 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base
 
-interface IItemOrMaterialEvent : IEvent {
+interface IAirableItemEvent : IEvent {
     var item: String?
 }

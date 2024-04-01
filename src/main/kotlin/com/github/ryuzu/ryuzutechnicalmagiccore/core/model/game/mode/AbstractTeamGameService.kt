@@ -1,5 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode
 
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.ConfiguredGameMode
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredStage
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.team.ConfiguredTeam
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer.GamePlayer.ITeamGamePlayer
@@ -7,16 +8,17 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlay
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.team.IGameTeam
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.entry.IEntryGameService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.CollectionUtility.Companion.getRandomKey
 import java.util.*
 
 abstract class AbstractTeamGameService(
     world: String,
+    config: ConfiguredGameMode,
     stage: ConfiguredStage,
     entryService: IEntryGameService,
     entryPlayers: Set<IPlayer>,
-) : ITeamGameService, AbstractGameService(world, stage, entryService, entryPlayers) {
-    protected val teams: LinkedHashMap<String, IGameTeam> = LinkedHashMap(stage.teams.mapValues { createGameTeam(it.value) })
+) : ITeamGameService, AbstractGameService(world, config, stage, entryService, entryPlayers) {
+    protected val teams: LinkedHashMap<String, IGameTeam> =
+        stage.teams.associateTo(LinkedHashMap()) { it.id to createGameTeam(it) }
 
     override fun createPlayer(player: IPlayer): IGamePlayer = ITeamGamePlayer.TeamGamePlayer(player)
     override fun getGamePlayer(player: IPlayer): ITeamGamePlayer = players.first { it == player } as ITeamGamePlayer
@@ -57,8 +59,10 @@ abstract class AbstractTeamGameService(
     }
 
     private fun selectTeamAlgorithm(player: IGamePlayer): IGameTeam {
-        return teams[teams.keys.random()]!!
+        algorithmInt++
+        return teams[teams.keys.elementAt(algorithmInt % teams.keys.size)]!!
     }
+    private var algorithmInt: Int = teams.keys.size
 
     private fun leaveTeam(player: ITeamGamePlayer) {
         player.team.players.remove(player)
@@ -69,12 +73,12 @@ abstract class AbstractTeamGameService(
         teleportService.teleport(gamePlayer.team.property.respawnPoint.toLocation(world), player)
     }
 
-    override val placeholders: HashMap<String, () -> String> = super.placeholders.apply {
-        teams.entries.forEachIndexed{ index, entry ->
+    override val placeholders: MutableMap<String, () -> String> = super.placeholders.apply {
+        teams.entries.forEachIndexed { index, entry ->
             put("%team${index}_player_count%") { entry.value.players.size.toString() }
             put("%team${index}_name%") { entry.value.property.name }
-            if(entry.value is IGameTeam.IScoreGameTeam)
-                put("team${index}_score") { (entry.value as IGameTeam.IScoreGameTeam).score.toString() }
+            if (entry.value is IGameTeam.AbstractScoreGameTeam)
+                put("%team${index}_score%") { (entry.value as IGameTeam.AbstractScoreGameTeam).score.toString() }
         }
     }
 }

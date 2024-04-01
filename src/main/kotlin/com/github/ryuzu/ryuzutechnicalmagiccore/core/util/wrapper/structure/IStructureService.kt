@@ -5,5 +5,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.ISimpleSched
 import org.koin.core.component.KoinComponent
 
 interface IStructureService : KoinComponent {
+    fun read(location: ConfiguredIntLocation, structure: String): ISimpleScheduler
     fun read(world: String, structure: String): ISimpleScheduler
+    fun delete(world: String)
 }
