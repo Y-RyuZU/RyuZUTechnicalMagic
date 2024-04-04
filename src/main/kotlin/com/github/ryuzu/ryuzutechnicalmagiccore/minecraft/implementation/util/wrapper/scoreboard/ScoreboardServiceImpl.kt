@@ -3,11 +3,10 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.w
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.ConfiguredScoreboard
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.StringUtility.Companion.replaceLambdaPlaceholders
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.ISimpleScheduler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.scoreboard.AbstractScoreboardService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.scoreboard.IScoreboardService
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.PlayerUtility.Companion.toPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toPlayer
 import net.kyori.adventure.text.Component
 import net.megavex.scoreboardlibrary.api.ScoreboardLibrary
 import net.megavex.scoreboardlibrary.api.sidebar.Sidebar

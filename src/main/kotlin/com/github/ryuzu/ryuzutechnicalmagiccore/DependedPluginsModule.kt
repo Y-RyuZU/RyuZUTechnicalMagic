@@ -15,7 +15,7 @@ import org.koin.core.component.inject
 class DependedPluginsModule : KoinComponent {
     private val instance: RyuZUTechnicalMagicCore by inject()
 
-    @Single
+    @Single(createdAtStart = true)
     fun provideScoreboardLibrary() = ScoreboardLibrary.loadScoreboardLibrary(instance);
     @Single
     fun provideMultiverseCore() = Bukkit.getServer().pluginManager.getPlugin("Multiverse-Core") as MultiverseCore

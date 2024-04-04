@@ -1,10 +1,8 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.ConfiguredParticleSet
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.set.ConfiguredParticleSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.sound.ConfiguredSoundSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.IBukkitAdapter
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.gamemode.IGameModeService
@@ -17,11 +15,10 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.teleport.ITele
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.title.ITitleService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.UUID
 
-data class Player(
-    override val id: UUID,
-) : IPlayer, KoinComponent {
+class Player(
+    livingEntity: ILivingEntity
+) : IPlayer, ILivingEntity by livingEntity, KoinComponent {
     private val bukkitAdapter: IBukkitAdapter by inject()
     private val teleportService: ITeleportService by inject()
     private val locationService: ILocationService by inject()
@@ -38,10 +35,6 @@ data class Player(
         soundService.playSound(soundSets, this)
     }
 
-    override fun Set<IPlayer>.playSound(soundSets: Set<ConfiguredSoundSet>) {
-        soundService.playSound(soundSets, this)
-    }
-
     override fun playSound(vararg soundSets: ConfiguredSoundSet) {
         soundService.playSound(soundSets.toSet(), this)
     }
@@ -54,32 +47,8 @@ data class Player(
         teleportService.teleport(vector, this)
     }
 
-    override fun Set<IPlayer>.teleport(location: ConfiguredIntLocation) {
-        teleportService.teleport(location, this)
-    }
-
-    override fun Set<IPlayer>.teleport(vector: ConfiguredIntVector) {
-        teleportService.teleport(vector, this)
-    }
-
     override fun sendMessage(messages: List<String>, actionPlaceholder: Map<String, MessageActionData>) {
         messageService.sendMessage(messages, actionPlaceholder, this)
-    }
-
-    override fun Set<IPlayer>.sendMessage(messages: List<String>, actionPlaceholder: Map<String, MessageActionData>) {
-        messageService.sendMessage(messages, actionPlaceholder, this)
-    }
-
-    override fun getIntLocation(): ConfiguredIntLocation {
-        return locationService.getIntLocation(this)
-    }
-
-    override fun getDoubleLocation(): ConfiguredDoubleLocation {
-        return locationService.getDoubleLocation(this)
-    }
-
-    override fun getDirection(): ConfiguredDoubleVector {
-        return locationService.getDirection(this)
     }
 
     override fun changeGameMode(gameMode: Int) {
@@ -96,21 +65,5 @@ data class Player(
 
     override fun spawnParticle(particleSets: Set<ConfiguredParticleSet>) {
         particleService.spawnParticle(particleSets, this)
-    }
-
-    override fun Set<IPlayer>.sendTitle(title: String?, subtitle: String?) {
-        titleService.sendTitle(title, subtitle, this)
-    }
-
-    override fun Set<IPlayer>.spawnParticle(particleSets: Set<ConfiguredParticleSet>) {
-        particleService.spawnParticle(particleSets, this)
-    }
-
-    override fun Set<IPlayer>.spawnParticle(
-        particleSets: Set<ConfiguredParticleSet>,
-        location: ConfiguredDoubleLocation,
-        vector: ConfiguredDoubleVector
-    ) {
-        particleService.spawnParticle(particleSets, location, vector, this)
     }
 }

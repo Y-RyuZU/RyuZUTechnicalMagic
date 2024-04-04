@@ -4,6 +4,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.module.
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.IGameManager
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.event.BukkitEventAdapter
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.gui.GuiModule
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.skill.SkillServiceImpl
 import com.hakan.spinjection.SpigotBootstrap
 import com.hakan.spinjection.annotations.Scanner
 import net.megavex.scoreboardlibrary.api.ScoreboardLibrary

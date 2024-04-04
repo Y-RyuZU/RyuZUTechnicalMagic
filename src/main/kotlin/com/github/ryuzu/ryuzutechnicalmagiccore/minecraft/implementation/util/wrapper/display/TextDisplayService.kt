@@ -22,7 +22,7 @@ class TextDisplayService : ITextDisplayService {
         val display = location.world.spawnEntity(location, EntityType.TEXT_DISPLAY) as TextDisplay
         DisplayUtility.setMeta(display, texts)
         display.text(Component.text { texts.texts })
-        display.alignment = TextDisplay.TextAlignment.valueOf(texts.alignment)
+        display.alignment = TextDisplay.TextAlignment.valueOf(texts.alignment.uppercase())
         display.backgroundColor = ColorUtility.fromText(texts.background)
         display.lineWidth = texts.lineWidth
         display.textOpacity = texts.opacity

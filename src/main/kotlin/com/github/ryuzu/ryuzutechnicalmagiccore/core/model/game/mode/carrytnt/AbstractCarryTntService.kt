@@ -107,7 +107,7 @@ abstract class AbstractCarryTntService(
                 if (!checkTntAcquisitionStatus(location, player)) scheduler.cancel()
             }.schedule(0, gameModeParameter.getTNTDuration, UpdatePeriod.SECOND.getCondition()) { _, _ ->
                 player.sendTitle(null, "CARRYING TNT!")
-                config.effects.sounds["CarryTnt"]?.let { player.playSound(it) }
+                effectService.playEffect(config.effect, "CarryTnt", player)
             }.finally { tryCarryTNTScheduler = null }.end { getTnt(player) }.runSync()
     }
 
@@ -116,8 +116,7 @@ abstract class AbstractCarryTntService(
         tntBlockLocation = player.getIntLocation().vector
         blockService.setBlock(tntBlockLocation!!.toLocation(world), "TNT")
         titleService.sendTitle(null, "LOST TNT!", player.team.players)
-        config.effects.sounds["LostTnt"]?.let { soundService.playSound(it, players) }
-        config.effects.particles["LostTnt"]?.let { particleService.spawnParticle(it, player) }
+        effectService.playEffect(config.effect, "LostTnt", player.team.players)
         bossBars.values.forEach { it.color("WHITE") }
     }
 
@@ -125,8 +124,7 @@ abstract class AbstractCarryTntService(
         if(getEnemyPoint(player.team as CarryTntTeam) != location.vector) return
         blockService.setBlock(location.vector.toLocation(world), "TNT")
         titleService.sendTitle(null, "PLACED TNT!", player.team.players)
-        config.effects.sounds["PlaceTNT"]?.let { soundService.playSound(it, players) }
-        config.effects.particles["PlaceTNT"]?.let { particleService.spawnParticle(it, player) }
+        effectService.playEffect(config.effect, "PlaceTNT", players)
         end()
     }
 

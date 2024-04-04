@@ -8,7 +8,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillTrigger
 import org.koin.core.component.KoinComponent
 
-interface ISkillService : KoinComponent {
+interface ISkillService {
     fun use(event: ISkillActivateEvent)
     fun addState(player: IPlayer, state: SkillState)
     fun getSkillIds(itemId: String, skillTrigger: SkillTrigger): List<String>?

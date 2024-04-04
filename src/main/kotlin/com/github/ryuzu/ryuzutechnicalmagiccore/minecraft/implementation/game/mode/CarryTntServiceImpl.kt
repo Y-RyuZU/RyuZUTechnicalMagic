@@ -17,7 +17,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlay
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toBlockLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toMiddleLocation
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.PlayerUtility.Companion.toPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.VectorUtility.Companion.getDegreeFrom3Points
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.InjectedParam

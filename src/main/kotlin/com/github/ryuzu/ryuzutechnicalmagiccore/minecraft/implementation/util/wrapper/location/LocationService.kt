@@ -3,23 +3,57 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.w
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntity
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.ILivingEntity
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.gamemode.IGameModeService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.location.AbstractLocationService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.location.ILocationService
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toDoubleConfigured
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toIntConfigured
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.PlayerUtility.Companion.toPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toLocation
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toVector
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toEntity
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toLivingEntity
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toPlayer
+import org.bukkit.FluidCollisionMode
+import org.bukkit.util.RayTraceResult
 import org.koin.core.annotation.Single
-import java.util.*
 
 @Single([ILocationService::class])
-class LocationService : ILocationService {
-    override fun getIntLocation(player: IPlayer): ConfiguredIntLocation =
-        player.toPlayer().getLocation().toIntConfigured()
+class LocationService : AbstractLocationService() {
+    override fun getIntLocation(entity: IEntity): ConfiguredIntLocation =
+        entity.toEntity().location.toIntConfigured()
 
-    override fun getDoubleLocation(player: IPlayer): ConfiguredDoubleLocation =
-        player.toPlayer().getLocation().toDoubleConfigured()
+    override fun getDoubleLocation(entity: IEntity): ConfiguredDoubleLocation =
+        entity.toEntity().location.toDoubleConfigured()
 
-    override fun getDirection(player: IPlayer): ConfiguredDoubleVector =
-        player.toPlayer().getLocation().getDirection().toDoubleConfigured()
+    override fun getEyeLocation(entity: ILivingEntity): ConfiguredDoubleLocation =
+        entity.toLivingEntity().eyeLocation.toDoubleConfigured()
+
+    override fun getDirection(entity: IEntity): ConfiguredDoubleVector =
+        entity.toEntity().location.direction.toDoubleConfigured()
+
+    override fun getEyeDirection(entity: ILivingEntity): ConfiguredDoubleVector =
+        entity.toLivingEntity().eyeLocation.direction.toDoubleConfigured()
+
+    override fun getNearbyLivingEntities(
+        location: ConfiguredDoubleLocation,
+        radius: Double,
+        predicate: ((ILivingEntity) -> Boolean)?
+    ): Set<ILivingEntity> {
+        val entities = location.toLocation().getNearbyLivingEntities(radius)
+            .map { entityManager.getLivingEntity(it.uniqueId) }
+        return if (predicate == null) entities.toSet() else entities.filter { predicate(it) }.toSet()
+    }
+
+    override fun canThrough(location: ConfiguredDoubleLocation, direction: ConfiguredDoubleVector, maxDistance: Double): Boolean {
+        val result: RayTraceResult? = location.toLocation().world.rayTraceBlocks(
+            location.toLocation(),
+            direction.toVector(),
+            maxDistance,
+            FluidCollisionMode.NEVER,
+            true
+        )
+        return result == null || result.hitBlock == null
+    }
 }

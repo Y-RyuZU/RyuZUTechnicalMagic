@@ -2,11 +2,8 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.param
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer.GamePlayer.ITeamGamePlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillId
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillTrigger
-import java.util.UUID
+import java.util.*
 
 sealed interface ISkillEventPrams {
     val location: ConfiguredIntLocation

@@ -7,7 +7,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.di
 data class ConfiguredEntry(
     val structure: String,
     val block: String,
-    val effects: ConfiguredEffect,
+    val effect: ConfiguredEffect,
     val points: Set<ConfiguredIntVector>,
     val worlds: Set<String>
 )

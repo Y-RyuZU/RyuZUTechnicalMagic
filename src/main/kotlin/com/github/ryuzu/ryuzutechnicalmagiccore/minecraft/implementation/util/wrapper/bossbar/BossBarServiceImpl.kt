@@ -3,12 +3,11 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.w
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.bossbar.ConfiguredBossBar
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.StringUtility.Companion.replaceLambdaPlaceholders
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.ISimpleScheduler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.bossbar.AbstractBossBarService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.bossbar.IBossBarService
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.BossBarBuilder
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.PlayerUtility.Companion.toPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toPlayer
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
@@ -23,8 +22,8 @@ class BossBarServiceImpl : AbstractBossBarService() {
 
     override fun createBossBar(config: ConfiguredBossBar, placeholders: Map<String, () -> String>, period: UpdatePeriod): IBossBarService {
         this.bossBar = bossBarBuilder
-            .color(BossBar.Color.valueOf(config.color))
-            .style(BossBar.Overlay.valueOf(config.style))
+            .color(BossBar.Color.valueOf(config.color.uppercase()))
+            .style(BossBar.Overlay.valueOf(config.style.uppercase()))
             .progress(1F)
             .build()
         update(config.titles.first(), placeholders)
@@ -60,6 +59,6 @@ class BossBarServiceImpl : AbstractBossBarService() {
     }
 
     override fun color(color: String) {
-        bossBar.color(BossBar.Color.valueOf(color))
+        bossBar.color(BossBar.Color.valueOf(color.uppercase()))
     }
 }

@@ -5,6 +5,6 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.Co
 
 data class ConfiguredGameMode (
     val display: ConfiguredGameModeDisplay,
-    val effects: ConfiguredEffect,
+    val effect: ConfiguredEffect,
     val parameter: IConfiguredGameModeParameter,
 )

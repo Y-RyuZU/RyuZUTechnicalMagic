@@ -1,8 +1,9 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler
 
 interface ISimpleScheduler {
-    fun schedule(vararg tasks: TaskUnit): ISimpleScheduler
     fun schedule(tasks: Set<TaskUnit>): ISimpleScheduler
+    fun schedule(vararg tasks: TaskUnit): ISimpleScheduler = schedule(tasks.toSet())
+    fun promise(task: ISimpleScheduler): ISimpleScheduler
 
     fun schedule(
         delay: Long = 0,
@@ -21,7 +22,9 @@ interface ISimpleScheduler {
     fun end(task: () -> Unit): ISimpleScheduler
     fun finally(task: (Boolean) -> Unit): ISimpleScheduler
 
-    fun runSync(): ISimpleScheduler
-    fun runAsync(): ISimpleScheduler
+    fun runSync(alwaysTimer: Boolean = false): ISimpleScheduler
+    fun runAsync(alwaysTimer: Boolean = false): ISimpleScheduler
     fun cancel()
+    fun abbreviate()
+    fun stop()
 }

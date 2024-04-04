@@ -14,6 +14,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.PlayerDam
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.PlayerDeathEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerItemPickUpEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerMaterialPickUpEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.*
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.IEventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.model.block.IBlockProvider
 import org.koin.core.annotation.Single
@@ -36,6 +37,13 @@ class EventListenerCollectorImpl : IEventListenerCollector {
         PlayerItemPickUpEvent::class.java,
         PlayerMaterialPickUpEvent::class.java,
         PlayerPortalReadyEvent::class.java,
+        SkillActivateEvent::class.java,
+        EntitySkillCastEvent::class.java,
+        PlayerSkillCastEvent::class.java,
+        PlayerSkillCastLeftClickAirEvent::class.java,
+        PlayerSkillCastLeftClickBlockEvent::class.java,
+        PlayerSkillCastRightClickAirEvent::class.java,
+        PlayerSkillCastRightClickBlockEvent::class.java,
     )
 
     private val publishers: Map<Class<out IEvent>, EventPublisherImpl<out IEvent>> = eventClasses.associateWith { EventPublisherImpl(it) }

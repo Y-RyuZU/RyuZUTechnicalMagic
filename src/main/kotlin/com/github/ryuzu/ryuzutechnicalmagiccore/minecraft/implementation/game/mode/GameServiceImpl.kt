@@ -61,7 +61,7 @@ class GameServiceImpl(
 
     override fun start() {
         messageService.sendMessage(config.display.description, players)
-        config.effects.sounds["START"]?.let { soundService.playSound(it, players) }
+        effectService.playEffect(config.effect, "Start", players)
     }
 
     override fun end() {
@@ -71,7 +71,7 @@ class GameServiceImpl(
 
     override fun joinGameMidway(player: IPlayer) {
         messageService.sendMessage(config.display.description, players)
-        config.effects.sounds["START"]?.let { soundService.playSound(it, players) }
+        effectService.playEffect(config.effect, "Start", players)
     }
 
     override fun leaveGame(player: IPlayer) {

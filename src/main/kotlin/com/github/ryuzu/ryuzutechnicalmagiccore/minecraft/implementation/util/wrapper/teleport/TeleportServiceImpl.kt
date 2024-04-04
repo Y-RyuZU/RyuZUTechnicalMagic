@@ -2,23 +2,21 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.w
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.sound.ISoundService
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.teleport.AbstractTeleportService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntity
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.teleport.ITeleportService
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toBlockLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toMiddleLocation
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.PlayerUtility.Companion.toPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toEntity
 import org.koin.core.annotation.Single
-import java.util.*
+import org.koin.core.component.KoinComponent
 
 @Single([ITeleportService::class])
-class TeleportServiceImpl : AbstractTeleportService() {
-    override fun teleport(location: ConfiguredIntLocation, players: Set<IPlayer>) {
-        players.map { it.toPlayer() }.forEach { it.teleport(location.toBlockLocation()) }
+class TeleportServiceImpl : ITeleportService, KoinComponent {
+    override fun teleport(location: ConfiguredIntLocation, entities: Set<IEntity>) {
+        entities.map { it.toEntity() }.forEach { it.teleport(location.toBlockLocation()) }
     }
 
-    override fun teleport(location: ConfiguredIntVector, players: Set<IPlayer>) {
-        players.map { it.toPlayer() }.forEach { it.teleport(location.toLocation(it.location.world.name).toMiddleLocation()) }
+    override fun teleport(location: ConfiguredIntVector, entities: Set<IEntity>) {
+        entities.map { it.toEntity() }.forEach { it.teleport(location.toLocation(it.location.world.name).toMiddleLocation()) }
     }
 }

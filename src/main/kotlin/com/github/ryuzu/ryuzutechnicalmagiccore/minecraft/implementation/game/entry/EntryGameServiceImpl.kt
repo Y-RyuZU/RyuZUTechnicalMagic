@@ -11,7 +11,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.entry.AbstractEn
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.entry.IEntryGameService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.GameMode
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.gui.GuiType
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.PlayerUtility.Companion.toPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toPlayer
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.InjectedParam

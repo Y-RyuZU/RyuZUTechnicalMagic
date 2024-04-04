@@ -9,7 +9,7 @@ import org.joml.Vector3f
 class DisplayUtility {
     companion object {
         fun setMeta(display: Display,config: IConfiguredDisplay) {
-            display.billboard = Display.Billboard.valueOf(config.billboard)
+            display.billboard = Display.Billboard.valueOf(config.billboard.uppercase())
             display.brightness = Display.Brightness(config.blockLight, config.skyLight)
             display.displayHeight = config.height
             display.displayWidth = config.width

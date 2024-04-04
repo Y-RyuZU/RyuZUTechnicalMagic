@@ -10,8 +10,8 @@ sealed interface IGamePlayer : IPlayer {
     var kill: Int
     var death: Int
 
-    data class GamePlayer(
-        val player: IPlayer,
+    class GamePlayer(
+        player: IPlayer,
         override var star: Int = 0,
         override var kill: Int = 0,
         override var death: Int = 0,
@@ -20,8 +20,8 @@ sealed interface IGamePlayer : IPlayer {
             val assist: Int
             var team: IGameTeam
 
-            data class TeamGamePlayer(
-                val player: IPlayer,
+            class TeamGamePlayer(
+                player: IPlayer,
                 override var star: Int = 0,
                 override var kill: Int = 0,
                 override var death: Int = 0,
@@ -30,8 +30,8 @@ sealed interface IGamePlayer : IPlayer {
                 override lateinit var team: IGameTeam
 
                 sealed interface ICarryTntPlayer : ITeamGamePlayer {
-                    data class CarryTntPlayer(
-                        val player: IPlayer,
+                    class CarryTntPlayer(
+                        player: IPlayer,
                         override var star: Int = 0,
                         override var kill: Int = 0,
                         override var death: Int = 0,
@@ -44,8 +44,8 @@ sealed interface IGamePlayer : IPlayer {
                 sealed interface ICarryMiniTntPlayer : ITeamGamePlayer {
                     val holdTNTAmount: Int
 
-                    data class CarryMiniTntPlayer(
-                        val player: IPlayer,
+                    class CarryMiniTntPlayer(
+                        player: IPlayer,
                         override var star: Int = 0,
                         override var kill: Int = 0,
                         override var death: Int = 0,
@@ -58,11 +58,22 @@ sealed interface IGamePlayer : IPlayer {
             }
         }
 
-        data class BattleRoyalePlayer(
-            val player: IPlayer,
+        class BattleRoyalePlayer(
+            player: IPlayer,
             override var star: Int = 0,
             override var kill: Int = 0,
             override var death: Int = 0,
         ) : IGamePlayer, IPlayer by player
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is IGamePlayer) return false
+            if (id != other.id) return false
+            return true
+        }
+
+        override fun hashCode(): Int {
+            return id.hashCode()
+        }
     }
 }

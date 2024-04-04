@@ -6,7 +6,7 @@ import org.joml.Vector3f
 import kotlin.math.sqrt
 import kotlin.random.Random
 
-data class ConfiguredDoubleVector(val x: Double = 0.0, val y: Double = 0.0, val z: Double = 0.0) : Vector3d(x, y, z) {
+data class ConfiguredDoubleVector(var x: Double = 0.0, val y: Double = 0.0, val z: Double = 0.0) : Vector3d(x, y, z) {
 
     @JsonCreator
     constructor(vector: String) : this(
@@ -14,6 +14,10 @@ data class ConfiguredDoubleVector(val x: Double = 0.0, val y: Double = 0.0, val 
         fromStringPart(vector, 1),
         fromStringPart(vector, 2)
     )
+
+    constructor(vector: Vector3d) : this(vector.x, vector.y, vector.z)
+
+    constructor() : this(0.0, 1.0, 0.0)
 
     override fun toString(): String {
         return "$x,$y,$z"

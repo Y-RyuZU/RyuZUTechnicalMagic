@@ -92,7 +92,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     implementation 'com.github.hakan-krgn.spigot-injection:injection-core:0.1.5.1'
-    implementation 'com.github.hakan-krgn.spigot-injection:injection-listener:0.1.5.1'
     implementation 'com.github.hakan-krgn.spigot-injection:injection-command:0.1.5.1'
 
     implementation("com.jeff_media:SpigotUpdateChecker:3.0.3")

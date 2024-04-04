@@ -8,16 +8,16 @@ import java.io.File
 
 @Module
 class ConfiguredSkillSetModule :
-    AbstractConfigurationModule<Map<String, ConfiguredSkillSet>, Map<String, ConfiguredSkillSet>>() {
+    AbstractConfigurationModule<HashMap<String, ConfiguredSkillSet>, HashMap<String, ConfiguredSkillSet>>() {
     override val folderName: String = "skill-sets"
 
     @Single(createdAtStart = true)
     @Named("SkillSetConfig")
-    override fun loadConfig(): Map<String, ConfiguredSkillSet> = super.loadConfig()
+    override fun loadConfig(): HashMap<String, ConfiguredSkillSet> = super.loadConfig()
 
-    override fun processFile(file: File): Map<String, ConfiguredSkillSet> {
+    override fun processFile(file: File): HashMap<String, ConfiguredSkillSet> {
         val mapType = mapper.typeFactory
-            .constructMapType(Map::class.java, String::class.java, ConfiguredSkillSet::class.java)
+            .constructMapType(HashMap::class.java, String::class.java, ConfiguredSkillSet::class.java)
         return mapper.readValue(file, mapType)
     }
 }

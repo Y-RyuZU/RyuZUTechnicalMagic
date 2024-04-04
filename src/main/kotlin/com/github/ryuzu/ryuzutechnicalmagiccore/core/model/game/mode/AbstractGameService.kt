@@ -23,6 +23,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.teleport.ITele
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.title.ITitleService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.SimpleSchedulerFactory
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.block.IBlockService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.effect.IEffectService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.structure.IStructureService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -41,6 +42,7 @@ abstract class AbstractGameService(
     protected val schedulerFactory: SimpleSchedulerFactory by inject()
     protected val messageService: IMessageService by inject()
     protected val titleService: ITitleService by inject()
+    protected val effectService: IEffectService by inject()
     protected val soundService: ISoundService by inject()
     protected val particleService: IParticleService by inject()
     protected val teleportService: ITeleportService by inject()
@@ -62,8 +64,7 @@ abstract class AbstractGameService(
     override fun start() {
         players.addAll(entryService.entryPlayers.map { createPlayer(it) })
         messageService.sendMessage(listOf("Game Start !"), players)
-        config.effects.sounds["GameStart"]?.let { soundService.playSound(it, players) }
-        config.effects.particles["GameStart"]?.let { particleService.spawnParticle(it, players) }
+        effectService.playEffect(config.effect, "GameStart", players)
         createBossBar()
         createScoreBoard()
         scheduler = schedulerFactory.createScheduler().whileSchedule { _, count -> gameData.time = count }
@@ -72,14 +73,12 @@ abstract class AbstractGameService(
     override fun joinGameMidway(player: IPlayer) {
         players.add(createPlayer(player))
         messageService.sendMessage(listOf("Game Start !"), player)
-        config.effects.sounds["GameStart"]?.let { soundService.playSound(it, player) }
-        config.effects.particles["GameStart"]?.let { particleService.spawnParticle(it, player) }
+        effectService.playEffect(config.effect, "GameStart", player)
     }
 
     override fun end() {
         messageService.sendMessage(listOf("Game Over!"), players)
-        config.effects.sounds["GameOver"]?.let { soundService.playSound(it, players) }
-        config.effects.particles["GameOver"]?.let { particleService.spawnParticle(it, players) }
+        effectService.playEffect(config.effect, "GameOver", players)
         teleportService.teleport(
             entryService.location.copy(vector = entryService.location.vector.copy(y = entryService.location.vector.y + 1)),
             players

@@ -9,16 +9,16 @@ import java.io.File
 
 @Module
 class ConfiguredSkillModule :
-    AbstractConfigurationModule<Map<String, ConfiguredSkillParams>, Map<String, ConfiguredSkillParams>>() {
+    AbstractConfigurationModule<HashMap<String, ConfiguredSkillParams>, HashMap<String, ConfiguredSkillParams>>() {
     override val folderName: String = "skills"
 
     @Single(createdAtStart = true)
     @Named("SkillConfig")
-    override fun loadConfig(): Map<String, ConfiguredSkillParams> = super.loadConfig()
+    override fun loadConfig(): HashMap<String, ConfiguredSkillParams> = super.loadConfig()
 
-    override fun processFile(file: File): Map<String, ConfiguredSkillParams> {
+    override fun processFile(file: File): HashMap<String, ConfiguredSkillParams> {
         val mapType = mapper.typeFactory
-            .constructMapType(Map::class.java, String::class.java, ConfiguredSkillParams::class.java)
+            .constructMapType(HashMap::class.java, String::class.java, ConfiguredSkillParams::class.java)
         return mapper.readValue(file, mapType)
     }
 }

@@ -15,8 +15,7 @@ sealed interface IGameTeam{
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
-            if (javaClass != other?.javaClass) return false
-            other as AbstractScoreGameTeam
+            if (other !is IGameTeam) return false
             if (property != other.property) return false
             return true
         }

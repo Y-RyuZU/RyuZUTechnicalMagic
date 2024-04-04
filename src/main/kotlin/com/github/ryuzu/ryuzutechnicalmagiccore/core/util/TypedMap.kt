@@ -50,7 +50,7 @@ class TypedMap(map: MutableMap<String, Any> = mutableMapOf()) : MutableMap<Strin
 
     @Throws(IllegalArgumentException::class)
     fun getEasingFunction(key: String): EasingFunction {
-        return EasingFunction.valueOf(getString(key))
+        return EasingFunction.valueOf(getString(key).uppercase())
     }
 
     @Throws(IllegalArgumentException::class)

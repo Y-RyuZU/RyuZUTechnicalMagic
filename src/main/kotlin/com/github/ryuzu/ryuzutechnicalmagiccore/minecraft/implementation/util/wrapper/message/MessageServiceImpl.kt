@@ -1,11 +1,10 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.wrapper.message
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.location.ILocationService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.message.AbstractMessageService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.message.IMessageService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.message.MessageActionData
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.PlayerUtility.Companion.toPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toPlayer
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextReplacementConfig
 import net.kyori.adventure.text.event.ClickEvent

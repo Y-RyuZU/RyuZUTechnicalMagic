@@ -7,35 +7,29 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.skill.C
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.skill.ConfiguredSkillSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.ISkill
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillId
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillTrigger
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.TypedMap
+import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parameterSetOf
+import org.koin.core.qualifier.named
 import org.reflections.Reflections
 import kotlin.collections.HashMap
 
-abstract class AbstractSkillService : ISkillService {
+abstract class AbstractSkillService : ISkillService, KoinComponent {
     private val coolTimeService: ICoolTimeService by inject()
 
-    private val skillSets: HashMap<String, ConfiguredSkillSet> by inject()
-    private val skills: HashMap<String, ConfiguredSkillParams> by inject()
+    private val skillSets: HashMap<String, ConfiguredSkillSet> by inject(named("SkillSetConfig"))
+    private val skills: HashMap<String, ConfiguredSkillParams> by inject(named("SkillConfig"))
     private val skillClasses: Map<String, ISkill> = getSkillClasses()
     private val states = mutableMapOf<IPlayer, MutableList<SkillState>>()
 
-
     private fun getSkillClasses(): Map<String, ISkill> {
-        val skills = mutableMapOf<String, ISkill>()
         val reflections = Reflections("com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.skill")
 
-        reflections.getTypesAnnotatedWith(SkillId::class.java).forEach { classWithAnnotation ->
-            val annotation = classWithAnnotation.getAnnotation(SkillId::class.java)
-            val instance = classWithAnnotation.getDeclaredConstructor().newInstance()
-            if (instance is ISkill)
-                skills[annotation.id] = instance
-        }
-
-        return skills
+        return reflections.getSubTypesOf(ISkill::class.java).associateBy({ it.simpleName }, {
+            it.getDeclaredConstructor().newInstance()
+        })
     }
 
     override fun bindSkillToItem(itemId: String, skillSet: ConfiguredSkillSet) {
@@ -74,7 +68,7 @@ abstract class AbstractSkillService : ISkillService {
 
     private fun use(skillClassId: String, event: ISkillActivateEvent, state: SkillState? = null) {
         val data = TypedMap()
-        skillClasses[skillClassId]?.use(skills[skillClassId]!!, event, data, state?.setDataCaller { data })
+        skillClasses[skillClassId]!!.use(skills[event.skillId]!!, event, data, state?.setDataCaller { data })
     }
 
     override fun getFirstSkillIds(itemId: String, skillTrigger: SkillTrigger): Set<String>? {

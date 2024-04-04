@@ -14,7 +14,7 @@ import org.bukkit.event.block.Action
 import org.koin.core.annotation.Single
 import org.koin.core.component.inject
 
-@Single([ISkillService::class])
+@Single([ISkillService::class], true)
 class SkillServiceImpl : AbstractSkillService(), IEventHandler {
     private val skillService: ISkillService by inject()
     private val eventListenerCollector: IEventListenerCollector by inject()
@@ -25,10 +25,11 @@ class SkillServiceImpl : AbstractSkillService(), IEventHandler {
 
     @EventHandler
     fun onClick(event: IPlayerClickEvent) {
+        println("onClick: ${event.item}")
         val item: String = event.item ?: return
         val player = event.player
-        val location = player.getDoubleLocation()
-        val direction = player.getDirection()
+        val location = player.getEyeLocation()
+        val direction = player.getEyeDirection()
         val skillIds = skillService.getFirstSkillIds(item, SkillTrigger.RIGHT_CLICK_AIR) ?: return
 
         val skillTrigger: SkillTrigger = when (event) {
@@ -41,24 +42,29 @@ class SkillServiceImpl : AbstractSkillService(), IEventHandler {
 
         skillIds.forEach {
             var skillEvent: ISkillActivateEvent = SkillActivateEvent(location, direction, item, skillTrigger, it)
-            skillEvent = EntitySkillCastEvent(skillEvent, player.id)
+            skillEvent = EntitySkillCastEvent(skillEvent, player)
             skillEvent = PlayerSkillCastEvent(skillEvent, player)
 
             skillEvent = when (event) {
                 is PlayerRightClickAirEvent -> PlayerSkillCastRightClickAirEvent(skillEvent)
                 is PlayerLeftClickAirEvent -> PlayerSkillCastLeftClickAirEvent(skillEvent)
                 is IPlayerClickBlockEvent -> {
-                    val blockLocation = event.location
-                    val block = event.block
                     if (event is PlayerRightClickBlockEvent)
-                        PlayerSkillCastRightClickBlockEvent(skillEvent, blockLocation, block)
+                        PlayerSkillCastRightClickBlockEvent(skillEvent, event.location, event.block)
                     else
-                        PlayerSkillCastLeftClickBlockEvent(skillEvent, blockLocation, block)
+                        PlayerSkillCastLeftClickBlockEvent(skillEvent, event.location, event.block)
                 }
                 else -> return
             }
 
             eventListenerCollector.publish(skillEvent)
         }
+    }
+
+    @EventHandler(priority = 200)
+    fun onCast(event: ISkillActivateEvent) {
+        println("onCast: ${event.skillId}")
+        if(event.isCancelled) return
+        skillService.use(event)
     }
 }

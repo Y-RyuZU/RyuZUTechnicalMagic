@@ -1,4 +1,4 @@
-package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.wrapper.scheduler
+package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.scheduler
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.RyuZUTechnicalMagicCore
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.AbstractSimpleScheduler
@@ -23,16 +23,18 @@ class SimpleSchedulerImpl(@InjectedParam updatePeriod: UpdatePeriod) : AbstractS
         bukkitTask.cancel()
     }
 
-    override fun runSync(): ISimpleScheduler {
-        bukkitTask = if(getEndTime() == 1L)
+    override fun runSync(alwaysTimer: Boolean): ISimpleScheduler {
+        super.runSync(alwaysTimer)
+        bukkitTask = if(!alwaysTimer && getEndTime() == 1L)
             bukkitScheduler.runTask(instance, runnable())
         else
             bukkitScheduler.runTaskTimer(instance, runnable(), 0, updatePeriod.getPeriod())
         return this
     }
 
-    override fun runAsync(): ISimpleScheduler {
-        bukkitTask = if(getEndTime() == 1L)
+    override fun runAsync(alwaysTimer: Boolean): ISimpleScheduler {
+        super.runAsync(alwaysTimer)
+        bukkitTask = if(!alwaysTimer && getEndTime() == 1L)
             bukkitScheduler.runTaskAsynchronously(instance, runnable())
         else
             bukkitScheduler.runTaskTimerAsynchronously(instance, runnable(), 0, updatePeriod.getPeriod())

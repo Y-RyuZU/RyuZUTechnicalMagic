@@ -1,5 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.entry
 
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.entry.ConfiguredEntry
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.ConfiguredGameMode
@@ -8,12 +9,11 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.GameMode
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.CollectionUtility.Companion.getRandomKey
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.message.IMessageService
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.particle.IParticleService
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.sound.ISoundService
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.structure.IStructureService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.SimpleSchedulerFactory
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.effect.IEffectService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.message.IMessageService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.structure.IStructureService
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import java.time.LocalTime
@@ -27,8 +27,7 @@ abstract class AbstractEntryGameService(
 
     private val schedulerFactory: SimpleSchedulerFactory by inject()
     private val messageService: IMessageService by inject()
-    private val soundService: ISoundService by inject()
-    private val particleService: IParticleService by inject()
+    private val effectService: IEffectService by inject()
     private val structureService: IStructureService by inject()
 
     private val stages: Map<String, ConfiguredStage> by inject(named("StageConfig"))
@@ -46,7 +45,7 @@ abstract class AbstractEntryGameService(
         println("Enter")
 
         entryPlayers.add(player)
-        config.effects.sounds["Entry"]?.let { player.playSound(it) }
+        effectService.playEffect(config.effect, "Entry", player)
 
         if (isStart)
             enterMidway(player)
@@ -93,8 +92,7 @@ abstract class AbstractEntryGameService(
 
     private fun countDownEffect(count: Long) {
         messageService.sendMessage(listOf("Game will start in $count seconds"), entryPlayers)
-        config.effects.sounds["CountDown"]?.let { soundService.playSound(it, entryPlayers) }
-        config.effects.particles["CountDown"]?.let { particleService.spawnParticle(it, entryPlayers) }
+        effectService.playEffect(config.effect, "CountDown", entryPlayers)
     }
 
     private fun getWorldId(selectedStageId: String): String =

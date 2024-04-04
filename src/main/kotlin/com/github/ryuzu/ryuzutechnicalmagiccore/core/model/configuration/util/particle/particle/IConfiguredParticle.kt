@@ -1,9 +1,8 @@
-package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle
+package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.particle
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.display.IConfiguredDisplay
 
 /*
     TODO: Add SCULK_CHARGE, SHRIEK, and VIBRATION

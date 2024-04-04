@@ -7,6 +7,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.IPlayerEven
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.click.IPlayerClickAirEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.click.IPlayerLeftClickEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntity
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import java.util.*
 
@@ -14,6 +15,6 @@ class PlayerBlockBreakEvent(
     override var player: IPlayer,
     override var location: ConfiguredIntLocation,
     override var block: String,
-    override var entity: UUID = player.id,
+    override var entity: IEntity = player,
     eventProps: ICancelableEvent = DefaultCancelableEventProperties()
 ) : IPlayerBlockBreakEvent, ICancelableEvent by eventProps

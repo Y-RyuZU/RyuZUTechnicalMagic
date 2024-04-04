@@ -27,7 +27,7 @@ class GameManager : IGameManager {
             structureService.read(world, entries.structure)
             entries.points.map { point ->
                 blockService.setBlock(point.toLocation(world), entries.block)
-                entries.effects.displays["EntryGateText"]?.forEach {
+                entries.effect.displays["EntryGateText"]?.forEach {
                     it.displays.forEach { display ->
                         textDisplayService.displayText(display as IConfiguredDisplay.ConfiguredTextDisplay, point.copy(y = point.y + 1).toLocation(world))
                     }
