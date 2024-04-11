@@ -1,7 +1,7 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.particle
 
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredColor
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredScalableColor
 
 data class ConfiguredColorParticle(
     override val id: String,
@@ -9,6 +9,6 @@ data class ConfiguredColorParticle(
     override val extra: Double = 0.0,
     override val offset: ConfiguredDoubleVector = ConfiguredDoubleVector(),
     override val delay: Long = 0,
-    val color: ConfiguredScalableColor,
-    val size: Float
+    val color: ConfiguredColor,
+    val scale: Float = 1.0f
 ) : IConfiguredParticle

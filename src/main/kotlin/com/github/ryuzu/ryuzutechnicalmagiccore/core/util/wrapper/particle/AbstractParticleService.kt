@@ -5,8 +5,6 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.Co
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.set.IConfiguredParticleSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.particle.IConfiguredParticle
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.set.ConfiguredCircleParticleSet
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.set.OrthonormalBasis
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.set.ParticleAngle
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.IParticleScheduler
@@ -27,45 +25,46 @@ abstract class AbstractParticleService : IParticleService {
         vector: ConfiguredDoubleVector,
         location: ConfiguredDoubleLocation,
         scheduler: IParticleScheduler
-    ): Set<TaskUnit> {
-        val directionVector = particleSet.angle.getVector(vector)
+    ): Set<TaskUnit> =
+        (0 until particleSet.amount).flatMap { index ->
+            val directionVector = particleSet.angle.getVector(vector)
+            when (particleSet) {
+                is ConfiguredCircleParticleSet -> {
+                    val data = scheduler.getData(particleSet, index) as CircleParticleSetData
+                    val orthonormalBasis = data.getOrthonormalBasis(directionVector)
+                    (0 until particleSet.period).flatMap { count ->
+                        particleSet.particles.map { particle ->
+                            TaskUnit(particleSet.delay + particle.delay + count) { _, _ ->
+                                for (i in 0 until particleSet.acceleration) {
+                                    val radian = Math.toRadians(data.nextDegree().toDouble())
+                                    val radius = data.nextRadius()
+                                    val point = ConfiguredDoubleVector(
+                                        Vector3d(location.vector)
+                                            .add(Vector3d(orthonormalBasis.u).mul(cos(radian) * radius))
+                                            .add(Vector3d(orthonormalBasis.w).mul(sin(radian) * radius))
+                                    )
 
-        return when (particleSet) {
-            is ConfiguredCircleParticleSet -> {
-                val data = scheduler.get(particleSet) as CircleParticleSetData
-                val orthonormalBasis = OrthonormalBasis.from(directionVector)
+                                    val circleExtraVector = ConfiguredDoubleVector(
+                                        if (particle.count == 0)
+                                            Vector3d(point).sub(location.vector).normalize()
+                                        else
+                                            orthonormalBasis.u
+                                    )
 
-                particleSet.particles.map { particle ->
-                    TaskUnit(particleSet.delay + particle.delay) { _, _ ->
-                        for (i in 0 until particleSet.acceleration) {
-                            val radian = Math.toRadians(data.nextDegree().toDouble())
-                            val radius = data.nextRadius()
-                            val point = ConfiguredDoubleVector(
-                                Vector3d(location.vector)
-                                    .add(Vector3d(orthonormalBasis.u).mul(cos(radian) * radius))
-                                    .add(Vector3d(orthonormalBasis.w).mul(sin(radian) * radius))
-                            )
-
-                            val circleExtraVector = ConfiguredDoubleVector(
-                                if (particle.count == 0)
-                                    Vector3d(point).sub(location.vector).normalize()
-                                else
-                                    orthonormalBasis.u
-                            )
-
-                            spawnParticle(particle, point.toLocation(location.world), circleExtraVector)
+                                    spawnParticle(particle, point.toLocation(location.world), circleExtraVector)
+                                }
+                            }
                         }
                     }
                 }
-            }
 
-            else -> particleSet.particles.map { particle ->
-                TaskUnit(particleSet.delay + particle.delay) { _, _ ->
-                    spawnParticle(particle, location, directionVector)
+                else -> particleSet.particles.map { particle ->
+                    TaskUnit(particleSet.delay + particle.delay) { _, _ ->
+                        spawnParticle(particle, location, directionVector)
+                    }
                 }
             }
         }.toSet()
-    }
 
     override fun convertTaskUnits(
         particleSets: Set<IConfiguredParticleSet>,
@@ -101,11 +100,13 @@ abstract class AbstractParticleService : IParticleService {
         location: ConfiguredDoubleLocation,
         vector: ConfiguredDoubleVector,
     ) {
-        schedulerFactory.createParticleScheduler().apply { schedule(convertTaskUnits(particleSets, location, vector, this)) }.runSync()
+        schedulerFactory.createParticleScheduler()
+            .apply { schedule(convertTaskUnits(particleSets, location, vector, this)) }.runSync()
     }
 
     override fun spawnParticle(particleSets: Set<IConfiguredParticleSet>, players: Set<IPlayer>) {
-        schedulerFactory.createParticleScheduler().apply { schedule(convertTaskUnits(particleSets, this, players)) }.runSync()
+        schedulerFactory.createParticleScheduler().apply { schedule(convertTaskUnits(particleSets, this, players)) }
+            .runSync()
     }
 
     override fun getReceivers(player: IGamePlayer, location: ConfiguredDoubleLocation): Set<IPlayer> {

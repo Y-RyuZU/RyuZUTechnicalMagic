@@ -18,4 +18,6 @@ interface ISkillService {
     fun clearStates(player: IPlayer)
     fun bindSkillToItem(itemId: String, skillSet: ConfiguredSkillSet)
     fun registerSkill(skillId: String, skillParams: ConfiguredSkillParams)
+    fun reloadSkill()
+    fun reloadSkillSet()
 }

@@ -38,7 +38,6 @@ class SimpleShoot : ISkill, KoinComponent {
         val world = eventParams.skillCastLocation.world
         var projectilePoint = eventParams.skillCastLocation.vector
         val projectileVector = eventParams.direction
-        val orthonormalBasis = OrthonormalBasis.from(projectileVector)
         fun location() = projectilePoint.toLocation(world)
         var repeatCount = 0
         val hitEntities = mutableSetOf<IEntity>()

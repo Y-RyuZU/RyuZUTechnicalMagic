@@ -17,7 +17,7 @@ data class ConfiguredScalableColor(val color: ConfiguredColor, val size: Float =
             if (split.size != 4) {
                 throw IllegalArgumentException("Invalid scalable color format, expected 4 parts but got ${split.size}")
             }
-            val rgbString = split.take(3).joinToString("-")
+            val rgbString = split.take(3).joinToString(",")
             return ConfiguredColor(rgbString)
         }
 

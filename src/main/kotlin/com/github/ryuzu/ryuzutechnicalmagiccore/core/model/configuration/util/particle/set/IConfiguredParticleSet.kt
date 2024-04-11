@@ -12,12 +12,12 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.particle.IPart
     defaultImpl = ConfiguredParticleSet::class
 )
 @JsonSubTypes(
-    JsonSubTypes.Type(value = ConfiguredParticleSet::class, name = "NORMAL"),
     JsonSubTypes.Type(value = ConfiguredCircleParticleSet::class, name = "CIRCLE"),
 )
 interface IConfiguredParticleSet {
     val priority: Int
     val delay: Int
+    val amount: Int
     val angle: ParticleAngle
     val receiver: Receiver
     val particles: Set<IConfiguredParticle>

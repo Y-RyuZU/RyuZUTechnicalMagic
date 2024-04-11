@@ -7,15 +7,18 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameServic
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.ISimpleScheduler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.SimpleSchedulerFactory
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.MathUtility.Companion.nextGaussian
+import org.koin.core.annotation.InjectedParam
+import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.named
 import java.util.UUID
 import kotlin.random.Random
 
 abstract class AbstractGeneratorService(
-    private val gameService: IGameService
+    private val gameService: IGameService,
+    private val generatorSet: ConfiguredGeneratorSet
 ) : IGeneratorService {
-    private val generatorSet: ConfiguredGeneratorSet by inject { parametersOf(gameService.world) }
     private val schedulerFactory: SimpleSchedulerFactory by inject()
 
     private val starStocks: MutableMap<ConfiguredStarGenerator, StarStockData> = mutableMapOf()
@@ -66,7 +69,7 @@ abstract class AbstractGeneratorService(
     private fun getRarityWithGaussian(mean: Double): Int {
         val rand = Random.nextGaussian() * VARIANCE
         val result = mean + rand
-        return result.coerceIn(0.0, 100.0).toInt() / 20
+        return result.coerceIn(0.0, 99.9).toInt() / 20 + 1
     }
 
     companion object {

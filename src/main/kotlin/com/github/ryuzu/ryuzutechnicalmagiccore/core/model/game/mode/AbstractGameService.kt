@@ -1,5 +1,8 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode
 
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.PlayerDeathEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.EventHandler
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.IEventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.general.ConfiguredGeneralParameter
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.ConfiguredGameMode
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.IConfiguredGameModeParameter
@@ -22,6 +25,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.sound.ISoundSe
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.teleport.ITeleportService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.title.ITitleService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.SimpleSchedulerFactory
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.block.IBlockService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.effect.IEffectService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.structure.IStructureService
@@ -36,8 +40,8 @@ abstract class AbstractGameService(
     protected val stage: ConfiguredStage,
     protected val entryService: IEntryGameService,
     entryPlayers: Set<IPlayer>,
-) : IGameService, KoinComponent {
-    protected val generatorService: IGeneratorService by inject { parametersOf(this) }
+) : IGameService, IEventHandler, KoinComponent {
+    protected val generatorService: IGeneratorService by inject { parametersOf(this, stage.generators) }
     protected val levelService: ILevelService by inject { parametersOf(this) }
     protected val schedulerFactory: SimpleSchedulerFactory by inject()
     protected val messageService: IMessageService by inject()
@@ -99,6 +103,30 @@ abstract class AbstractGameService(
         put("%time%") { gameData.time.tickToFormattedTime() }
         put("%phase%") { getPhase().toString() }
         put("%stage%") { stage.display.name }
+    }
+
+    @EventHandler(priority = 150)
+    fun onPlayerDeath(event: PlayerDeathEvent) {
+        if(!isGamePlayer(event.player)) return
+        val gamePlayer = getGamePlayer(event.player)
+        gamePlayer.death++
+        generatorService.generateStar(
+            locationService.getIntLocation(gamePlayer).toDoubleLocation(),
+            (gamePlayer.star * stage.gameProperty.starLostRate).toInt(),
+            parameter.generatorParameter.starLostScatter * event.lastDamage
+        )
+        gamePlayer.star *= (1.0 - stage.gameProperty.starLostRate).toInt()
+
+        val respawnInterval = 5L
+        schedulerFactory.createScheduler(UpdatePeriod.SECOND).schedule(0, respawnInterval) { _, count ->
+            gameModeService.changeGameMode(3, gamePlayer, true)
+            titleService.sendTitle(null, "Respawn in ${respawnInterval - count}", gamePlayer)
+        }.schedule(respawnInterval) { _, _ ->
+            gameModeService.changeGameMode(0, gamePlayer, false)
+            titleService.sendTitle(null, "Respawn", gamePlayer)
+            respawnPlayer(gamePlayer)
+        }.runSync()
+        event.shouldNotify = false
     }
 
     override fun getPhase(): Int = (gameData.time / (gameModeParameter.duration * 20 * 60)).toInt()

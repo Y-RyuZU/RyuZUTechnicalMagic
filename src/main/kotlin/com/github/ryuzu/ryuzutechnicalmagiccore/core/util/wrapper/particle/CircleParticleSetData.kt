@@ -10,6 +10,7 @@ class CircleParticleSetData(
     private val particleSet: ConfiguredCircleParticleSet
 ) : IParticleSetData {
     private var degree: Int = Random.nextInt(360)
+    private val positiveDegreeAcceleration: Boolean = Random.nextBoolean()
     private var radius: Double = Random.nextDouble(particleSet.minRadius, particleSet.maxRadius)
     private var positiveRadiusAcceleration: Boolean = false
     private lateinit var orthonormalBasis: OrthonormalBasis
@@ -21,11 +22,9 @@ class CircleParticleSetData(
     }
 
     fun nextDegree(): Int {
-        degree += particleSet.speed
-        if(degree >= 360)
-            degree -= 360
+        degree += particleSet.speed * if(positiveDegreeAcceleration) 1 else -1
 
-        return degree
+        return degree % 360
     }
 
     fun nextRadius(): Double {

@@ -7,6 +7,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher.IEventListe
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.general.ConfiguredGeneralParameter
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator.ConfiguredGeneratorSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.AbstractGeneratorService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.IGeneratorService
@@ -26,7 +27,10 @@ import java.util.UUID
 import kotlin.random.Random
 
 @Single([IGeneratorService::class])
-class GeneratorServiceImpl(@InjectedParam gameService: IGameService) : AbstractGeneratorService(gameService), IEventHandler {
+class GeneratorServiceImpl(
+    @InjectedParam gameService: IGameService,
+    @InjectedParam generatorSet: ConfiguredGeneratorSet
+) : AbstractGeneratorService(gameService, generatorSet), IEventHandler {
     private val itemProvider: IItemProvider by inject()
     private val eventListenerCollector: IEventListenerCollector by inject()
 

@@ -18,7 +18,6 @@ interface IConfiguredGenerator {
     fun getGeneratePoint(vector: ConfiguredIntVector): ConfiguredDoubleVector {
         val xRadius = Random.nextGaussian() * radius
         val zRadius = Random.nextGaussian() * radius
-        val angle = Random.nextDouble() * 2 * PI
-        return ConfiguredDoubleVector(vector.x + xRadius * cos(angle), vector.y + zRadius * sin(angle), vector.z + Random.nextDouble(offY))
+        return ConfiguredDoubleVector(vector.x + xRadius, vector.y + offY, vector.z + zRadius)
     }
 }

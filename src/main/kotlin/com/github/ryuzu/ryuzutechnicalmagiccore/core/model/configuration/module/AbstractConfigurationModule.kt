@@ -1,13 +1,14 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.module
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import java.io.File
 
 abstract class AbstractConfigurationModule<T, U> : IConfigurationModule<T, U> {
     private val base: File by inject(named("dataFolder"))
-    protected val mapper: ObjectMapper by inject()
+    protected val mapper: YAMLMapper by inject()
     protected open val folderName: String = ""
     protected open val fileName: String? = null
 
@@ -29,7 +30,7 @@ abstract class AbstractConfigurationModule<T, U> : IConfigurationModule<T, U> {
         val allConfigurations: List<U> = selectedFiles.map {
             processFile(it)
         }
-
+2
         return when {
             allConfigurations.all { it is Map<*, *> } -> {
                 val resultMap = mutableMapOf<Any, Any>()

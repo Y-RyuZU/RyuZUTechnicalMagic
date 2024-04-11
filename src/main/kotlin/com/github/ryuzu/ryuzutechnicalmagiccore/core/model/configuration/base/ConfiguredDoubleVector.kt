@@ -17,8 +17,6 @@ data class ConfiguredDoubleVector(var x: Double = 0.0, val y: Double = 0.0, val 
 
     constructor(vector: Vector3d) : this(vector.x, vector.y, vector.z)
 
-    constructor() : this(0.0, 1.0, 0.0)
-
     override fun toString(): String {
         return "$x,$y,$z"
     }

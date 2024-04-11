@@ -1,6 +1,7 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.module
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
@@ -13,7 +14,7 @@ import java.io.File
 @Module
 class LanguageModule : KoinComponent {
     protected val folder: File by inject(named("dataFolder"))
-    protected val mapper: ObjectMapper by inject()
+    protected val mapper: YAMLMapper by inject()
 
     @Named("japanese")
     @Single(createdAtStart = true)

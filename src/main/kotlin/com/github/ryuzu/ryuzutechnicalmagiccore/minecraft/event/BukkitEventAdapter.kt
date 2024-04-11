@@ -94,7 +94,6 @@ class BukkitEventAdapter : Listener, KoinComponent {
         val entity = bukkitEvent.entity
         if (entity !is LivingEntity) return
         if (bukkitEvent.damage < entity.health) return
-        println("onDeath ${bukkitEvent.damage} ${entity.health}")
         var event: IEntityDeathEvent = EntityDeathEvent(
             entityManager.getLivingEntity(entity.uniqueId),
             bukkitEvent.damage
@@ -105,8 +104,10 @@ class BukkitEventAdapter : Listener, KoinComponent {
                 entityManager.getPlayer(entity.uniqueId)
             )
         eventListenerCollector.publish(event)
-        bukkitEvent.isCancelled = true
-        entity.health = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value
+        if(entity is org.bukkit.entity.Player) {
+            bukkitEvent.isCancelled = true
+            entity.health = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH)

@@ -5,11 +5,20 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.particle.IPart
 import org.koin.core.annotation.InjectedParam
 import java.util.SortedSet
 
-abstract class AbstractParticleScheduler(updatePeriod: UpdatePeriod) : IParticleScheduler, AbstractSimpleScheduler(updatePeriod) {
-    private val particleSetDataMap: MutableMap<IConfiguredParticleSet, IParticleSetData> = mutableMapOf()
+abstract class AbstractParticleScheduler(updatePeriod: UpdatePeriod) : IParticleScheduler,
+    AbstractSimpleScheduler(updatePeriod) {
+    private val particleSetDataMap: MutableMap<IConfiguredParticleSet, MutableList<IParticleSetData>> = mutableMapOf()
 
     override fun set(configuredSet: IConfiguredParticleSet, data: IParticleSetData) {
-        particleSetDataMap[configuredSet] = data
+        TODO()
     }
-    override fun get(configuredSet: IConfiguredParticleSet): IParticleSetData = particleSetDataMap.getOrPut(configuredSet) { configuredSet.createParticleSetData() }
+
+    override fun getData(configuredSet: IConfiguredParticleSet, index: Int): IParticleSetData =
+        particleSetDataMap.computeIfAbsent(configuredSet){ mutableListOf() }
+            .run{
+                if (size <= index){
+                    add(index, configuredSet.createParticleSetData())
+                }
+                get(index)
+            }
 }

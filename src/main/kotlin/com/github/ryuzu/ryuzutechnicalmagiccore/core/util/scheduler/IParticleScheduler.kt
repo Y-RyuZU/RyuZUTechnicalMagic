@@ -5,5 +5,5 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.particle.IPart
 
 interface IParticleScheduler : ISimpleScheduler {
     fun set(configuredSet: IConfiguredParticleSet, data: IParticleSetData)
-    fun get(configuredSet: IConfiguredParticleSet): IParticleSetData
+    fun getData(configuredSet: IConfiguredParticleSet, index: Int): IParticleSetData
 }

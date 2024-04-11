@@ -6,11 +6,12 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.particle.IPart
 data class ConfiguredParticleSet(
     override val priority: Int = 10,
     override val delay: Int = 0,
-    override val angle: ParticleAngle = ParticleAngle.RANDOM,
+    override val amount: Int = 1,
+    override val angle: ParticleAngle = ParticleAngle.RAW,
     override val receiver: Receiver = Receiver.ALL,
     override val particles: Set<IConfiguredParticle>
 ) : IConfiguredParticleSet {
     override fun createParticleSetData(): IParticleSetData {
-       throw NotImplementedError("Not yet implemented")
+        throw NotImplementedError("Not yet implemented")
     }
 }

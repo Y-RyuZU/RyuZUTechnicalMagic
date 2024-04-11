@@ -16,7 +16,6 @@ import org.koin.core.component.inject
 
 @Single([ISkillService::class], true)
 class SkillServiceImpl : AbstractSkillService(), IEventHandler {
-    private val skillService: ISkillService by inject()
     private val eventListenerCollector: IEventListenerCollector by inject()
 
     init {
@@ -30,7 +29,7 @@ class SkillServiceImpl : AbstractSkillService(), IEventHandler {
         val player = event.player
         val location = player.getEyeLocation()
         val direction = player.getEyeDirection()
-        val skillIds = skillService.getFirstSkillIds(item, SkillTrigger.RIGHT_CLICK_AIR) ?: return
+        val skillIds = getFirstSkillIds(item, SkillTrigger.RIGHT_CLICK_AIR) ?: return
 
         val skillTrigger: SkillTrigger = when (event) {
             is PlayerRightClickAirEvent -> SkillTrigger.RIGHT_CLICK_AIR
@@ -65,6 +64,6 @@ class SkillServiceImpl : AbstractSkillService(), IEventHandler {
     fun onCast(event: ISkillActivateEvent) {
         println("onCast: ${event.skillId}")
         if(event.isCancelled) return
-        skillService.use(event)
+        use(event)
     }
 }

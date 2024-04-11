@@ -7,9 +7,11 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.particle.IPart
 data class ConfiguredCircleParticleSet(
     override val priority: Int = 10,
     override val delay: Int = 0,
-    override val angle: ParticleAngle = ParticleAngle.RANDOM,
+    override val amount: Int = 1,
+    override val angle: ParticleAngle = ParticleAngle.RAW,
     override val receiver: Receiver = Receiver.ALL,
     override val particles: Set<IConfiguredParticle> = emptySet(),
+    val period: Long = 0,
     val speed: Int = 0,
     val acceleration: Int = 0,
     val minRadius: Double = 0.0,

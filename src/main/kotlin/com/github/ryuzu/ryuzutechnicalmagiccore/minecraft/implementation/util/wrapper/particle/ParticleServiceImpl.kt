@@ -3,15 +3,11 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.w
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.particle.*
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.particle.AbstractParticleService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.particle.IParticleService
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ItemUtility
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toPlayer
 import org.bukkit.*
-import org.bukkit.entity.Player
-import org.bukkit.util.Vector
 import org.koin.core.annotation.Single
 import org.koin.core.component.inject
 
@@ -40,10 +36,10 @@ class ParticleServiceImpl : AbstractParticleService() {
             is ConfiguredParticle -> builder.spawn()
             is ConfiguredColorParticle -> builder.color(
                 Color.fromRGB(
-                    particle.color.color.r,
-                    particle.color.color.g,
-                    particle.color.color.b
-                ), particle.color.size
+                    particle.color.r,
+                    particle.color.g,
+                    particle.color.b
+                ), particle.scale
             ).spawn()
 
             is ConfiguredBlockParticle -> builder.data(Bukkit.createBlockData(particle.block.uppercase())).spawn()

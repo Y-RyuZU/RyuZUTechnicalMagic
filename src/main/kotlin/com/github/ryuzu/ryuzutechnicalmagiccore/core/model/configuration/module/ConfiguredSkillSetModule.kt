@@ -1,6 +1,7 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.module
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.skill.ConfiguredSkillSet
+import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
@@ -11,7 +12,7 @@ class ConfiguredSkillSetModule :
     AbstractConfigurationModule<HashMap<String, ConfiguredSkillSet>, HashMap<String, ConfiguredSkillSet>>() {
     override val folderName: String = "skill-sets"
 
-    @Single(createdAtStart = true)
+    @Factory
     @Named("SkillSetConfig")
     override fun loadConfig(): HashMap<String, ConfiguredSkillSet> = super.loadConfig()
 

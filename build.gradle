@@ -5,7 +5,7 @@ plugins {
 
     id 'org.springframework.boot' version '3.2.3'
     id 'io.spring.dependency-management' version '1.1.4'
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.22'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.23'
 //    id "com.github.johnrengelman.shadow" version "8.1.1"
     id "io.github.goooler.shadow" version "8.1.7"
     id 'com.google.devtools.ksp' version "1.9.23-1.0.19"
@@ -47,6 +47,10 @@ repositories {
     maven {
         name = "code-mc"
         url = "https://repo.codemc.io/repository/maven-public/"
+    }
+    maven {
+        name = "commandlib"
+        url = "https://repo.codemc.org/repository/maven-public/"
     }
 //    maven {
 //        name = "bkcommonlib"
@@ -91,9 +95,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    implementation 'com.github.hakan-krgn.spigot-injection:injection-core:0.1.5.1'
-    implementation 'com.github.hakan-krgn.spigot-injection:injection-command:0.1.5.1'
-
     implementation("com.jeff_media:SpigotUpdateChecker:3.0.3")
     implementation 'com.github.stefvanschie.inventoryframework:IF:0.10.13'
     implementation 'com.cjcrafter:weaponmechanics:3.3.0'
@@ -111,6 +112,7 @@ dependencies {
     compileOnly 'com.ticxo.modelengine:ModelEngine:R4.0.4'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.9'
     compileOnly 'com.onarandombox.multiversecore:multiverse-core:4.3.12'
+    compileOnly 'dev.jorel:commandapi-bukkit-core:9.2.0'
     implementation(platform("com.intellectualsites.bom:bom-newest:1.42"))
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
 

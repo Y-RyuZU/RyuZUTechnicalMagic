@@ -2,9 +2,6 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.module
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.json.JsonMapper
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.github.ryuzu.ryuzutechnicalmagiccore.RyuZUTechnicalMagicCore
@@ -29,7 +26,7 @@ class ConfigurationModule : KoinComponent {
     fun provideWorldContainer(): File = instance.server.worldContainer
 
     @Single
-    fun provideObjectMapper(): ObjectMapper = YAMLMapper.builder()
+    fun provideYamlMapper(): YAMLMapper = YAMLMapper.builder()
         .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
         .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
         .addModule(KotlinModule.Builder().build())

@@ -10,6 +10,6 @@ import java.util.UUID
 interface ITeleportService {
     fun teleport(location: ConfiguredIntLocation, entities: Set<IEntity>)
     fun teleport(location: ConfiguredIntLocation, vararg entities: IEntity) = teleport(location, entities.toSet())
-    fun teleport(location: ConfiguredIntVector, entities: Set<IEntity>)
-    fun teleport(location: ConfiguredIntVector, vararg entities: IEntity) = teleport(location, entities.toSet())
+    fun teleport(vector: ConfiguredIntVector, entities: Set<IEntity>)
+    fun teleport(vector: ConfiguredIntVector, vararg entities: IEntity) = teleport(vector, entities.toSet())
 }

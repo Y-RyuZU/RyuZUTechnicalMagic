@@ -15,6 +15,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.carrytnt.Ab
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.carrytnt.ICarryTntService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toBlockLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toMiddleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toPlayer
@@ -30,7 +31,7 @@ class CarryTntServiceImpl(
     @InjectedParam stage: ConfiguredStage,
     @InjectedParam entryService: IEntryGameService,
     @InjectedParam entryPlayers: Set<IPlayer>,
-) : AbstractCarryTntService(world, config, stage, entryService, entryPlayers), IEventHandler {
+) : AbstractCarryTntService(world, config, stage, entryService, entryPlayers) {
     private val eventListenerCollector: IEventListenerCollector by inject()
 
     init {
@@ -103,12 +104,9 @@ class CarryTntServiceImpl(
 
     @EventHandler
     fun onDeath(event: PlayerDeathEvent) {
-        println("onDeath")
         if (!isGamePlayer(event.player)) return
-        println("onDeath2")
         val player = getGamePlayer(event.player)
         if (!isHoldPlayer(player)) return
-        println("onDeath3")
 
         lostTNT(getGamePlayer(event.player))
     }

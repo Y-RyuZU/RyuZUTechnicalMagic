@@ -10,6 +10,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.ISkill
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillTrigger
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.TypedMap
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.parameter.parameterSetOf
 import org.koin.core.qualifier.named
@@ -19,8 +20,8 @@ import kotlin.collections.HashMap
 abstract class AbstractSkillService : ISkillService, KoinComponent {
     private val coolTimeService: ICoolTimeService by inject()
 
-    private val skillSets: HashMap<String, ConfiguredSkillSet> by inject(named("SkillSetConfig"))
-    private val skills: HashMap<String, ConfiguredSkillParams> by inject(named("SkillConfig"))
+    private var skillSets: HashMap<String, ConfiguredSkillSet> = get (named("SkillSetConfig"))
+    private var skills: HashMap<String, ConfiguredSkillParams> = get(named("SkillConfig"))
     private val skillClasses: Map<String, ISkill> = getSkillClasses()
     private val states = mutableMapOf<IPlayer, MutableList<SkillState>>()
 
@@ -134,5 +135,13 @@ abstract class AbstractSkillService : ISkillService, KoinComponent {
 
     override fun clearStates(player: IPlayer) {
         states.remove(player)
+    }
+
+    override fun reloadSkill() {
+        skills = get(named("SkillConfig"))
+    }
+
+    override fun reloadSkillSet() {
+        skillSets = get(named("SkillSetConfig"))
     }
 }

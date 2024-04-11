@@ -16,7 +16,7 @@ class TeleportServiceImpl : ITeleportService, KoinComponent {
         entities.map { it.toEntity() }.forEach { it.teleport(location.toBlockLocation()) }
     }
 
-    override fun teleport(location: ConfiguredIntVector, entities: Set<IEntity>) {
-        entities.map { it.toEntity() }.forEach { it.teleport(location.toLocation(it.location.world.name).toMiddleLocation()) }
+    override fun teleport(vector: ConfiguredIntVector, entities: Set<IEntity>) {
+        entities.map { it.toEntity() }.forEach { it.teleport(vector.toLocation(it.location.world.name).toMiddleLocation()) }
     }
 }
