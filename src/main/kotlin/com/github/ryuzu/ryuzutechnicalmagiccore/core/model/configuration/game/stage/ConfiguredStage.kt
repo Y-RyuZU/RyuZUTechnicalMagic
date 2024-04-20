@@ -10,5 +10,6 @@ data class ConfiguredStage(
     val display: ConfiguredStageDisplay,
     val generators: ConfiguredGeneratorSet,
     val teams: List<ConfiguredTeam>,
-    val anomaly: Set<IConfiguredAnomalyParameter>
+    val anomaly: Set<IConfiguredAnomalyParameter>,
+    val itemTable: Map<Int, LinkedHashSet<String>>
 )

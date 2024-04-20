@@ -11,6 +11,7 @@ class PlayerItemPickUpEvent(
     override var player: IPlayer,
     override var item: String,
     override var itemEntity: UUID,
+    override var amount: Int,
     override var entity: IEntity = player,
     eventProps: ICancelableEvent = DefaultCancelableEventProperties()
 ) : IPlayerItemPickUpEvent, ICancelableEvent by eventProps

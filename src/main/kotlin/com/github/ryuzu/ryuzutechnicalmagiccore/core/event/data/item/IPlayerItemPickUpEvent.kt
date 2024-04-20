@@ -9,4 +9,5 @@ import java.util.*
 
 interface IPlayerItemPickUpEvent : ICancelableEvent, IPlayerEvent, IItemEvent {
     var itemEntity: UUID
+    var amount: Int
 }

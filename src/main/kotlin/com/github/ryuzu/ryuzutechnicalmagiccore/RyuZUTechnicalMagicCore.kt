@@ -16,14 +16,16 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import org.koin.ksp.generated.module
+import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.context.ConfigurableApplicationContext
 
 @Module
 @ComponentScan("com.github.ryuzu.ryuzutechnicalmagiccore")
 @SpringBootApplication
 class RyuZUTechnicalMagicCore : JavaPlugin(), KoinComponent {
     private val scoreboardLibrary: ScoreboardLibrary by inject()
-    private val gameManager: IGameManager by inject()
+    private val context: ConfigurableApplicationContext by inject()
 
     override fun onEnable() {
         // Plugin startup logic
@@ -32,6 +34,7 @@ class RyuZUTechnicalMagicCore : JavaPlugin(), KoinComponent {
         val module = module {
             single { provideInstance() }
             single { provideNamespacedKey() }
+            single { SpringApplication.run(RyuZUTechnicalMagicCore::class.java) }
         }
 
         startKoin {
@@ -63,11 +66,11 @@ class RyuZUTechnicalMagicCore : JavaPlugin(), KoinComponent {
     override fun onDisable() {
         // Plugin shutdown logic
         scoreboardLibrary.close()
+        SpringApplication.exit(context)
         stopKoin()
     }
 
     fun provideInstance() = this
-
 
     fun provideNamespacedKey() = NamespacedKey(this, this.name)
 }

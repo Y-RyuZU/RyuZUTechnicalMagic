@@ -153,10 +153,10 @@ class BukkitEventAdapter : Listener, KoinComponent {
             bukkitEvent.isCancelled = event.isCancelled
             bukkitEvent.item.itemStack.type = Material.valueOf(event.material.uppercase())
         } else {
-            val event = PlayerItemPickUpEvent(player, id, bukkitEvent.item.uniqueId)
+            val event = PlayerItemPickUpEvent(player, id, bukkitEvent.item.uniqueId, bukkitEvent.item.itemStack.amount)
             eventListenerCollector.publish(event)
             bukkitEvent.isCancelled = event.isCancelled
-            bukkitEvent.item.itemStack = itemProvider.getItemStack(event.item)
+            bukkitEvent.item.itemStack = itemProvider.getItemStack(event.item).asQuantity(event.amount)
         }
     }
 

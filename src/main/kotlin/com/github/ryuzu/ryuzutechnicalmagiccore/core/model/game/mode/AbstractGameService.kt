@@ -41,7 +41,7 @@ abstract class AbstractGameService(
     protected val entryService: IEntryGameService,
     entryPlayers: Set<IPlayer>,
 ) : IGameService, IEventHandler, KoinComponent {
-    protected val generatorService: IGeneratorService by inject { parametersOf(this, stage.generators) }
+    protected val generatorService: IGeneratorService by inject { parametersOf(this, stage.generators, stage) }
     protected val levelService: ILevelService by inject { parametersOf(this) }
     protected val schedulerFactory: SimpleSchedulerFactory by inject()
     protected val messageService: IMessageService by inject()

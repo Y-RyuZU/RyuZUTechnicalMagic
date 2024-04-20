@@ -8,6 +8,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.Co
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.general.ConfiguredGeneralParameter
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator.ConfiguredGeneratorSet
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredStage
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.AbstractGeneratorService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.IGeneratorService
@@ -29,12 +30,10 @@ import kotlin.random.Random
 @Single([IGeneratorService::class])
 class GeneratorServiceImpl(
     @InjectedParam gameService: IGameService,
-    @InjectedParam generatorSet: ConfiguredGeneratorSet
-) : AbstractGeneratorService(gameService, generatorSet), IEventHandler {
+    @InjectedParam stage: ConfiguredStage
+) : AbstractGeneratorService(gameService, stage), IEventHandler {
     private val itemProvider: IItemProvider by inject()
     private val eventListenerCollector: IEventListenerCollector by inject()
-
-    private val parameter: ConfiguredGeneralParameter by inject()
 
     override fun generateStar(location: ConfiguredDoubleLocation, amount: Int, scatter: Double): StarStockData {
         val starStockData = StarStockData()
@@ -47,7 +46,7 @@ class GeneratorServiceImpl(
                 val item = itemProvider.getItemStack(starItem)
                 item.lore(listOf(Component.text(UUID.randomUUID().toString())))
                 val droppedItem = spawnItem(location, item)
-                if(scatter != 0.0) droppedItem.velocity = ConfiguredDoubleVector.random().toVector().multiply(scatter)
+                if (scatter != 0.0) droppedItem.velocity = ConfiguredDoubleVector.random().toVector().multiply(scatter)
                 starList.add(droppedItem.uniqueId)
             }
         }
@@ -67,13 +66,21 @@ class GeneratorServiceImpl(
         eventListenerCollector.unregisterEventListener(this)
     }
 
-    @EventHandler
-    fun onPickup(event: PlayerItemPickUpEvent) {
-        onPickup(event.itemEntity)
+    @EventHandler(priority = 50)
+    override fun onPickup(event: PlayerItemPickUpEvent) {
+        if (!gameService.isGamePlayer(event.player)) return
+        val generatorItems = listOf(
+            parameter.generatorParameter.littleStarItem,
+            parameter.generatorParameter.bigStarItem,
+            parameter.generatorParameter.hyperItem,
+            stage.itemTable.values.flatten()
+        )
+        if (!generatorItems.contains(event.item)) return
+        super.onPickup(event)
     }
 
-    override fun generateItem(location: ConfiguredDoubleLocation, rarity: Int) : UUID {
-        val items = parameter.generatorParameter.itemTable[rarity]!!
+    override fun generateItem(location: ConfiguredDoubleLocation, rarity: Int): UUID {
+        val items = stage.itemTable[rarity]!!
         val item = itemProvider.getItemStack(items.elementAt(Random.nextInt(items.size)))
         return spawnItem(location.toLocation(), item).uniqueId
     }

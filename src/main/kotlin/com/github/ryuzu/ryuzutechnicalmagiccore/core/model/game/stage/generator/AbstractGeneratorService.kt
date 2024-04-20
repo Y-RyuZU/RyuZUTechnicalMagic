@@ -1,12 +1,16 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator
 
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerItemPickUpEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.general.ConfiguredGeneralParameter
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator.ConfiguredGeneratorSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator.ConfiguredItemGenerator
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator.ConfiguredStarGenerator
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredStage
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.ISimpleScheduler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.SimpleSchedulerFactory
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.MathUtility.Companion.nextGaussian
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.effect.IEffectService
 import org.koin.core.annotation.InjectedParam
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -16,10 +20,12 @@ import java.util.UUID
 import kotlin.random.Random
 
 abstract class AbstractGeneratorService(
-    private val gameService: IGameService,
-    private val generatorSet: ConfiguredGeneratorSet
+    protected val gameService: IGameService,
+    protected val stage: ConfiguredStage
 ) : IGeneratorService {
     private val schedulerFactory: SimpleSchedulerFactory by inject()
+    protected val effectService: IEffectService by inject()
+    protected val parameter: ConfiguredGeneralParameter by inject()
 
     private val starStocks: MutableMap<ConfiguredStarGenerator, StarStockData> = mutableMapOf()
     private val itemStocks: MutableMap<ConfiguredItemGenerator, MutableSet<UUID>> = mutableMapOf()
@@ -29,7 +35,7 @@ abstract class AbstractGeneratorService(
             if (count % 20L == 0L) return@whileSchedule
             val phase = gameService.getPhase().toDouble()
 
-            generatorSet.item.entries.forEach { (vector, item) ->
+            stage.generators.item.entries.forEach { (vector, item) ->
                 if (item.maxStock <= (itemStocks.getOrPut(item) { mutableSetOf() }.size)) return@forEach
                 val location = item.getGeneratePoint(vector).toLocation(gameService.world)
                 if (count % item.period == 0L)
@@ -38,7 +44,7 @@ abstract class AbstractGeneratorService(
                     else
                         generateHyper(location)
             }
-            generatorSet.star.entries.forEach {(vector, star) ->
+            stage.generators.star.entries.forEach { (vector, star) ->
                 if (star.maxStock <= (starStocks.getOrPut(star) { StarStockData() }.getStock())) return@forEach
                 if (count % star.period == 0L)
                     starStocks[star]?.addStock(
@@ -56,13 +62,22 @@ abstract class AbstractGeneratorService(
 
     override fun stop() = scheduler.cancel()
 
-    protected fun onPickup(itemEntity: UUID) {
+    protected open fun onPickup(event: PlayerItemPickUpEvent) {
         itemStocks.values.forEach {
-            it.remove(itemEntity)
+            it.remove(event.itemEntity)
         }
         starStocks.values.forEach {
-            it.bigStars.remove(itemEntity)
-            it.littleStars.remove(itemEntity)
+            it.bigStars.remove(event.itemEntity)
+            it.littleStars.remove(event.itemEntity)
+        }
+
+        if (event.item == parameter.generatorParameter.littleStarItem || event.item == parameter.generatorParameter.bigStarItem) {
+            event.amount = 0
+            gameService.getGamePlayer(event.player).star += event.amount * if(event.item == parameter.generatorParameter.littleStarItem) 1 else 10
+            effectService.playEffect(parameter.generatorParameter.effect, "StarPickup", event.player)
+        }
+        if (stage.itemTable.values.flatten().contains(event.item)) {
+            effectService.playEffect(parameter.generatorParameter.effect, "ItemPickup", event.player)
         }
     }
 

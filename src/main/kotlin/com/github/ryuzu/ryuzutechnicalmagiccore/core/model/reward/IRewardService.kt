@@ -1,4 +1,4 @@
-package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.storage.reward
+package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.reward
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.reward.ConfiguredReward
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
