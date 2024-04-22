@@ -1,7 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.module.*
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.IGameManager
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.event.BukkitEventAdapter
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.gui.GuiModule
 import net.megavex.scoreboardlibrary.api.ScoreboardLibrary
@@ -42,7 +41,7 @@ class RyuZUTechnicalMagicCore : JavaPlugin(), KoinComponent {
             modules(
                 module,
                 RyuZUTechnicalMagicCore().module,
-                DependedPluginsModule().module,
+                DependPluginsModule().module,
                 ConfigurationModule().module,
                 ConfiguredAnomalyModule().module,
                 ConfiguredEntryModule().module,

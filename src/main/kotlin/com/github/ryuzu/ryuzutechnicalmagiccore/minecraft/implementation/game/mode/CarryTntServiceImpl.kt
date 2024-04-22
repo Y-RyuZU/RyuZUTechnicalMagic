@@ -14,6 +14,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.entry.IEntryGame
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.carrytnt.AbstractCarryTntService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.carrytnt.ICarryTntService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.team.IGameTeam.AbstractScoreGameTeam.CarryTntTeam
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toBlockLocation
@@ -91,6 +92,7 @@ class CarryTntServiceImpl(
         if (!isGamePlayer(event.player)) return
         val player = getGamePlayer(event.player)
         if (!isHoldPlayer(player)) return
+        if(getEnemyPoint(player.team as CarryTntTeam) != event.location.vector) return
 
         placeTnt(event.location, player)
     }

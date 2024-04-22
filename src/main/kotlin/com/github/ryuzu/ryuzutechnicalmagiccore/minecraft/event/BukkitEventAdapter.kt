@@ -9,11 +9,12 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.click.PlayerLeft
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.click.PlayerRightClickAirEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.click.PlayerRightClickBlockEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.*
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerItemPickUpEvent
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerMaterialPickUpEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerDropEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerPickUpEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher.IEventListenerCollector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntityManager
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.model.item.IItemProvider
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.storage.Item
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.model.item.IItemManager
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toIntConfigured
 import io.papermc.paper.event.entity.EntityPortalReadyEvent
 import org.bukkit.Material
@@ -34,12 +35,12 @@ import org.koin.core.component.inject
 class BukkitEventAdapter : Listener, KoinComponent {
     private val eventListenerCollector: IEventListenerCollector by inject()
     private val entityManager: IEntityManager by inject()
-    private val itemProvider: IItemProvider by inject()
+    private val itemManager: IItemManager by inject()
 
     @EventHandler(priority = EventPriority.HIGH)
     fun onClick(bukkitEvent: PlayerInteractEvent) {
         val player = entityManager.getPlayer(bukkitEvent.player.uniqueId)
-        val item: String? = if (bukkitEvent.item == null) null else itemProvider.getId(bukkitEvent.item!!)
+        val item: Item? = bukkitEvent.item?.let { itemManager.getItem(it) }
         val offHand = bukkitEvent.hand?.equals(EquipmentSlot.OFF_HAND) ?: false
 
         val event = when (bukkitEvent.action) {
@@ -76,6 +77,7 @@ class BukkitEventAdapter : Listener, KoinComponent {
         if (bukkitEvent.isCancelled) return
         val entity = bukkitEvent.entity
         if (entity !is LivingEntity) return
+
         var event: IEntityDamageEvent = EntityDamageEvent(
             entityManager.getLivingEntity(entity.uniqueId),
             bukkitEvent.damage
@@ -84,6 +86,7 @@ class BukkitEventAdapter : Listener, KoinComponent {
             event,
             entityManager.getPlayer(entity.uniqueId)
         )
+
         eventListenerCollector.publish(event)
         bukkitEvent.isCancelled = event.isCancelled
     }
@@ -94,6 +97,7 @@ class BukkitEventAdapter : Listener, KoinComponent {
         val entity = bukkitEvent.entity
         if (entity !is LivingEntity) return
         if (bukkitEvent.damage < entity.health) return
+
         var event: IEntityDeathEvent = EntityDeathEvent(
             entityManager.getLivingEntity(entity.uniqueId),
             bukkitEvent.damage
@@ -103,6 +107,7 @@ class BukkitEventAdapter : Listener, KoinComponent {
                 event,
                 entityManager.getPlayer(entity.uniqueId)
             )
+
         eventListenerCollector.publish(event)
         if(entity is org.bukkit.entity.Player) {
             bukkitEvent.isCancelled = true
@@ -112,18 +117,23 @@ class BukkitEventAdapter : Listener, KoinComponent {
 
     @EventHandler(priority = EventPriority.HIGH)
     fun onQuit(bukkitEvent: org.bukkit.event.player.PlayerQuitEvent) {
-        val event = PlayerQuitEvent(entityManager.getPlayer(bukkitEvent.player.uniqueId))
+        val event = PlayerQuitEvent(
+            entityManager.getPlayer(bukkitEvent.player.uniqueId)
+        )
+
         eventListenerCollector.publish(event)
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     fun onBreak(bukkitEvent: BlockBreakEvent) {
         if (bukkitEvent.isCancelled) return
+
         val event = PlayerBlockBreakEvent(
             entityManager.getPlayer(bukkitEvent.player.uniqueId),
             bukkitEvent.block.location.toIntConfigured(),
             bukkitEvent.block.type.name
         )
+
         eventListenerCollector.publish(event)
         bukkitEvent.isCancelled = event.isCancelled
     }
@@ -131,11 +141,13 @@ class BukkitEventAdapter : Listener, KoinComponent {
     @EventHandler(priority = EventPriority.HIGH)
     fun onPlace(bukkitEvent: BlockPlaceEvent) {
         if (bukkitEvent.isCancelled) return
+
         val event = PlayerBlockPlaceEvent(
             entityManager.getPlayer(bukkitEvent.player.uniqueId),
             bukkitEvent.block.location.toIntConfigured(),
             bukkitEvent.block.type.name
         )
+
         eventListenerCollector.publish(event)
         bukkitEvent.isCancelled = event.isCancelled
     }
@@ -144,26 +156,40 @@ class BukkitEventAdapter : Listener, KoinComponent {
     fun onPickup(bukkitEvent: EntityPickupItemEvent) {
         if (bukkitEvent.isCancelled) return
         if (bukkitEvent.entity !is org.bukkit.entity.Player) return
-        val player = entityManager.getPlayer(bukkitEvent.entity.uniqueId)
-        val bukkitItem = bukkitEvent.item.itemStack
-        val id = itemProvider.getId(bukkitItem)
-        if (id == null) {
-            val event = PlayerMaterialPickUpEvent(player, bukkitItem.type.name, bukkitEvent.item.uniqueId)
-            eventListenerCollector.publish(event)
-            bukkitEvent.isCancelled = event.isCancelled
-            bukkitEvent.item.itemStack.type = Material.valueOf(event.material.uppercase())
-        } else {
-            val event = PlayerItemPickUpEvent(player, id, bukkitEvent.item.uniqueId, bukkitEvent.item.itemStack.amount)
-            eventListenerCollector.publish(event)
-            bukkitEvent.isCancelled = event.isCancelled
-            bukkitEvent.item.itemStack = itemProvider.getItemStack(event.item).asQuantity(event.amount)
-        }
+
+        val event = PlayerPickUpEvent(
+            entityManager.getPlayer(bukkitEvent.entity.uniqueId),
+            itemManager.getItem(bukkitEvent.item.itemStack),
+            entityManager.getEntity(bukkitEvent.entity.uniqueId)
+        )
+
+        eventListenerCollector.publish(event)
+        bukkitEvent.isCancelled = event.isCancelled
+        bukkitEvent.item.itemStack = itemManager.getItemStack(event.item)
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    fun onDrop(bukkitEvent: org.bukkit.event.player.PlayerDropItemEvent) {
+        if (bukkitEvent.isCancelled) return
+
+        val event = PlayerDropEvent(
+            entityManager.getPlayer(bukkitEvent.player.uniqueId),
+            itemManager.getItem(bukkitEvent.itemDrop.itemStack)
+        )
+
+        eventListenerCollector.publish(event)
+        bukkitEvent.isCancelled = event.isCancelled
+        bukkitEvent.itemDrop.itemStack = itemManager.getItemStack(event.item)
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     fun onPortalReady(bukkitEvent: EntityPortalReadyEvent) {
         if (bukkitEvent.entity !is org.bukkit.entity.Player) return
-        val event = PlayerPortalReadyEvent(entityManager.getPlayer(bukkitEvent.entity.uniqueId))
+
+        val event = PlayerPortalReadyEvent(
+            entityManager.getPlayer(bukkitEvent.entity.uniqueId)
+        )
+
         eventListenerCollector.publish(event)
         bukkitEvent.isCancelled = event.isCancelled
     }

@@ -12,11 +12,9 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.EntityDam
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.EntityDeathEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.PlayerDamageEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.PlayerDeathEvent
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerItemPickUpEvent
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerMaterialPickUpEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerPickUpEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.*
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.IEventHandler
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.model.block.IBlockProvider
 import org.koin.core.annotation.Single
 
 @Single([IEventListenerCollector::class])
@@ -34,8 +32,7 @@ class EventListenerCollectorImpl : IEventListenerCollector {
         PlayerBlockBreakEvent::class.java,
         PlayerBlockPlaceEvent::class.java,
         PlayerQuitEvent::class.java,
-        PlayerItemPickUpEvent::class.java,
-        PlayerMaterialPickUpEvent::class.java,
+        PlayerPickUpEvent::class.java,
         PlayerPortalReadyEvent::class.java,
         SkillActivateEvent::class.java,
         EntitySkillCastEvent::class.java,

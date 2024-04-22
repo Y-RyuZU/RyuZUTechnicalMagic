@@ -18,6 +18,7 @@ sealed interface IConfiguredGameModeParameter {
         override val maximumPlayerCount: Int,
         override val minimumPlayerCount: Int,
         val getTNTDuration: Long,
+        val tntItemId: String,
     ) : IConfiguredGameModeParameter
 
     data class ConfiguredCaptureWoolParameter(

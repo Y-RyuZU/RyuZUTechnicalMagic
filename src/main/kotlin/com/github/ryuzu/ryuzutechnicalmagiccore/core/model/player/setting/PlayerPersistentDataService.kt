@@ -1,8 +1,7 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.setting
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.setting.PlayerPersistentDataEntity
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.IGameManager
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.repository.setting.PlayerDataRepository
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.persistent.PlayerPersistentDataEntity
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.repository.PlayerDataRepository
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.SimpleSchedulerFactory
 import org.koin.core.annotation.Single
 import org.koin.core.component.inject

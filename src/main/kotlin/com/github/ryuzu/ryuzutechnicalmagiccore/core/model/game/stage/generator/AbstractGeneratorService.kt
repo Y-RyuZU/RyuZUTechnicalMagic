@@ -1,22 +1,18 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerItemPickUpEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerPickUpEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.general.ConfiguredGeneralParameter
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator.ConfiguredGeneratorSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator.ConfiguredItemGenerator
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator.ConfiguredStarGenerator
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredStage
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntity
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.MathUtility.Companion.nextGaussian
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.ISimpleScheduler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.SimpleSchedulerFactory
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.MathUtility.Companion.nextGaussian
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.effect.IEffectService
-import org.koin.core.annotation.InjectedParam
-import org.koin.core.component.get
 import org.koin.core.component.inject
-import org.koin.core.parameter.parametersOf
-import org.koin.core.qualifier.named
-import java.util.UUID
+import java.util.*
 import kotlin.random.Random
 
 abstract class AbstractGeneratorService(
@@ -28,7 +24,7 @@ abstract class AbstractGeneratorService(
     protected val parameter: ConfiguredGeneralParameter by inject()
 
     private val starStocks: MutableMap<ConfiguredStarGenerator, StarStockData> = mutableMapOf()
-    private val itemStocks: MutableMap<ConfiguredItemGenerator, MutableSet<UUID>> = mutableMapOf()
+    private val itemStocks: MutableMap<ConfiguredItemGenerator, MutableSet<IEntity>> = mutableMapOf()
 
     protected val scheduler: ISimpleScheduler =
         schedulerFactory.createScheduler().whileSchedule { _, count ->
@@ -62,7 +58,7 @@ abstract class AbstractGeneratorService(
 
     override fun stop() = scheduler.cancel()
 
-    protected open fun onPickup(event: PlayerItemPickUpEvent) {
+    protected open fun onPickup(event: PlayerPickUpEvent) {
         itemStocks.values.forEach {
             it.remove(event.itemEntity)
         }
@@ -71,12 +67,12 @@ abstract class AbstractGeneratorService(
             it.littleStars.remove(event.itemEntity)
         }
 
-        if (event.item == parameter.generatorParameter.littleStarItem || event.item == parameter.generatorParameter.bigStarItem) {
-            event.amount = 0
-            gameService.getGamePlayer(event.player).star += event.amount * if(event.item == parameter.generatorParameter.littleStarItem) 1 else 10
+        if (event.item.id == parameter.generatorParameter.littleStarItem || event.item.id == parameter.generatorParameter.bigStarItem) {
+            event.item = event.item.copy(amount = 0)
+            gameService.getGamePlayer(event.player).star += event.item.amount * if(event.item.id == parameter.generatorParameter.littleStarItem) 1 else 10
             effectService.playEffect(parameter.generatorParameter.effect, "StarPickup", event.player)
         }
-        if (stage.itemTable.values.flatten().contains(event.item)) {
+        if (stage.itemTable.values.flatten().contains(event.item.id)) {
             effectService.playEffect(parameter.generatorParameter.effect, "ItemPickup", event.player)
         }
     }

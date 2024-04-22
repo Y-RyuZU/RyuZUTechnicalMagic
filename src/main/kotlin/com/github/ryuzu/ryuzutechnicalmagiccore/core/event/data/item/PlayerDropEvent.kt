@@ -1,16 +1,15 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.AbstractCancelableEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.DefaultCancelableEventProperties
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.ICancelableEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntity
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import java.util.UUID
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.storage.Item
+import java.util.*
 
-class PlayerMaterialPickUpEvent(
+class PlayerDropEvent(
     override var player: IPlayer,
-    override var material: String,
-    override var itemEntity: UUID,
+    override var item: Item,
     override var entity: IEntity = player,
     eventProps: ICancelableEvent = DefaultCancelableEventProperties()
-) : IPlayerMaterialPickUpEvent, ICancelableEvent by eventProps
+) : IPlayerDropEvent, ICancelableEvent by eventProps

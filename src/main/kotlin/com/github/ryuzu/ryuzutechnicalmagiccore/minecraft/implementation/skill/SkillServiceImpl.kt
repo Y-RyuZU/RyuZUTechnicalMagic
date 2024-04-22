@@ -9,6 +9,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillTrigger
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.service.AbstractSkillService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.service.ICoolTimeService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.service.ISkillService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.storage.Item
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toIntConfigured
 import org.bukkit.event.block.Action
 import org.koin.core.annotation.Single
@@ -24,12 +25,11 @@ class SkillServiceImpl : AbstractSkillService(), IEventHandler {
 
     @EventHandler
     fun onClick(event: IPlayerClickEvent) {
-        println("onClick: ${event.item}")
-        val item: String = event.item ?: return
+        val item: Item = event.item ?: return
         val player = event.player
         val location = player.getEyeLocation()
         val direction = player.getEyeDirection()
-        val skillIds = getFirstSkillIds(item, SkillTrigger.RIGHT_CLICK_AIR) ?: return
+        val skillIds = getFirstSkillIds(item.id, SkillTrigger.RIGHT_CLICK_AIR) ?: return
 
         val skillTrigger: SkillTrigger = when (event) {
             is PlayerRightClickAirEvent -> SkillTrigger.RIGHT_CLICK_AIR
@@ -40,7 +40,7 @@ class SkillServiceImpl : AbstractSkillService(), IEventHandler {
         }
 
         skillIds.forEach {
-            var skillEvent: ISkillActivateEvent = SkillActivateEvent(location, direction, item, skillTrigger, it)
+            var skillEvent: ISkillActivateEvent = SkillActivateEvent(location, direction, item.id, skillTrigger, it)
             skillEvent = EntitySkillCastEvent(skillEvent, player)
             skillEvent = PlayerSkillCastEvent(skillEvent, player)
 

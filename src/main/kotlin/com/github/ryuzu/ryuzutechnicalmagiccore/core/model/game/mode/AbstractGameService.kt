@@ -29,6 +29,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.block.IBlockService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.effect.IEffectService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.structure.IStructureService
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.model.item.IItemManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
@@ -48,6 +49,7 @@ abstract class AbstractGameService(
     protected val titleService: ITitleService by inject()
     protected val effectService: IEffectService by inject()
     protected val soundService: ISoundService by inject()
+    protected val itemManager: IItemManager by inject()
     protected val particleService: IParticleService by inject()
     protected val teleportService: ITeleportService by inject()
     protected val gameModeService: IGameModeService by inject()

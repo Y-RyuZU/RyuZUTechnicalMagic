@@ -1,19 +1,19 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.game.generator
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerItemPickUpEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerPickUpEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.EventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.IEventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher.IEventListenerCollector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.general.ConfiguredGeneralParameter
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.generator.ConfiguredGeneratorSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredStage
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.AbstractGeneratorService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.IGeneratorService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.StarStockData
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.model.item.IItemProvider
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntity
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntityManager
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.model.item.IItemManager
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toVector
 import net.kyori.adventure.text.Component
@@ -32,8 +32,9 @@ class GeneratorServiceImpl(
     @InjectedParam gameService: IGameService,
     @InjectedParam stage: ConfiguredStage
 ) : AbstractGeneratorService(gameService, stage), IEventHandler {
-    private val itemProvider: IItemProvider by inject()
+    private val itemManager: IItemManager by inject()
     private val eventListenerCollector: IEventListenerCollector by inject()
+    private val entityManager: IEntityManager by inject()
 
     override fun generateStar(location: ConfiguredDoubleLocation, amount: Int, scatter: Double): StarStockData {
         val starStockData = StarStockData()
@@ -41,13 +42,13 @@ class GeneratorServiceImpl(
         val littleStarAmount = amount % 10
         val bigStarAmount = amount / 10
 
-        fun generateStar(starAmount: Int, starItem: String, starList: MutableSet<UUID>) {
+        fun generateStar(starAmount: Int, starItem: String, starList: MutableSet<IEntity>) {
             for (i in 0 until starAmount) {
-                val item = itemProvider.getItemStack(starItem)
+                val item = itemManager.getItemStack(starItem)
                 item.lore(listOf(Component.text(UUID.randomUUID().toString())))
                 val droppedItem = spawnItem(location, item)
                 if (scatter != 0.0) droppedItem.velocity = ConfiguredDoubleVector.random().toVector().multiply(scatter)
-                starList.add(droppedItem.uniqueId)
+                starList.add(entityManager.getEntity(droppedItem.uniqueId))
             }
         }
 
@@ -67,7 +68,7 @@ class GeneratorServiceImpl(
     }
 
     @EventHandler(priority = 50)
-    override fun onPickup(event: PlayerItemPickUpEvent) {
+    override fun onPickup(event: PlayerPickUpEvent) {
         if (!gameService.isGamePlayer(event.player)) return
         val generatorItems = listOf(
             parameter.generatorParameter.littleStarItem,
@@ -79,14 +80,14 @@ class GeneratorServiceImpl(
         super.onPickup(event)
     }
 
-    override fun generateItem(location: ConfiguredDoubleLocation, rarity: Int): UUID {
+    override fun generateItem(location: ConfiguredDoubleLocation, rarity: Int): IEntity {
         val items = stage.itemTable[rarity]!!
-        val item = itemProvider.getItemStack(items.elementAt(Random.nextInt(items.size)))
-        return spawnItem(location.toLocation(), item).uniqueId
+        val item = itemManager.getItemStack(items.elementAt(Random.nextInt(items.size)))
+        return entityManager.getEntity(spawnItem(location.toLocation(), item).uniqueId)
     }
 
     override fun generateHyper(location: ConfiguredDoubleLocation) {
-        val item = itemProvider.getItemStack(parameter.generatorParameter.hyperItem)
+        val item = itemManager.getItemStack(parameter.generatorParameter.hyperItem)
         spawnItem(location.toLocation(), item)
     }
 

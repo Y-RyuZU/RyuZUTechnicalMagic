@@ -108,6 +108,7 @@ abstract class AbstractCarryTntService(
             }.schedule(0, gameModeParameter.getTNTDuration, UpdatePeriod.SECOND.getCondition()) { _, _ ->
                 player.sendTitle(null, "CARRYING TNT!")
                 effectService.playEffect(config.effect, "CarryTnt", player)
+                itemManager.giveItem(gameModeParameter.tntItemId, player)
             }.finally { tryCarryTNTScheduler = null }.end { getTnt(player) }.runSync()
     }
 
@@ -117,11 +118,11 @@ abstract class AbstractCarryTntService(
         blockService.setBlock(tntBlockLocation!!.toLocation(world), "TNT")
         titleService.sendTitle(null, "LOST TNT!", player.team.players)
         effectService.playEffect(config.effect, "LostTnt", player.team.players)
+        itemManager.removeItem(gameModeParameter.tntItemId, player)
         bossBars.values.forEach { it.color("WHITE") }
     }
 
     override fun placeTnt(location: ConfiguredIntLocation, player: ICarryTntPlayer) {
-        if(getEnemyPoint(player.team as CarryTntTeam) != location.vector) return
         blockService.setBlock(location.vector.toLocation(world), "TNT")
         titleService.sendTitle(null, "PLACED TNT!", player.team.players)
         effectService.playEffect(config.effect, "PlaceTNT", players)

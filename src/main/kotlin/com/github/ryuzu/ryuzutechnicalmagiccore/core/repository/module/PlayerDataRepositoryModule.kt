@@ -1,6 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.repository.module
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.repository.setting.PlayerDataRepository
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.repository.PlayerDataRepository
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
