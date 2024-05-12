@@ -1,6 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.wrapper.title
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.title.ITitleService
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toPlayer
 import net.kyori.adventure.text.Component

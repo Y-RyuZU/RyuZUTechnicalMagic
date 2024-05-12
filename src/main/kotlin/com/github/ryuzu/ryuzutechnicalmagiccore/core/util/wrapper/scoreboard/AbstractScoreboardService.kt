@@ -1,12 +1,10 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.scoreboard
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.ConfiguredScoreboard
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.ISimpleScheduler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.SimpleSchedulerFactory
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
 import org.koin.core.component.inject
-import java.util.*
 
 abstract class AbstractScoreboardService : IScoreboardService {
     private val schedulerFactory: SimpleSchedulerFactory by inject()

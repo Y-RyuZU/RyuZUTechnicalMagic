@@ -12,12 +12,11 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.*
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerDropEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerPickUpEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher.IEventListenerCollector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntityManager
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntityManager
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.storage.Item
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.model.item.IItemManager
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toIntConfigured
 import io.papermc.paper.event.entity.EntityPortalReadyEvent
-import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler

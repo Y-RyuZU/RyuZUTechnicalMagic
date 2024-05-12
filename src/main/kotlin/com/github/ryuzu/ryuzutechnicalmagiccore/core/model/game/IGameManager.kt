@@ -2,9 +2,8 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.GameMode
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import org.koin.core.component.KoinComponent
-import java.util.*
 
 interface IGameManager : KoinComponent {
     fun isEntryGate(location: ConfiguredIntLocation): Boolean

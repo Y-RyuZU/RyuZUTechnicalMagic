@@ -1,7 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntity
-import java.util.UUID
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntity
 
 data class StarStockData(
     val bigStars: MutableSet<IEntity> = mutableSetOf(),

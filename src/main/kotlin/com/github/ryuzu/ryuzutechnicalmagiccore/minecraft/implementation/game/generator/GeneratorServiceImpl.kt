@@ -11,8 +11,8 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.IGeneratorService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.StarStockData
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntity
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntityManager
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntity
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntityManager
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.model.item.IItemManager
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toVector

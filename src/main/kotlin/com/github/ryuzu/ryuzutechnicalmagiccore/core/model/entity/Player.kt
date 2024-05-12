@@ -1,4 +1,4 @@
-package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player
+package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntVector

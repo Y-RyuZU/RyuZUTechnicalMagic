@@ -2,10 +2,9 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.service
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.IPlayerSkillCastEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.ISkillActivateEvent
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillTrigger
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.TypedMap
-import org.koin.core.component.KoinComponent
 
 data class SkillState(
     val event: ISkillActivateEvent,

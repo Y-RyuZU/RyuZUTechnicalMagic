@@ -1,12 +1,10 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.AbstractEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.DefaultCancelableEventProperties
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.ICancelableEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.IPlayerEvent
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntity
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import java.util.*
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntity
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 
 class PlayerQuitEvent(
     override var player: IPlayer,

@@ -1,7 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.service
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.setting.IPlayerPersistentDataService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import org.koin.core.annotation.Single
 import kotlin.math.max
 

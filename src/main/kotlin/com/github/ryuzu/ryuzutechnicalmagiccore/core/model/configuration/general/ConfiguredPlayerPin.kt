@@ -1,4 +1,4 @@
-package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.general
+package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.general
 
 data class ConfiguredPlayerPin(
     val smallPin: String,

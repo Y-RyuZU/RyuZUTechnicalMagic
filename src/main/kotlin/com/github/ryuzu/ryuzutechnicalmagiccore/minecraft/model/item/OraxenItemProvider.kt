@@ -7,6 +7,7 @@ import org.koin.core.annotation.Single
 
 @Single([IItemProvider::class])
 class OraxenItemProvider : IItemProvider {
+    override val priority: Int = 0
     override fun getItemStack(item: Item): ItemStack? =
         OraxenItems.getItemById(item.id)?.build()?.asQuantity(item.amount)
 

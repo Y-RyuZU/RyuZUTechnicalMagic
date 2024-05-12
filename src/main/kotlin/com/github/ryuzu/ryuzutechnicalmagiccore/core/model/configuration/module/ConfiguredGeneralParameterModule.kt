@@ -1,6 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.module
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.general.ConfiguredGeneralParameter
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.general.ConfiguredGeneralParameter
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
 import java.io.File

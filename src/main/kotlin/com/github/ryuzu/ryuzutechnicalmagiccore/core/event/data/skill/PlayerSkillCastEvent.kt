@@ -1,8 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.IEntityEvent
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import java.util.*
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 
 class PlayerSkillCastEvent(
     eventProps: IEntitySkillCastEvent,

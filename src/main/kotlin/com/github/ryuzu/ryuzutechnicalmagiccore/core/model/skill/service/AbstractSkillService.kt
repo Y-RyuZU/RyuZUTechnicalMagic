@@ -5,14 +5,13 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.IPlayerSki
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.ISkillActivateEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.skill.ConfiguredSkillParams
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.skill.ConfiguredSkillSet
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.ISkill
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillTrigger
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.TypedMap
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
-import org.koin.core.parameter.parameterSetOf
 import org.koin.core.qualifier.named
 import org.reflections.Reflections
 import kotlin.collections.HashMap
@@ -20,7 +19,7 @@ import kotlin.collections.HashMap
 abstract class AbstractSkillService : ISkillService, KoinComponent {
     private val coolTimeService: ICoolTimeService by inject()
 
-    private var skillSets: HashMap<String, ConfiguredSkillSet> = get (named("SkillSetConfig"))
+    private var skillSets: HashMap<String, ConfiguredSkillSet> = get(named("SkillSetConfig"))
     private var skills: HashMap<String, ConfiguredSkillParams> = get(named("SkillConfig"))
     private val skillClasses: Map<String, ISkill> = getSkillClasses()
     private val states = mutableMapOf<IPlayer, MutableList<SkillState>>()
@@ -50,7 +49,7 @@ abstract class AbstractSkillService : ISkillService, KoinComponent {
         getSkillsConfig(boundSkills).forEach {
             val nextSkillIds = getNextSkillIds(event.skillSetId, event.skillId, 0)
 
-            if(event is IPlayerSkillCastEvent) {
+            if (event is IPlayerSkillCastEvent) {
                 val relationCoolTime = System.currentTimeMillis() + it.relationExpirationTime
                 coolTimeService.setCoolTime(event.player, it.id, relationCoolTime)
             }

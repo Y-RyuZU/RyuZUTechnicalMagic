@@ -25,6 +25,8 @@ class SkillServiceImpl : AbstractSkillService(), IEventHandler {
 
     @EventHandler
     fun onClick(event: IPlayerClickEvent) {
+        println(event.item)
+        println(getFirstSkillIds(event.item?.id!!, SkillTrigger.RIGHT_CLICK_AIR))
         val item: Item = event.item ?: return
         val player = event.player
         val location = player.getEyeLocation()
@@ -55,6 +57,8 @@ class SkillServiceImpl : AbstractSkillService(), IEventHandler {
                 }
                 else -> return
             }
+
+            println("onClick: ${skillEvent.skillId}")
 
             eventListenerCollector.publish(skillEvent)
         }

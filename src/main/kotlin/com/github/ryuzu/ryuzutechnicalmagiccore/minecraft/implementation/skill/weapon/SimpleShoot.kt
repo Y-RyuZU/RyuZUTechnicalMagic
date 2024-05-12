@@ -5,12 +5,10 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.ISkillActi
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.skill.ConfiguredSkillParams
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.skill.param.SimpleShootParams
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.set.OrthonormalBasis
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntity
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntity
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.ISkill
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.service.SkillState
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.TypedMap
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.IParticleScheduler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.SimpleSchedulerFactory
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.damage.IDamageService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.effect.IEffectService

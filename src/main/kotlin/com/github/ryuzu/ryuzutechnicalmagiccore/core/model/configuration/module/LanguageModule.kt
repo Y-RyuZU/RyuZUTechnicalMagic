@@ -18,14 +18,20 @@ class LanguageModule : KoinComponent {
 
     @Named("japanese")
     @Single(createdAtStart = true)
-    fun provideJapanese(): Map<String, String> {
-        val languageFile =  File(folder, "lang/ja_jp.yml")
-        require(languageFile.exists()) { "Language file ja_jp.yml does not exist." }
+    fun provideJapanese() = provideLanguage("ja_jp")
+
+    @Named("english")
+    @Single(createdAtStart = true)
+    fun provideEnglish() = provideLanguage("en_us")
+
+    private fun provideLanguage(lang: String): Map<String, String> {
+        val languageFile = File(folder, "languages/${lang}.yml")
+        require(languageFile.exists()) { "Language file ${lang}.yml does not exist." }
         val languages = mutableMapOf<String, String>()
         return flatten("", mapper.readValue(languageFile, Any::class.java)).toMap(languages)
     }
 
-    fun flatten(currentPath: String, yamlData: Any?): Map<String, String> {
+    private fun flatten(currentPath: String, yamlData: Any?): Map<String, String> {
         val flatMap = mutableMapOf<String, String>()
 
         if (yamlData is Map<*, *>) {

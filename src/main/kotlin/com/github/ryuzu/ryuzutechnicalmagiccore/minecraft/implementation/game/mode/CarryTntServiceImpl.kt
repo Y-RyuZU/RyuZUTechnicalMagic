@@ -4,8 +4,8 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.PlayerQuitEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.block.PlayerBlockPlaceEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.click.PlayerRightClickBlockEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.PlayerDeathEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerDropEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.EventHandler
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.IEventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher.IEventListenerCollector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.ConfiguredGameMode
@@ -15,8 +15,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.carrytnt.Ab
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.carrytnt.ICarryTntService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.team.IGameTeam.AbstractScoreGameTeam.CarryTntTeam
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toBlockLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toMiddleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toPlayer
@@ -111,5 +110,15 @@ class CarryTntServiceImpl(
         if (!isHoldPlayer(player)) return
 
         lostTNT(getGamePlayer(event.player))
+    }
+
+    @EventHandler
+    fun onDrop(event: PlayerDropEvent) {
+        if (!isGamePlayer(event.player)) return
+        val player = getGamePlayer(event.player)
+        if (!isHoldPlayer(player)) return
+        if(event.item.id != gameModeParameter.tntItemId) return
+
+        event.isCancelled = true
     }
 }

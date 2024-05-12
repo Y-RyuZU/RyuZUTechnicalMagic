@@ -1,4 +1,4 @@
-package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player
+package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity
 
 import java.util.UUID
 

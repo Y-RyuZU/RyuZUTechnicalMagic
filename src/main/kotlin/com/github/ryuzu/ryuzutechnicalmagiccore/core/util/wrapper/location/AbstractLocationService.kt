@@ -2,8 +2,8 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.location
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.ILivingEntity
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntityManager
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.ILivingEntity
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntityManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

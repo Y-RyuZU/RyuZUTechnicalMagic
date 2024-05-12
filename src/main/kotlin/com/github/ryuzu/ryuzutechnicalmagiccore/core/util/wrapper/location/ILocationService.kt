@@ -3,8 +3,8 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.location
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntity
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.ILivingEntity
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntity
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.ILivingEntity
 
 interface ILocationService {
     fun getIntLocation(entity: IEntity): ConfiguredIntLocation

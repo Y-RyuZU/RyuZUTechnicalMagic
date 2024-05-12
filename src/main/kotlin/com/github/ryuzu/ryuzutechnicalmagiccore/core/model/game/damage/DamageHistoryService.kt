@@ -1,13 +1,9 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.damage
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.IPlayerDamageEvent
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.PlayerDamageEvent
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.general.ConfiguredGeneralParameter
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.param.ISkillEventPrams.ICasterEventParams.CasterEventParams.IDamageEventParams
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.general.ConfiguredGeneralParameter
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import org.koin.core.component.inject
-import org.koin.core.qualifier.named
-import java.util.UUID
 
 class DamageHistoryService : IDamageHistoryService {
     private val config: ConfiguredGeneralParameter by inject()

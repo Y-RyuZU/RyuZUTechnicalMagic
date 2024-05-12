@@ -2,8 +2,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.w
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.IEntitySkillCastEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.ISkillActivateEvent
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntity
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.ILivingEntity
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.ILivingEntity
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.damage.IDamageService
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toEntity
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toLivingEntity

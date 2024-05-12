@@ -1,6 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.level
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.general.ConfiguredGeneralParameter
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.general.ConfiguredGeneralParameter
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.level.LevelUpMission.KILL
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.level.LevelUpMission.STAR
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
@@ -37,7 +37,8 @@ abstract class AbstractLevelService : ILevelService {
             )
 
             player.sendMessage(
-                parameter.levelParameter.successNormaCheckMessages.replacePlaceholders(placeholders), mapOf(
+                parameter.levelParameter.successNormaCheckMessages.replacePlaceholders(placeholders),
+                mapOf(
                     parameter.levelParameter.selectStarNormaMessage to MessageActionData({
                         selectMission(
                             player,

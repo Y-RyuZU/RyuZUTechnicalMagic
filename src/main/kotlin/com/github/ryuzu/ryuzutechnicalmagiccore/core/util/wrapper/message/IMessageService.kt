@@ -1,8 +1,7 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.message
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import org.koin.core.component.KoinComponent
-import java.util.*
 
 interface IMessageService : KoinComponent {
 

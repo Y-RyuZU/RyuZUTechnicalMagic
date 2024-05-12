@@ -2,8 +2,8 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.w
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer.GamePlayer.ITeamGamePlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntityManager
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntityManager
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toLocation
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent

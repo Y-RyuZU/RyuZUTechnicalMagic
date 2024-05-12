@@ -1,7 +1,7 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.team.IGameTeam
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import java.util.*
 
 sealed interface IGamePlayer : IPlayer {

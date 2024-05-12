@@ -1,6 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.wrapper.message
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.message.AbstractMessageService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.message.IMessageService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.message.MessageActionData

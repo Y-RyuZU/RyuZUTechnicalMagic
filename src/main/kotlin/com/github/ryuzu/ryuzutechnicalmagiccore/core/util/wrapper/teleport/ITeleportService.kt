@@ -2,10 +2,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.teleport
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntity
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import org.koin.core.component.KoinComponent
-import java.util.UUID
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntity
 
 interface ITeleportService {
     fun teleport(location: ConfiguredIntLocation, entities: Set<IEntity>)

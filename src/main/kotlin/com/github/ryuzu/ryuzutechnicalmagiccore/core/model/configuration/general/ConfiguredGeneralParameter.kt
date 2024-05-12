@@ -1,4 +1,4 @@
-package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.general
+package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.general
 
 data class ConfiguredGeneralParameter(
     val playerPin: ConfiguredPlayerPin,
@@ -6,4 +6,5 @@ data class ConfiguredGeneralParameter(
     val generatorParameter: ConfiguredGeneratorParameter,
     val damageHistoryParameter: ConfiguredDamageHistoryParameter,
     val respawnParameter: ConfiguredRespawnParameter,
+    val autoSavingParameter: ConfiguredAutoSavingParameter,
 )

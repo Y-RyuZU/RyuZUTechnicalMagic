@@ -4,9 +4,8 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.IEntitySki
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.ISkillActivateEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.skill.ConfiguredSkillParams
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.skill.ConfiguredSkillSet
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.SkillTrigger
-import org.koin.core.component.KoinComponent
 
 interface ISkillService {
     fun use(event: ISkillActivateEvent)

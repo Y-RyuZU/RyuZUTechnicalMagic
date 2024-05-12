@@ -1,7 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.gamemode
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
-import java.util.*
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 
 interface IGameModeService {
     fun changeGameMode(gameMode: Int, player: IPlayer)

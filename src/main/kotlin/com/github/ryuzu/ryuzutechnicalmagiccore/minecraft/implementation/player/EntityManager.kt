@@ -1,6 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.player
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.*
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.*
 import org.bukkit.Bukkit
 import org.koin.core.annotation.Single
 import java.util.*

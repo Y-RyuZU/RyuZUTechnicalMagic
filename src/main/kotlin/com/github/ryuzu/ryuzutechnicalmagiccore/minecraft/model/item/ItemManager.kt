@@ -1,6 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.model.item
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.storage.Item
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toPlayer
 import org.bukkit.inventory.ItemStack
@@ -9,7 +9,7 @@ import org.koin.core.component.KoinComponent
 
 @Single([IItemManager::class])
 class ItemManager : IItemManager, KoinComponent {
-    private val itemProviders: List<IItemProvider> = getKoin().getAll()
+    private val itemProviders: List<IItemProvider> = getKoin().getAll<IItemProvider>().sortedBy { it.priority }
 
     override fun getItemStack(item: Item): ItemStack =
         itemProviders.firstNotNullOfOrNull { it.getItemStack(item) } ?:

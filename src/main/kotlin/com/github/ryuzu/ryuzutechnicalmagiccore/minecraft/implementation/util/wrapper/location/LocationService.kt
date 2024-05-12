@@ -3,9 +3,8 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.w
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IEntity
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.ILivingEntity
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntity
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.ILivingEntity
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.location.AbstractLocationService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.location.ILocationService
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toDoubleConfigured
@@ -14,7 +13,6 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toEntity
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toLivingEntity
-import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.EntityUtility.Companion.toPlayer
 import org.bukkit.FluidCollisionMode
 import org.bukkit.util.RayTraceResult
 import org.koin.core.annotation.Single

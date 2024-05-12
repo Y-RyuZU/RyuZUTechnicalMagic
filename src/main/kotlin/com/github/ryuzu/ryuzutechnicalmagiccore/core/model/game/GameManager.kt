@@ -5,13 +5,12 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.en
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.display.IConfiguredDisplay
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.entry.IEntryGameService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.GameMode
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.block.IBlockService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.display.ITextDisplayService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.structure.IStructureService
 import org.koin.core.annotation.Single
 import org.koin.core.component.inject
-import java.util.*
 import org.koin.core.component.get
 import org.koin.core.parameter.parametersOf
 

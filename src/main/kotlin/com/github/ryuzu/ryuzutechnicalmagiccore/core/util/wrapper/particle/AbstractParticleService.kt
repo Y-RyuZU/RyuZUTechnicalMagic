@@ -6,7 +6,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.pa
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.particle.IConfiguredParticle
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.set.ConfiguredCircleParticleSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.player.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.IParticleScheduler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.TaskUnit
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.location.ILocationService
