@@ -14,6 +14,8 @@ import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import org.reflections.Reflections
+import org.reflections.scanners.Scanners
+import org.reflections.util.ConfigurationBuilder
 import kotlin.collections.HashMap
 
 abstract class AbstractSkillService : ISkillService, KoinComponent {
@@ -25,7 +27,11 @@ abstract class AbstractSkillService : ISkillService, KoinComponent {
     private val states = mutableMapOf<IPlayer, MutableList<SkillState>>()
 
     private fun getSkillClasses(): Map<String, ISkill> {
-        val reflections = Reflections("com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.skill")
+        val reflections = Reflections(
+            ConfigurationBuilder()
+                .forPackages("com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.skill")
+                .addScanners(Scanners.SubTypes)
+        )
 
         return reflections.getSubTypesOf(ISkill::class.java).associateBy({ it.simpleName }, {
             it.getDeclaredConstructor().newInstance()

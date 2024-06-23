@@ -4,5 +4,5 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntity
 
 
 interface IEntityEvent : IEvent {
-    var entity: IEntity
+    val entity: IEntity
 }

@@ -28,9 +28,9 @@ class GuiModule : KoinComponent {
         val gui = ChestGui(config.rows, config.name)
         val pane = StaticPane(0, 0, 9, 6)
         config.items.forEach { (slot, item) ->
-            val itemStack = GuiItem(itemManager.getItemStack(item.items.elementAt(0)))
-            itemStack.setAction { _ -> action[item.action] }
-            pane.addItem(itemStack, Slot.fromIndex(slot))
+            val guiItem = GuiItem(itemManager.getItemStack(item.items.elementAt(0)))
+            guiItem.setAction { _ -> action[item.action] }
+            pane.addItem(guiItem, Slot.fromIndex(slot))
         }
         gui.addPane(pane)
         return gui

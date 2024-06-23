@@ -4,6 +4,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.ICancelable
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.IEntityEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.base.ILivingEntityEvent
 
-interface IEntityDeathEvent : ILivingEntityEvent, ICancelableEvent {
-    var lastDamage: Double
+interface IEntitySkillDeathEvent : IEntityDeathEvent {
+    val skillSetId: String
+    val skillId: String?
 }

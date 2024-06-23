@@ -14,9 +14,11 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerPickU
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher.IEventListenerCollector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntityManager
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.storage.Item
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.wrapper.damage.RTMDamageSource
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.model.item.IItemManager
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toIntConfigured
 import io.papermc.paper.event.entity.EntityPortalReadyEvent
+import me.deecaad.weaponmechanics.weapon.weaponevents.WeaponDamageEntityEvent
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
@@ -28,6 +30,8 @@ import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -81,10 +85,33 @@ class BukkitEventAdapter : Listener, KoinComponent {
             entityManager.getLivingEntity(entity.uniqueId),
             bukkitEvent.damage
         )
-        if (entity is org.bukkit.entity.Player) event = PlayerDamageEvent(
-            event,
-            entityManager.getPlayer(entity.uniqueId)
-        )
+
+        val source = bukkitEvent.damageSource
+        if (source is RTMDamageSource) {
+            event = EntitySkillDamageEvent(
+                event,
+                source.skillSetId,
+                source.skillId
+            )
+        }
+
+        if (bukkitEvent is org.bukkit.event.entity.EntityDamageByEntityEvent) {
+            val damager = bukkitEvent.damager
+            if (damager is LivingEntity) {
+                event = EntityDamageByEntityEvent(
+                    event,
+                    entityManager.getLivingEntity(damager.uniqueId)
+                )
+
+                if (source is RTMDamageSource) {
+                    event = EntitySkillDamageByEntityEvent(
+                        event,
+                        source.skillSetId,
+                        source.skillId
+                    )
+                }
+            }
+        }
 
         eventListenerCollector.publish(event)
         bukkitEvent.isCancelled = event.isCancelled
@@ -101,11 +128,33 @@ class BukkitEventAdapter : Listener, KoinComponent {
             entityManager.getLivingEntity(entity.uniqueId),
             bukkitEvent.damage
         )
-        if (bukkitEvent.entity is org.bukkit.entity.Player)
-            event = PlayerDeathEvent(
+
+        val source = bukkitEvent.damageSource
+        if (source is RTMDamageSource) {
+            event = EntitySkillDeathEvent(
                 event,
-                entityManager.getPlayer(entity.uniqueId)
+                source.skillSetId,
+                source.skillId
             )
+        }
+
+        if (bukkitEvent is org.bukkit.event.entity.EntityDamageByEntityEvent) {
+            val damager = bukkitEvent.damager
+            if (damager is LivingEntity) {
+                event = EntityDeathByEntityEvent(
+                    event,
+                    entityManager.getLivingEntity(damager.uniqueId)
+                )
+
+                if (source is RTMDamageSource) {
+                    event = EntitySkillDeathByEntityEvent(
+                        event,
+                        source.skillSetId,
+                        source.skillId
+                    )
+                }
+            }
+        }
 
         eventListenerCollector.publish(event)
         if(entity is org.bukkit.entity.Player) {

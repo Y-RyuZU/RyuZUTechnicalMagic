@@ -3,7 +3,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.game.m
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.PlayerQuitEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.block.PlayerBlockPlaceEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.click.PlayerRightClickBlockEvent
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.PlayerDeathEvent
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.damage.EntityDeathEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.item.PlayerDropEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.EventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher.IEventListenerCollector
@@ -104,8 +104,8 @@ class CarryTntServiceImpl(
     }
 
     @EventHandler
-    fun onDeath(event: PlayerDeathEvent) {
-        if (!isGamePlayer(event.player)) return
+    fun onDeath(event: EntityDeathEvent) {
+        if (!isGamePlayer(event.entity)) return
         val player = getGamePlayer(event.player)
         if (!isHoldPlayer(player)) return
 

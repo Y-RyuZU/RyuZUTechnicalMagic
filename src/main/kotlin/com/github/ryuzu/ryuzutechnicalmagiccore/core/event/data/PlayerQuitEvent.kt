@@ -7,7 +7,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntity
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 
 class PlayerQuitEvent(
-    override var player: IPlayer,
+    override val player: IPlayer,
     override var entity: IEntity = player,
     eventProps: ICancelableEvent = DefaultCancelableEventProperties()
 ) : IPlayerEvent, ICancelableEvent by eventProps

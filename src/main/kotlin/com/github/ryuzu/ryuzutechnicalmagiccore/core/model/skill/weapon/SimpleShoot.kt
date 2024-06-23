@@ -1,4 +1,4 @@
-package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.skill.weapon
+package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.weapon
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.IEntitySkillCastEvent
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.ISkillActivateEvent
@@ -39,49 +39,79 @@ class SimpleShoot : ISkill, KoinComponent {
         fun location() = projectilePoint.toLocation(world)
         var repeatCount = 0
         val hitEntities = mutableSetOf<IEntity>()
-        schedulerFactory.createParticleScheduler().apply{
+        schedulerFactory.createParticleScheduler().apply {
             schedule(0, (performance.maxRepeat / performance.repeat) + 1L) { scheduler, count ->
-            if(count == 0L) scheduler.schedule(effectService.convertTaskUnits(skillParams.effect, "ProjectileStart", location(), projectileVector, this))
-            for (i in 0 until performance.repeat) {
-                scheduler.schedule(effectService.convertTaskUnits(skillParams.effect, "Projectile", location(), projectileVector, this))
-                val entities = locationService.getNearbyEnemyLivingEntities(
-                    location(),
-                    performance.hitBox,
-                    (eventParams as? IEntitySkillCastEvent)?.livingEntity
-                ).filter { !hitEntities.contains(it) }.toSet()
-                damageService.applyDamage(eventParams, performance.damage, entities)
+                if (count == 0L) scheduler.schedule(
+                    effectService.convertTaskUnits(
+                        skillParams.effect,
+                        "ProjectileStart",
+                        location(),
+                        projectileVector,
+                        this
+                    )
+                )
+                for (i in 0 until performance.repeat) {
+                    scheduler.schedule(
+                        effectService.convertTaskUnits(
+                            skillParams.effect,
+                            "Projectile",
+                            location(),
+                            projectileVector,
+                            this
+                        )
+                    )
+                    val entities = locationService.getNearbyEnemyLivingEntities(
+                        location(),
+                        performance.hitBox,
+                        (eventParams as? IEntitySkillCastEvent)?.livingEntity
+                    ).filter { !hitEntities.contains(it) }.toSet()
+                    damageService.applyDamage(eventParams, performance.damage, entities)
 
-                projectilePoint =
-                    ConfiguredDoubleVector(Vector3d(projectilePoint).add(Vector3d(projectileVector).mul(performance.speed)))
+                    projectilePoint =
+                        ConfiguredDoubleVector(Vector3d(projectilePoint).add(Vector3d(projectileVector).mul(performance.speed)))
 
-                hitEntities.addAll(entities)
+                    hitEntities.addAll(entities)
 
-                if (!performance.penetrationEntity && entities.isNotEmpty()) {
-                    scheduler.abbreviate()
-                    break
+                    if (!performance.penetrationEntity && entities.isNotEmpty()) {
+                        scheduler.abbreviate()
+                        break
+                    }
+
+                    if (!performance.penetrationBlock && !locationService.canThrough(
+                            location(),
+                            projectileVector,
+                            performance.speed
+                        )
+                    ) {
+                        scheduler.abbreviate()
+                        break
+                    }
+
+                    if (repeatCount >= performance.maxRepeat)
+                        break
+
+                    repeatCount++
                 }
-
-                if (!performance.penetrationBlock && !locationService.canThrough(location(), projectileVector, performance.speed)) {
-                    scheduler.abbreviate()
-                    break
-                }
-
-                if (repeatCount >= performance.maxRepeat)
-                    break
-
-                repeatCount++
             }
-        }
         }.promise(schedulerFactory.createParticleScheduler().apply {
-                schedule { scheduler, _ ->
-                scheduler.schedule(effectService.convertTaskUnits(skillParams.effect, "ProjectileEnd", location(), projectileVector, this))
+            schedule { scheduler, _ ->
+                scheduler.schedule(
+                    effectService.convertTaskUnits(
+                        skillParams.effect,
+                        "ProjectileEnd",
+                        location(),
+                        projectileVector,
+                        this
+                    )
+                )
                 val entities = locationService.getNearbyEnemyLivingEntities(
                     location(),
                     performance.endDamageHitBox,
                     (eventParams as? IEntitySkillCastEvent)?.livingEntity
                 )
                 damageService.applyDamage(eventParams, performance.endDamage, entities)
-            }}).runSync(true)
+            }
+        }).runSync(true)
         return { data }
     }
 }
