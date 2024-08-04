@@ -1,8 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.module
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.anomaly.ConfiguredAnomaly
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.gui.ConfiguredGui
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.anomaly.AnomalyType
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single

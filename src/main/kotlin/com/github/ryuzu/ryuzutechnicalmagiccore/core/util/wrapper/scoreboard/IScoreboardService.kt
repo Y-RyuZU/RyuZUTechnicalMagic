@@ -2,7 +2,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.scoreboard
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.ConfiguredScoreboard
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.UpdatePeriod
 import org.koin.core.component.KoinComponent
 
 interface IScoreboardService : KoinComponent {

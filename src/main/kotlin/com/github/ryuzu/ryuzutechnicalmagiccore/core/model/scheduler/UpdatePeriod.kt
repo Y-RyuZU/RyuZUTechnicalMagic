@@ -1,4 +1,4 @@
-package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler
+package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler
 
 enum class UpdatePeriod {
     TICK,

@@ -1,4 +1,4 @@
-package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler
+package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler
 
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent

@@ -4,8 +4,8 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.general
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.persistent.PlayerPersistentDataEntity
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.repository.PlayerDataRepository
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.SimpleSchedulerFactory
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.SimpleSchedulerFactory
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.UpdatePeriod
 import org.koin.core.annotation.Single
 import org.koin.core.component.inject
 import java.util.UUID

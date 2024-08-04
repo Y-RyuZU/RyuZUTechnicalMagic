@@ -1,7 +1,4 @@
-package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler
-
-import org.koin.core.annotation.InjectedParam
-import java.util.SortedSet
+package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler
 
 abstract class AbstractSimpleScheduler(val updatePeriod: UpdatePeriod) : ISimpleScheduler {
     private val tasks: MutableList<TaskUnit> = mutableListOf()

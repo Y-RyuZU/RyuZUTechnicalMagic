@@ -4,8 +4,8 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.Co
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.sound.ConfiguredSound
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.sound.ConfiguredSoundSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.TaskUnit
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.SimpleSchedulerFactory
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.TaskUnit
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.SimpleSchedulerFactory
 
 import org.koin.core.component.inject
 

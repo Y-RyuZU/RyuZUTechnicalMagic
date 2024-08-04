@@ -4,8 +4,8 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.Co
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.ConfiguredEffect
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.IParticleScheduler
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.TaskUnit
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.IParticleScheduler
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.TaskUnit
 
 interface IEffectService {
     fun convertTaskUnits(

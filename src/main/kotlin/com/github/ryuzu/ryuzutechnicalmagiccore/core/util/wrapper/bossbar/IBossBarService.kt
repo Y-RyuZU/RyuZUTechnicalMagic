@@ -2,7 +2,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.bossbar
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.bossbar.ConfiguredBossBar
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.UpdatePeriod
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.UpdatePeriod
 import org.koin.core.component.KoinComponent
 
 interface IBossBarService : KoinComponent {

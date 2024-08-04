@@ -73,7 +73,7 @@ abstract class AbstractTeamGameService(
         teleportService.teleport(gamePlayer.team.property.respawnPoint.toLocation(world), player)
     }
 
-    override val placeholders: MutableMap<String, () -> String> = super.placeholders.apply {
+    override fun getPlaceholders(): Map<String, () -> String> = super.getPlaceholders().toMutableMap().apply {
         teams.entries.forEachIndexed { index, entry ->
             put("%team${index}_player_count%") { entry.value.players.size.toString() }
             put("%team${index}_name%") { entry.value.property.name }

@@ -27,11 +27,13 @@ class GuiModule : KoinComponent {
     private fun createGui(config: ConfiguredGui, action: Map<GuiAction, () -> Unit>): ChestGui {
         val gui = ChestGui(config.rows, config.name)
         val pane = StaticPane(0, 0, 9, 6)
+
         config.items.forEach { (slot, item) ->
             val guiItem = GuiItem(itemManager.getItemStack(item.items.elementAt(0)))
             guiItem.setAction { _ -> action[item.action] }
             pane.addItem(guiItem, Slot.fromIndex(slot))
         }
+
         gui.addPane(pane)
         return gui
     }

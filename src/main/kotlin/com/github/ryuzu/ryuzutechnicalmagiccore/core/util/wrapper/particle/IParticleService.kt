@@ -5,8 +5,8 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.Co
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.set.IConfiguredParticleSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.IParticleScheduler
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.scheduler.TaskUnit
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.IParticleScheduler
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.TaskUnit
 import org.koin.core.component.KoinComponent
 
 interface IParticleService : KoinComponent {

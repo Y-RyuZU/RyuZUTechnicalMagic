@@ -19,7 +19,6 @@ class ConfiguredSkillModule :
     override fun loadConfig(): HashMap<String, ConfiguredSkillParams> = super.loadConfig()
 
     override fun processFile(file: File): HashMap<String, ConfiguredSkillParams> {
-
         val mapType = mapper.typeFactory
             .constructMapType(HashMap::class.java, String::class.java, ConfiguredSkillParams::class.java)
         return mapper.readValue(file, mapType)
