@@ -2,7 +2,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.effect
 
 data class StatusEffectState(
     val id: StatusEffectId,
-    var duration: Long,
+    var duration: Int,
     var level: Int,
     val startedAt: Long = System.currentTimeMillis(),
 ) {

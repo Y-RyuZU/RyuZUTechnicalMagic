@@ -1,10 +1,9 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.effect
 
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.LivingEntity
+
 interface IStatusEffectService {
-    fun apply(statusEffectId: StatusEffectId, duration: Long, level: Int)
-    fun remove(statusEffectId: StatusEffectId)
-    fun remove(state: StatusEffectState)
-    fun get(statusEffectId: StatusEffectId): StatusEffectState?
-    fun getAll(): List<StatusEffectState>
-    fun clear()
+    fun apply(entity: LivingEntity, statusEffectState: StatusEffectState)
+
+    fun remove(entity: LivingEntity, statusEffectState: StatusEffectState)
 }

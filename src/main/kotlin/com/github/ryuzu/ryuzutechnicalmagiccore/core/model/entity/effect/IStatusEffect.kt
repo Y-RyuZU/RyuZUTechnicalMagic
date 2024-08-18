@@ -1,7 +1,7 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.effect
 
 interface IStatusEffect {
-    val onEffectStart: Unit
-    val onEffectTick: Unit
-    val onEffectEnd: Unit
+    fun onEffectStart(level: Int): Unit
+    fun onEffectTick(level: Int): Unit
+    fun onEffectEnd(level: Int): Unit
 }

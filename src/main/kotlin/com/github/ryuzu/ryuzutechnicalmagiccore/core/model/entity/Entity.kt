@@ -4,6 +4,8 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.Co
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntVector
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.effect.IStatusEffectContainer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.effect.StatusEffectContainer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.location.ILocationService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.teleport.ITeleportService
 import org.koin.core.component.KoinComponent

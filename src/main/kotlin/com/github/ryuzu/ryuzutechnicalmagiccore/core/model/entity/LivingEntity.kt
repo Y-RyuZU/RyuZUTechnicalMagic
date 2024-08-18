@@ -10,7 +10,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class LivingEntity(entity: IEntity) : ILivingEntity, IEntity by entity, KoinComponent {
-    val statusEffectContainer = StatusEffectContainer()
+    override val statusEffectContainer = StatusEffectContainer(this)
     private val locationService: ILocationService by inject()
 
     override fun getEyeLocation(): ConfiguredDoubleLocation = locationService.getEyeLocation(this)

@@ -1,28 +1,34 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.effect
 
-class StatusEffectContainer : IStatusEffectContainer {
-    override fun apply(statusEffectId: StatusEffectId, duration: Long, level: Int) {
-        TODO("Not yet implemented")
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.LivingEntity
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+
+class StatusEffectContainer(private val entity: LivingEntity) : IStatusEffectContainer, KoinComponent {
+    private val statusEffectStates = mutableListOf<StatusEffectState>();
+    private val statusEffectService: IStatusEffectService by inject()
+
+    override fun apply(statusEffectState: StatusEffectState) {
+        statusEffectStates.add(statusEffectState)
+        statusEffectService.apply(entity, statusEffectState)
     }
 
     override fun remove(statusEffectId: StatusEffectId) {
-        TODO("Not yet implemented")
+        statusEffectStates.removeIf { it.id == statusEffectId }
+        get(statusEffectId).forEach { statusEffectService.remove(entity, it) }
     }
 
     override fun remove(state: StatusEffectState) {
-        TODO("Not yet implemented")
+        statusEffectStates.remove(state)
+        statusEffectService.remove(entity, state)
     }
 
-    override fun get(statusEffectId: StatusEffectId): StatusEffectState? {
-        TODO("Not yet implemented")
-    }
+    override fun get(statusEffectId: StatusEffectId): List<StatusEffectState> = statusEffectStates.filter { it.id == statusEffectId }
 
-    override fun getAll(): List<StatusEffectState> {
-        TODO("Not yet implemented")
-    }
+    override fun getAll(): List<StatusEffectState> = statusEffectStates
 
     override fun clear() {
-        TODO("Not yet implemented")
+        statusEffectStates.forEach{ remove(it) }
     }
 
 }

@@ -30,8 +30,6 @@ import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
-import org.bukkit.potion.PotionEffect
-import org.bukkit.potion.PotionEffectType
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
