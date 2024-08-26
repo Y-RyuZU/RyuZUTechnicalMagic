@@ -7,34 +7,20 @@ sealed interface IGameTeam{
     val property: ConfiguredTeam
     val players: MutableSet<ITeamGamePlayer>
 
-    abstract sealed class AbstractScoreGameTeam(
-        override val property: ConfiguredTeam,
-        var score: Int,
-        override val players: MutableSet<ITeamGamePlayer>
-    ) : IGameTeam {
+    sealed interface IScoreGameTeam : IGameTeam {
+        var score: Int
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is IGameTeam) return false
-            if (property != other.property) return false
-            return true
-        }
-
-        override fun hashCode(): Int {
-            return property.hashCode()
-        }
-
-        class CaptureWool(
-            property: ConfiguredTeam,
-            score: Int = 0,
-            players: MutableSet<ITeamGamePlayer> = mutableSetOf(),
+        data class CaptureWool(
+            override val property: ConfiguredTeam,
+            override val players: MutableSet<ITeamGamePlayer> = mutableSetOf(),
+            override var score: Int = 0,
             var captureArea: Byte = 0,
-        ) : AbstractScoreGameTeam(property, score, players)
+        ) : IScoreGameTeam
 
-        class CarryTntTeam(
-            property: ConfiguredTeam,
-            players: MutableSet<ITeamGamePlayer> = mutableSetOf(),
-            score: Int = 0,
-        ) : AbstractScoreGameTeam(property, score, players)
+        data class CarryTntTeam(
+            override val property: ConfiguredTeam,
+            override val players: MutableSet<ITeamGamePlayer> = mutableSetOf(),
+            override var score: Int = 0,
+        ) : IScoreGameTeam
     }
 }

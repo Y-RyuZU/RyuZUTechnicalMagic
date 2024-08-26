@@ -1,8 +1,7 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.entry
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.ConfiguredEffect
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.display.IConfiguredDisplay
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.effect.ConfiguredEffect
 
 data class ConfiguredEntry(
     val structure: String,

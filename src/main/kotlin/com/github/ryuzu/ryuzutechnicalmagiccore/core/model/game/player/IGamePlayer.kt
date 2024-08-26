@@ -2,6 +2,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.team.IGameTeam
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.team.IGameTeam.IScoreGameTeam.CarryTntTeam
 import java.util.*
 
 sealed interface IGamePlayer : IPlayer {
@@ -18,27 +19,32 @@ sealed interface IGamePlayer : IPlayer {
     ) : IGamePlayer, IPlayer by player {
         sealed interface ITeamGamePlayer : IGamePlayer {
             val assist: Int
-            var team: IGameTeam
+            val team: IGameTeam
 
             class TeamGamePlayer(
                 player: IPlayer,
+                override val team: IGameTeam,
                 override var star: Int = 0,
                 override var kill: Int = 0,
                 override var death: Int = 0,
                 override var assist: Int = 0,
             ) : ITeamGamePlayer, IPlayer by player {
-                override lateinit var team: IGameTeam
+
+                init {
+                    team.players.add(this)
+                }
 
                 sealed interface ICarryTntPlayer : ITeamGamePlayer {
+                    override val team : CarryTntTeam
+
                     class CarryTntPlayer(
                         player: IPlayer,
+                        override val team: CarryTntTeam,
                         override var star: Int = 0,
                         override var kill: Int = 0,
                         override var death: Int = 0,
                         override var assist: Int = 0,
-                    ) : ICarryTntPlayer, IPlayer by player {
-                        override lateinit var team: IGameTeam
-                    }
+                    ) : ICarryTntPlayer, IPlayer by player
                 }
 
                 sealed interface ICarryMiniTntPlayer : ITeamGamePlayer {
@@ -46,14 +52,13 @@ sealed interface IGamePlayer : IPlayer {
 
                     class CarryMiniTntPlayer(
                         player: IPlayer,
+                        override val team: IGameTeam,
                         override var star: Int = 0,
                         override var kill: Int = 0,
                         override var death: Int = 0,
                         override var assist: Int = 0,
                         override val holdTNTAmount: Int = 0,
-                    ) : ICarryMiniTntPlayer, IPlayer by player {
-                        override lateinit var team: IGameTeam
-                    }
+                    ) : ICarryMiniTntPlayer, IPlayer by player
                 }
             }
         }

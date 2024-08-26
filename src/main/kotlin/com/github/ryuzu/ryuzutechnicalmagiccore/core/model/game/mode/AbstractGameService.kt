@@ -1,7 +1,5 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.EventHandler
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.handler.IEventHandler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.general.ConfiguredGeneralParameter
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.ConfiguredGameMode
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.IConfiguredGameModeParameter
@@ -24,8 +22,10 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.teleport.ITele
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.title.ITitleService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.SimpleSchedulerFactory
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.UpdatePeriod
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.block.IBlockService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.adapter.block.IBlockAdapter
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.effect.IEffectService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.scoreboard.IScoreboardService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.scoreboard.ScoreboardFactory
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.structure.IStructureService
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.model.item.IItemManager
 import org.koin.core.component.KoinComponent
@@ -38,10 +38,9 @@ abstract class AbstractGameService(
     protected val stage: ConfiguredStage,
     protected val entryService: IEntryGameService,
     entryPlayers: Set<IPlayer>,
-) : IGameService, IEventHandler, IPlaceholdable, KoinComponent {
+) : IGameService, IPlaceholdable, KoinComponent {
     protected val generatorService: IGeneratorService by inject { parametersOf(this, stage.generators, stage) }
     protected val levelService: ILevelService by inject { parametersOf(this) }
-
 
     protected val schedulerFactory: SimpleSchedulerFactory by inject()
     protected val messageService: IMessageService by inject()
@@ -49,12 +48,13 @@ abstract class AbstractGameService(
     protected val particleService: IParticleService by inject()
     protected val effectService: IEffectService by inject()
     protected val soundService: ISoundService by inject()
-    protected val blockService: IBlockService by inject()
+    protected val blockService: IBlockAdapter by inject()
     protected val structureService: IStructureService by inject()
     protected val itemManager: IItemManager by inject()
     protected val teleportService: ITeleportService by inject()
     protected val gameModeService: IGameModeService by inject()
     protected val locationService: ILocationService by inject()
+    protected val scoreboardFactory: ScoreboardFactory by inject()
 
     protected val parameter: ConfiguredGeneralParameter by inject()
     protected val players: MutableSet<IGamePlayer> = entryPlayers.map { createPlayer(it) }.toMutableSet()
@@ -64,15 +64,21 @@ abstract class AbstractGameService(
     protected abstract val gameData: IGameData
     protected abstract fun createPlayer(player: IPlayer): IGamePlayer
 
-    protected lateinit var scheduler: ISimpleScheduler
+    protected val scheduler: ISimpleScheduler =
+        schedulerFactory.createScheduler().whileSchedule { _, count -> gameData.time = count }
+    protected val scoreboard: IScoreboardService by lazy {
+        scoreboardFactory.createScoreboardService().createScoreboard(config.display.scoreboard, placeholders)
+    }
 
-    override fun start() {
+    init {
         players.addAll(entryService.entryPlayers.map { createPlayer(it) })
         messageService.sendMessage(listOf("Game Start !"), players)
         effectService.playEffect(config.effect, "GameStart", players)
+        initialize()
+    }
+
+    private fun initialize() {
         createBossBar()
-        createScoreBoard()
-        scheduler = schedulerFactory.createScheduler().whileSchedule { _, count -> gameData.time = count }
     }
 
     override fun joinGameMidway(player: IPlayer) {
@@ -100,27 +106,25 @@ abstract class AbstractGameService(
     override fun getGamePlayer(player: IPlayer): IGamePlayer = players.first { it == player }
     override fun isGamePlayer(player: IPlayer): Boolean = players.any { it.id == player.id }
 
-    override fun getPlaceholders(): Map<String, () -> String> = mutableMapOf<String, () -> String>().apply {
-        put("%time%") { gameData.time.tickToFormattedTime() }
-        put("%phase%") { getPhase().toString() }
-        put("%stage%") { stage.display.name }
+    override fun handlePlayerDeath(player: IGamePlayer, lastDamage: Double) {
+        updateScores(player)
+        lostStar(player, lastDamage)
+        prepareForRespawn(player)
     }
 
-    fun onPlayerDeath(player: IGamePlayer) {
-        gamePlayer.death++
-        generatorService.generateStar(
-            locationService.getIntLocation(gamePlayer).toDoubleLocation(),
-            (gamePlayer.star * stage.gameProperty.starLostRate).toInt(),
-            parameter.generatorParameter.starLostScatter * event.lastDamage
-        )
-        gamePlayer.star *= (1.0 - stage.gameProperty.starLostRate).toInt()
-    }
+    override fun getPhase(): Int = (gameData.time / (gameModeParameter.duration * 20 * 60)).toInt()
 
-    fun increaseDeathCount(gamePlayer: IGamePlayer) {
+    override val placeholders: Map<String, () -> String> = mapOf(
+        "%time%" to { gameData.time.tickToFormattedTime() },
+        "%phase%" to { getPhase().toString() },
+        "%stage%" to { stage.display.name }
+    )
+
+    private fun updateScores(gamePlayer: IGamePlayer) {
         gamePlayer.death++
     }
 
-    fun lostStart(gamePlayer: IGamePlayer, damage: Double) {
+    private fun lostStar(gamePlayer: IGamePlayer, damage: Double) {
         generatorService.generateStar(
             locationService.getIntLocation(gamePlayer).toDoubleLocation(),
             (gamePlayer.star * stage.gameProperty.starLostRate).toInt(),
@@ -129,7 +133,7 @@ abstract class AbstractGameService(
         gamePlayer.star *= (1.0 - stage.gameProperty.starLostRate).toInt()
     }
 
-    fun respawnPlayer(gamePlayer: IGamePlayer) {
+    private fun prepareForRespawn(gamePlayer: IGamePlayer) {
         val respawnInterval = 5L
         schedulerFactory.createScheduler(UpdatePeriod.SECOND).schedule(0, respawnInterval) { _, count ->
             gameModeService.changeGameMode(3, gamePlayer, true)
@@ -137,26 +141,10 @@ abstract class AbstractGameService(
         }.schedule(respawnInterval) { _, _ ->
             gameModeService.changeGameMode(0, gamePlayer, false)
             titleService.sendTitle(null, "Respawn", gamePlayer)
-            respawnPlayer(gamePlayer)
+            prepareForRespawn(gamePlayer)
         }.runSync()
     }
 
-    @EventHandler(priority = 150)
-    fun onPlayerDeath(event: PlayerDeathEvent) {
-        if(!isGamePlayer(event.player)) return
-
-        val gamePlayer = getGamePlayer(event.player)
-        increaseDeathCount(gamePlayer)
-        lostStart(gamePlayer, event.lastDamage)
-        respawnPlayer(gamePlayer)
-
-        event.shouldNotify = false
-
-    }
-
-    override fun getPhase(): Int = (gameData.time / (gameModeParameter.duration * 20 * 60)).toInt()
-
     protected abstract fun createBossBar()
-    protected abstract fun createScoreBoard()
     protected abstract fun respawnPlayer(player: IPlayer)
 }

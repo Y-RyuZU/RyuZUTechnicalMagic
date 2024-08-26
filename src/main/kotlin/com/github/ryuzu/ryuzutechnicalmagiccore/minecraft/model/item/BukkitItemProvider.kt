@@ -8,7 +8,7 @@ import org.koin.core.annotation.Single
 
 @Single([IItemProvider::class])
 class BukkitItemProvider : IItemProvider {
-    override val priority: Int = 200
+    override val priority: Int = 5
     override fun getItemStack(item: Item): ItemStack? =
         runCatching { Material.valueOf(item.id) }.getOrNull()?.let { ItemStack(it, item.amount) }
 

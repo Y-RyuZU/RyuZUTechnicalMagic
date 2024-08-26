@@ -2,7 +2,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.util
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.display.EasingFunction
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.effect.display.EasingFunction
 import java.util.UUID
 
 class TypedMap(map: MutableMap<String, Any> = mutableMapOf()) : MutableMap<String, Any> by map {

@@ -2,7 +2,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.effect
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.ConfiguredEffect
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.effect.ConfiguredEffect
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.IParticleScheduler
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.TaskUnit

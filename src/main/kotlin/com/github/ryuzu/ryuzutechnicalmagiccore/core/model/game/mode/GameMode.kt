@@ -83,6 +83,7 @@ enum class GameMode : KoinComponent {
         entryService: IEntryGameService,
         entryPlayers: Set<IPlayer>,
     ): IGameService
+
     fun getGuiAction(): GuiAction {
         return when(this) {
             CarryTnt -> GuiAction.CHANGE_CARRY_TNT

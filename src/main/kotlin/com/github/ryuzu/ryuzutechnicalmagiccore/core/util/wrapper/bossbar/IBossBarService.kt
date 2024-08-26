@@ -6,7 +6,7 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.UpdatePerio
 import org.koin.core.component.KoinComponent
 
 interface IBossBarService : KoinComponent {
-    fun createBossBar(bossBar: ConfiguredBossBar, placeholders: Map<String, () -> String>, period: UpdatePeriod = UpdatePeriod.SECOND): IBossBarService
+    fun createBossBar(config: ConfiguredBossBar, placeholders: Map<String, () -> String>, period: UpdatePeriod = UpdatePeriod.SECOND): IBossBarService
     fun addPlayers(players: Set<IPlayer>)
     fun addPlayers(vararg players: IPlayer) = addPlayers(players.toSet())
     fun removePlayers(players: Set<IPlayer>)

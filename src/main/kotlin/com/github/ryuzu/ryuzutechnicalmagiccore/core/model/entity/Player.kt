@@ -2,8 +2,9 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.set.ConfiguredParticleSet
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.sound.ConfiguredSoundSet
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.gui.GuiAction
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.effect.particle.set.ConfiguredParticleSet
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.effect.sound.ConfiguredSoundSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.IBukkitAdapter
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.gamemode.IGameModeService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.location.ILocationService
@@ -13,6 +14,8 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.particle.IPart
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.sound.ISoundService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.teleport.ITeleportService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.title.ITitleService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.adapter.entity.IPlayerAdapter
+import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.gui.GuiType
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -27,6 +30,7 @@ class Player(
     private val soundService: ISoundService by inject()
     private val titleService: ITitleService by inject()
     private val particleService: IParticleService by inject()
+    private val playerAdapter: IPlayerAdapter by inject()
 
     override fun getName(): String = bukkitAdapter.getName(this)
     override fun isSneaking(): Boolean = bukkitAdapter.isSneaking(this)
@@ -65,5 +69,9 @@ class Player(
 
     override fun spawnParticle(particleSets: Set<ConfiguredParticleSet>) {
         particleService.spawnParticle(particleSets, this)
+    }
+
+    override fun openGui(gui: GuiType, actions: Map<GuiAction, () -> Unit>) {
+        playerAdapter.openGui(this, gui, actions)
     }
 }

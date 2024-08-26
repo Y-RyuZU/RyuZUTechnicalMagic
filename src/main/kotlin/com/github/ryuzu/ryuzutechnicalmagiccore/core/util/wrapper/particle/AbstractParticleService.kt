@@ -2,9 +2,9 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.particle
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.set.IConfiguredParticleSet
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.particle.IConfiguredParticle
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.set.ConfiguredCircleParticleSet
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.effect.particle.set.IConfiguredParticleSet
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.effect.particle.particle.IConfiguredParticle
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.effect.particle.set.ConfiguredCircleParticleSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.IParticleScheduler

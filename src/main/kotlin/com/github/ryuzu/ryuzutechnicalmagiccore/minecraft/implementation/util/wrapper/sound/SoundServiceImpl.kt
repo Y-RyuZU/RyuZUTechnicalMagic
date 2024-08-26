@@ -1,8 +1,8 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.wrapper.sound
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.sound.ConfiguredSound
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.sound.ConfiguredSoundSet
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.effect.sound.ConfiguredSound
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.effect.sound.ConfiguredSoundSet
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.sound.AbstractSoundService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.sound.ISoundService

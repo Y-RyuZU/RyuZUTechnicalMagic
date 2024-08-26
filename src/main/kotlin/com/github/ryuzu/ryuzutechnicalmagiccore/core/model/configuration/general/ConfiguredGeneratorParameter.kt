@@ -1,6 +1,6 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.general
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.ConfiguredEffect
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.effect.ConfiguredEffect
 
 data class ConfiguredGeneratorParameter(
     val littleStarItem: String,

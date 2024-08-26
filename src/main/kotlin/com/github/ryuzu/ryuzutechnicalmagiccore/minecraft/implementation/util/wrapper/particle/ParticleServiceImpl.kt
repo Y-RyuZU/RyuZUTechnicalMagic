@@ -2,7 +2,7 @@ package com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.implementation.util.w
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.particle.*
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.effect.particle.particle.*
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.particle.AbstractParticleService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.particle.IParticleService
 import com.github.ryuzu.ryuzutechnicalmagiccore.minecraft.util.ConfiguredUtility.Companion.toLocation

@@ -10,10 +10,10 @@ abstract class AbstractBossBarService : IBossBarService {
     private val schedulerFactory: SimpleSchedulerFactory by inject()
     private lateinit var scheduler: ISimpleScheduler
 
-    override fun createBossBar(bossBar: ConfiguredBossBar, placeholders: Map<String, () -> String>, period: UpdatePeriod): IBossBarService {
+    override fun createBossBar(config: ConfiguredBossBar, placeholders: Map<String, () -> String>, period: UpdatePeriod): IBossBarService {
         scheduler = schedulerFactory.createScheduler(period).whileSchedule { _, count ->
-            val frame = ((count / period.getPeriod()) % bossBar.titles.size).toInt()
-            update(bossBar.titles[frame], placeholders)
+            val frame = ((count / period.getPeriod()) % config.titles.size).toInt()
+            update(config.titles[frame], placeholders)
         }.runSync()
         return this
     }

@@ -1,18 +1,17 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.module
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import java.io.File
 
-abstract class AbstractConfigurationModule<T, U> : IConfigurationModule<T, U> {
+abstract class AbstractConfigurationModule<ResultValue, ValuePerFile> : IConfigurationModule<ResultValue, ValuePerFile> {
     private val base: File by inject(named("dataFolder"))
     protected val mapper: YAMLMapper by inject()
     protected open val folderName: String = ""
     protected open val fileName: String? = null
 
-    override fun loadConfig(): T {
+    override fun loadConfig(): ResultValue {
         val folder = File(base, folderName)
         if(!folder.exists())
             folder.mkdirs()
@@ -27,7 +26,7 @@ abstract class AbstractConfigurationModule<T, U> : IConfigurationModule<T, U> {
         else
             listAllFilesInFolder(folder).filter { it.extension == "yml" }
 
-        val allConfigurations: List<U> = selectedFiles.map {
+        val allConfigurations: List<ValuePerFile> = selectedFiles.map {
             processFile(it)
         }
 2
@@ -38,7 +37,7 @@ abstract class AbstractConfigurationModule<T, U> : IConfigurationModule<T, U> {
                     if (config is Map<*, *>)
                         resultMap.putAll(config as Map<Any, Any>)
                 }
-                resultMap as T
+                resultMap as ResultValue
             }
 
             allConfigurations.all { it is Set<*> } -> {
@@ -47,7 +46,7 @@ abstract class AbstractConfigurationModule<T, U> : IConfigurationModule<T, U> {
                     if (config is Set<*>)
                         resultSet.addAll(config as Set<Any>)
                 }
-                resultSet as T
+                resultSet as ResultValue
             }
 
             allConfigurations.all { it is List<*> } -> {
@@ -56,16 +55,16 @@ abstract class AbstractConfigurationModule<T, U> : IConfigurationModule<T, U> {
                     if (config is List<*>)
                         resultList.addAll(config as List<Any>)
                 }
-                resultList as T
+                resultList as ResultValue
             }
 
             else -> {
-                allConfigurations.first() as T
+                allConfigurations.first() as ResultValue
             }
         }
     }
 
-    protected abstract fun processFile(file: File): U
+    protected abstract fun processFile(file: File): ValuePerFile
 
     private fun listAllFilesInFolder(folder: File): List<File> {
         val result = mutableListOf<File>()

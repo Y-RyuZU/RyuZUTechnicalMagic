@@ -1,8 +1,7 @@
 package com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.particle
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.set.ConfiguredCircleParticleSet
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.particle.set.OrthonormalBasis
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.effect.particle.set.ConfiguredCircleParticleSet
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.effect.particle.set.OrthonormalBasis
 import org.joml.Vector3d
 import kotlin.random.Random
 
