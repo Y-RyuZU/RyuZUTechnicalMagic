@@ -1,0 +1,3 @@
+package dev.ryuzu.ryuzutechnicalmagicapi.event.data.skill
+
+interface IPlayerSkillCastLeftClickEvent : IPlayerSkillCastClickEvent
