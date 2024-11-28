@@ -2,7 +2,7 @@ plugins {
     java
     application
     kotlin("jvm")
-    id("com.gradleup.shadow")
+//    id("com.gradleup.shadow")
     id("com.google.devtools.ksp")
 }
 

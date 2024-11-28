@@ -1,0 +1,3 @@
+package dev.ryuzu.ryuzutechnicalmagic.api.core.event.data.damage
+
+interface IEntitySkillDamageByEntityEvent : IEntitySkillDamageEvent, IEntityDamageByEntityEvent
