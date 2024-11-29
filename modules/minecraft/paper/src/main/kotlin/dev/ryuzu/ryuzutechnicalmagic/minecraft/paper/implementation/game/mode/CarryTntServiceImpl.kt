@@ -10,12 +10,12 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher.IEventListe
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.mode.ConfiguredGameMode
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredStage
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.entry.IEntryGameService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.carrytnt.AbstractCarryTntService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.carrytnt.ICarryTntService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.team.IGameTeam.AbstractScoreGameTeam.CarryTntTeam
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.util.ConfiguredUtility.Companion.toBlockLocation
 import dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.util.ConfiguredUtility.Companion.toMiddleLocation
 import dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.util.EntityUtility.Companion.toPlayer

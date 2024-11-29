@@ -19,7 +19,6 @@ import org.koin.core.qualifier.named
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
 import org.reflections.util.ConfigurationBuilder
-import kotlin.collections.HashMap
 
 abstract class AbstractSkillService : ISkillService, KoinComponent {
     private val coolTimeService: ICoolTimeService by inject()

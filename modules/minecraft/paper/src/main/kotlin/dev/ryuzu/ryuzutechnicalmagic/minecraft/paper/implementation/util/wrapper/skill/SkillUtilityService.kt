@@ -1,9 +1,9 @@
 package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.implementation.util.wrapper.skill
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer.GamePlayer.ITeamGamePlayer
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntityManager
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.player.IGamePlayer.GamePlayer.ITeamGamePlayer
 import dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.util.ConfiguredUtility.Companion.toLocation
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent

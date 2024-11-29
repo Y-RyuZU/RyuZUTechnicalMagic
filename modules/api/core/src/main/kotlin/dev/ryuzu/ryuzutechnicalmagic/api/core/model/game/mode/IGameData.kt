@@ -1,7 +1,7 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.team.IGameTeam
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.team.IGameTeam
 
 sealed interface IGameData{
     val gameMode: GameMode

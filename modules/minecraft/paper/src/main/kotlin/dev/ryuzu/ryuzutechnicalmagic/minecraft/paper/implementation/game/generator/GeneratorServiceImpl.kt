@@ -7,12 +7,12 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.publisher.IEventListe
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.game.stage.ConfiguredStage
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.AbstractGeneratorService
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameService
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.IGeneratorService
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.StarStockData
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntity
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntityManager
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.mode.IGameService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.AbstractGeneratorService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.IGeneratorService
+import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.game.stage.generator.StarStockData
 import dev.ryuzu.ryuzutechnicalmagic.core.api.model.item.IItemManager
 import dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.util.ConfiguredUtility.Companion.toLocation
 import dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.util.ConfiguredUtility.Companion.toVector
@@ -24,7 +24,7 @@ import org.bukkit.inventory.ItemStack
 import org.koin.core.annotation.InjectedParam
 import org.koin.core.annotation.Single
 import org.koin.core.component.inject
-import java.util.UUID
+import java.util.*
 import kotlin.random.Random
 
 @Single([IGeneratorService::class])

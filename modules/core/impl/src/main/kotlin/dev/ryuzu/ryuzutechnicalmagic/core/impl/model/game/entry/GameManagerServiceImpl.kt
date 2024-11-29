@@ -3,17 +3,17 @@ package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.game.entry
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntLocation
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.entry.ConfiguredEntry
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.gui.GuiAction
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.GameMode
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.block.IBlockAdapter
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.entry.IEntryGameService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.entry.IGameManagerService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.structure.IStructureService
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.GameMode
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.gui.GuiType
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.block.IBlockAdapter
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.structure.IStructureService
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import org.koin.core.component.get
+import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 
 @Single([IGameManagerService::class], true)

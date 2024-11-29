@@ -1,23 +1,24 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.game.mode.carrytnt
 
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredIntVector
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.mode.ConfiguredGameMode
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.mode.IConfiguredGameModeParameter
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.stage.ConfiguredStage
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.stage.IConfiguredStageGameModeProperty
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.game.stage.IConfiguredStageGameModeProperty
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.team.ConfiguredTeam
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.entry.IEntryGameService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.IGameData
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.carrytnt.ICarryTntListener
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.carrytnt.ICarryTntService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer.GamePlayer.ITeamGamePlayer.TeamGamePlayer.ICarryTntPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.team.IGameTeam
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.team.IGameTeam.IScoreGameTeam.CarryTntTeam
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISimpleScheduler
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.UpdatePeriod
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.bossbar.IBossBarService
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.carrytnt.ICarryTntService
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.bossbar.IBossBarFactory
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.bossbar.IBossBarObject
 import dev.ryuzu.ryuzutechnicalmagic.core.impl.model.game.mode.AbstractTeamGameService
 import org.koin.core.annotation.Factory
 import org.koin.core.component.KoinComponent
@@ -46,8 +47,8 @@ class CarryTntServiceImpl(
         get() = teams as LinkedHashMap<String, CarryTntTeam>
 
     private val listener: ICarryTntListener by inject { parametersOf(this) }
-    private val bossBarFactory: BossBarFactory by inject()
-    private val bossBars: LinkedHashMap<CarryTntTeam, IBossBarService> = linkedMapOf()
+    private val bossBarFactory: IBossBarFactory by inject()
+    private val bossBars: LinkedHashMap<CarryTntTeam, IBossBarObject> = linkedMapOf()
 
     override fun createPlayer(player: IPlayer): ICarryTntPlayer =
         ICarryTntPlayer.CarryTntPlayer(player, selectTeamAlgorithm(player) as CarryTntTeam)

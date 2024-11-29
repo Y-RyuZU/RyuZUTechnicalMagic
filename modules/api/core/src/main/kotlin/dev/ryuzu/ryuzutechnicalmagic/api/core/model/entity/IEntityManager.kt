@@ -1,6 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity
 
-import java.util.UUID
+import java.util.*
 
 interface IEntityManager {
     fun getPlayer(id: UUID): dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer

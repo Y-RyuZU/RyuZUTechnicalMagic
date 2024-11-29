@@ -1,8 +1,8 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.lang
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.lang.ILanguageService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.setting.IPlayerPersistentDataService
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.lang.ILanguageService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.lang.Language
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.lang.LanguageKey
 import org.koin.core.component.KoinComponent

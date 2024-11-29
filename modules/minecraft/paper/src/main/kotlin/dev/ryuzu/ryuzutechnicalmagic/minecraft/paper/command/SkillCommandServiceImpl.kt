@@ -4,11 +4,8 @@ import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.command.ICommandServi
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.service.ISkillService
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.CommandPermission
-import dev.jorel.commandapi.arguments.GreedyStringArgument
 import dev.jorel.commandapi.arguments.MultiLiteralArgument
-import dev.jorel.commandapi.arguments.StringArgument
 import dev.jorel.commandapi.executors.CommandExecutor
-import org.bukkit.Bukkit
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

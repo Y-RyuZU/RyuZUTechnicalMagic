@@ -1,14 +1,14 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.configuration.module
 
 import com.charleskorn.kaml.Yaml
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.module.IConfigurationModule
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.module.IConfigurationModule
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import java.io.File
 import java.io.InputStream
 
-abstract class AbstractConfigurationModule<ResultValue, ValuePerFile> : IConfigurationModule<ResultValue, ValuePerFile>, KoinComponent {
+abstract class AbstractConfigurationModule<ResultValue, ValuePerFile> : dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.module.IConfigurationModule<ResultValue, ValuePerFile>, KoinComponent {
     private val base: File by inject(named("dataFolder"))
     protected val kaml: Yaml by inject()
     protected open val folderName: String = ""

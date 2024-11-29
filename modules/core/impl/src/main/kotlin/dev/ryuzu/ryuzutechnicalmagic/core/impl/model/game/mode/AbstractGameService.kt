@@ -1,34 +1,33 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.game.mode
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.general.ConfiguredGeneralParameter
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.mode.ConfiguredGameMode
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.mode.IConfiguredGameModeParameter
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.stage.ConfiguredStage
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.stage.IConfiguredStageGameModeProperty
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.entry.IEntryGameService
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.stage.generator.IGeneratorService
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.level.ILevelService
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.general.ConfiguredGeneralParameter
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.entry.IEntryGameService
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.level.ILevelService
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.IGameData
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.IGameService
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.stage.generator.IGeneratorService
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.item.IItemManager
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.placeholder.IPlaceholdable
-import dev.ryuzu.ryuzutechnicalmagic.api.core.util.StringUtility.Companion.tickToFormattedTime
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISchedulerFactory
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISimpleScheduler
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.UpdatePeriod
+import dev.ryuzu.ryuzutechnicalmagic.api.core.util.StringUtility.Companion.tickToFormattedTime
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.block.IBlockAdapter
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IEffectService
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.gamemode.IGameModeService
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.location.ILocationService
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.message.IMessageService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.particle.IParticleService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.sound.ISoundService
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IParticleService
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.scoreboard.IScoreboardObject
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.ISoundService
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.structure.IStructureService
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.teleport.ITeleportService
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.title.ITitleService
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.UpdatePeriod
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.block.IBlockAdapter
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.IGameData
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.IGameService
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.item.IItemManager
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.effect.IEffectService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.scoreboard.IScoreboardService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.structure.IStructureService
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISchedulerFactory
 import dev.ryuzu.ryuzutechnicalmagic.core.impl.util.wrapper.scoreboard.ScoreboardFactory
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -62,13 +61,13 @@ abstract class AbstractGameService(
     protected val players: MutableSet<IGamePlayer> = entryPlayers.map { createPlayer(it) }.toMutableSet()
 
     protected abstract val gameModeParameter: IConfiguredGameModeParameter
-    protected abstract val gameModeProperty: IConfiguredStageGameModeProperty
+    protected abstract val gameModeProperty: dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.game.stage.IConfiguredStageGameModeProperty
     protected abstract val gameData: IGameData
     protected abstract fun createPlayer(player: IPlayer): IGamePlayer
 
     protected val scheduler: ISimpleScheduler =
         schedulerFactory.createSimpleScheduler().whileSchedule { _, count -> gameData.time = count }
-    protected val scoreboard: IScoreboardService by lazy {
+    protected val scoreboard: IScoreboardObject by lazy {
         scoreboardFactory.createScoreboardService().createScoreboard(config.display.scoreboard, placeholders)
     }
 

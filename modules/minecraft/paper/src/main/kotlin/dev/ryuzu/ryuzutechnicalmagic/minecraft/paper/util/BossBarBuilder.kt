@@ -2,7 +2,6 @@ package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.util
 
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
-import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent

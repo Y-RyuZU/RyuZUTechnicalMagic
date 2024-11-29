@@ -1,6 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.structure
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredIntLocation
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISimpleScheduler
 
 interface IStructureService {

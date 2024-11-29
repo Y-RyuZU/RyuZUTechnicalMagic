@@ -1,6 +1,5 @@
 package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.implementation.util.wrapper.damage
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.event.data.skill.ISkillActivateEvent
 import org.bukkit.damage.DamageSource
 
 data class RTMDamageSource(

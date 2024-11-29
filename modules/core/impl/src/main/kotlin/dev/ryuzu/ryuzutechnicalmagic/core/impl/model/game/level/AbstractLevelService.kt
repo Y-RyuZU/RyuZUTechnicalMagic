@@ -8,8 +8,8 @@ import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.level.LevelUpMission.KI
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.level.LevelUpMission.STAR
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.util.StringUtility.Companion.replacePlaceholders
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.effect.IEffectService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.message.MessageActionData
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IEffectService
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.entity.MessageActionData
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

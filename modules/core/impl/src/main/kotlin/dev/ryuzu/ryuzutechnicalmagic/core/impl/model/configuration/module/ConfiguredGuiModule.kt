@@ -1,7 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.configuration.module
 
 import com.charleskorn.kaml.decodeFromStream
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.gui.ConfiguredGui
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single

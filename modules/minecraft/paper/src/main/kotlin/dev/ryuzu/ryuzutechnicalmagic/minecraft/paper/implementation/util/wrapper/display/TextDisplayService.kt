@@ -2,7 +2,6 @@ package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.implementation.util.wrappe
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredIntLocation
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.display.IConfiguredDisplay
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.service.ICoolTimeService
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.util.wrapper.display.ITextDisplayService
 import dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.util.ColorUtility
 import dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.util.ConfiguredUtility.Companion.toBlockLocation

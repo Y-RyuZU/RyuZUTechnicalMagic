@@ -4,13 +4,12 @@ import dev.ryuzu.ryuzutechnicalmagic.api.core.event.data.skill.IEntitySkillCastE
 import dev.ryuzu.ryuzutechnicalmagic.api.core.event.data.skill.ISkillActivateEvent
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredDoubleVector
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.skill.ConfiguredSkillParams
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.skill.param.SimpleShootParams
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IEntity
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.skill.ISkill
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.skill.service.SkillState
 import dev.ryuzu.ryuzutechnicalmagic.api.core.util.TypedMap
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.damage.IDamageService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.effect.IEffectService
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.damage.IDamageService
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IEffectService
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.location.ILocationService
 import dev.ryuzu.ryuzutechnicalmagic.core.impl.model.scheduler.SimpleSchedulerFactory
 import org.joml.Vector3d
@@ -31,7 +30,7 @@ class SimpleShoot : ISkill, KoinComponent {
         state: SkillState?
     ): () -> TypedMap {
         val performance = skillParams.performance
-        require(performance is SimpleShootParams) { "Invalid skill params" }
+        require(performance is dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.param.SimpleShootParams) { "Invalid skill params" }
 
         val world = eventParams.skillCastLocation.world
         var projectilePoint = eventParams.skillCastLocation.vector

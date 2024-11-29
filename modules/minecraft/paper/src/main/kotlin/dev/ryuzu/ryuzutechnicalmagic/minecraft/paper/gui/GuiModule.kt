@@ -2,11 +2,11 @@ package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.gui
 
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.gui.ConfiguredGui
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.gui.GuiAction
-import dev.ryuzu.ryuzutechnicalmagic.core.api.model.item.IItemManager
 import com.github.stefvanschie.inventoryframework.gui.GuiItem
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui
 import com.github.stefvanschie.inventoryframework.pane.StaticPane
 import com.github.stefvanschie.inventoryframework.pane.util.Slot
+import dev.ryuzu.ryuzutechnicalmagic.core.api.model.item.IItemManager
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.InjectedParam
 import org.koin.core.annotation.Module

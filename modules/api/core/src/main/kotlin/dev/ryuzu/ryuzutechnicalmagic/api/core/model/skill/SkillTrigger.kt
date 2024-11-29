@@ -1,13 +1,7 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.core.model.skill
 
 import kotlinx.serialization.SerialName
-
-import kotlinx.serialization.*
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.Serializable
 
 @Serializable
 enum class SkillTrigger {

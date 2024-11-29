@@ -1,8 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.game.stage.generator
 
 import dev.ryuzu.ryuzutechnicalmagic.api.core.event.data.item.PlayerPickUpEvent
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.generator.ConfiguredItemGenerator
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.generator.ConfiguredStarGenerator
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.stage.ConfiguredStage
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.general.ConfiguredGeneralParameter
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IEntity
@@ -12,7 +10,7 @@ import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.stage.generator.StarSto
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISchedulerFactory
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISimpleScheduler
 import dev.ryuzu.ryuzutechnicalmagic.api.core.util.MathUtility.Companion.nextGaussian
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.effect.IEffectService
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IEffectService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.random.Random
@@ -25,8 +23,8 @@ abstract class AbstractGeneratorService(
     protected val effectService: IEffectService by inject()
     protected val parameter: ConfiguredGeneralParameter by inject()
 
-    private val starStocks: MutableMap<ConfiguredStarGenerator, StarStockData> = mutableMapOf()
-    private val itemStocks: MutableMap<ConfiguredItemGenerator, MutableSet<IEntity>> = mutableMapOf()
+    private val starStocks: MutableMap<dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.game.generator.ConfiguredStarGenerator, StarStockData> = mutableMapOf()
+    private val itemStocks: MutableMap<dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.game.generator.ConfiguredItemGenerator, MutableSet<IEntity>> = mutableMapOf()
 
     protected val scheduler: ISimpleScheduler =
         schedulerFactory.createSimpleScheduler().whileSchedule { _, count ->

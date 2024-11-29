@@ -1,8 +1,8 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.entity.effect
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.effect.IStatusEffectContainer
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.effect.StatusEffectId
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.effect.StatusEffectState
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.statuseffect.IStatusEffectContainer
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.statuseffect.StatusEffectId
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.statuseffect.StatusEffectState
 
 class StatusEffectContainer : IStatusEffectContainer {
     override fun apply(statusEffectId: StatusEffectId, duration: Long, level: Int) {

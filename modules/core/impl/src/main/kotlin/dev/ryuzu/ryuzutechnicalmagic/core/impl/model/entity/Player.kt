@@ -1,23 +1,18 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.entity
 
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.gui.GuiAction
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.effect.sound.ConfiguredSoundSet
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.IBukkitAdapter
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.gamemode.IGameModeService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.location.ILocationService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.message.IMessageService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.message.MessageActionData
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.particle.IParticleService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.sound.ISoundService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.teleport.ITeleportService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.title.ITitleService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.entity.IPlayerAdapter
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.effect.particle.set.IConfiguredParticleSet
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.gui.GuiAction
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.ILivingEntity
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.gui.GuiType
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.IBukkitAdapter
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.gamemode.IGameModeService
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.location.ILocationService
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IParticleService
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.ISoundService
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.teleport.ITeleportService
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.title.ITitleService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -49,7 +44,7 @@ class Player(
         teleportService.teleport(location, this)
     }
 
-    override fun teleport(vector: ConfiguredIntVector) {
+    override fun teleport(vector: dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredIntVector) {
         teleportService.teleport(vector, this)
     }
 
@@ -69,7 +64,7 @@ class Player(
         titleService.sendTitle(title, subtitle, this)
     }
 
-    override fun spawnParticle(particleSets: Set<IConfiguredParticleSet.ConfiguredParticleSet>) {
+    override fun spawnParticle(particleSets: Set<dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.util.effect.particle.set.IConfiguredParticleSet.ConfiguredParticleSet>) {
         particleService.spawnParticle(particleSets, this)
     }
 

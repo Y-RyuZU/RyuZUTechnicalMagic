@@ -1,10 +1,8 @@
 package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.util
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.base.ConfiguredDoubleVector
 import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.configuration.util.display.IConfiguredDisplay
 import org.bukkit.entity.Display
 import org.bukkit.util.Transformation
-import org.joml.Vector3f
 
 class DisplayUtility {
     companion object {

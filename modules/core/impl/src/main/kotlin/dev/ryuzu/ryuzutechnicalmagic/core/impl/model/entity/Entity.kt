@@ -3,7 +3,7 @@ package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.entity
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredDoubleLocation
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredDoubleVector
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredIntVector
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IEntity
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.location.ILocationService
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.teleport.ITeleportService
@@ -19,7 +19,7 @@ class Entity(override val id: UUID) : IEntity, KoinComponent {
         teleportService.teleport(location, this)
     }
 
-    override fun teleport(vector: ConfiguredIntVector) {
+    override fun teleport(vector: dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredIntVector) {
         teleportService.teleport(vector, this)
     }
 

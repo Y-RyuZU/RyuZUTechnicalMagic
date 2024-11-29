@@ -1,15 +1,14 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.game.mode
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.team.IGameTeam
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.mode.ConfiguredGameMode
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.stage.ConfiguredStage
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.team.ConfiguredTeam
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer.GamePlayer.ITeamGamePlayer
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.entry.IEntryGameService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.entry.IEntryGameService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.ITeamGameService
-import java.util.*
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer.GamePlayer.ITeamGamePlayer
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.team.IGameTeam
 
 abstract class AbstractTeamGameService(
     world: String,

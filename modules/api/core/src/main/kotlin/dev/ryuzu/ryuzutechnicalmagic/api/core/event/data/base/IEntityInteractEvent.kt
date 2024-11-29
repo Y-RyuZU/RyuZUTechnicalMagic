@@ -1,6 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.core.event.data.base
 
-import java.util.UUID
+import java.util.*
 
 
 interface IEntityInteractEvent : IEntityEvent {

@@ -1,9 +1,9 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.game.damage
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.damage.DamageHistoryData
 import dev.ryuzu.ryuzutechnicalmagic.api.core.event.data.damage.IEntityDamageEvent
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.general.ConfiguredGeneralParameter
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.damage.DamageHistoryData
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.damage.IDamageHistoryService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
