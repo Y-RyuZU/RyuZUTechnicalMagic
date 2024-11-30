@@ -1,8 +1,8 @@
 package  dev.ryuzu.ryuzutechnicalmagic.api.core.util
 
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredIntVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.util.effect.display.EasingFunction
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredIntVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.effect.display.EasingFunction
 import java.util.*
 
 class TypedMap(map: MutableMap<String, Any> = mutableMapOf()) : MutableMap<String, Any> by map {
@@ -44,13 +44,13 @@ class TypedMap(map: MutableMap<String, Any> = mutableMapOf()) : MutableMap<Strin
     }
 
     @Throws(IllegalArgumentException::class, NumberFormatException::class)
-    fun getVector(key: String): dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredIntVector {
-        return dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredIntVector(getString(key))
+    fun getVector(key: String): ConfiguredIntVector {
+        return ConfiguredIntVector(getString(key))
     }
 
     @Throws(IllegalArgumentException::class)
-    fun getEasingFunction(key: String): dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.util.effect.display.EasingFunction {
-        return dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.util.effect.display.EasingFunction.valueOf(getString(key).uppercase())
+    fun getEasingFunction(key: String): EasingFunction {
+        return EasingFunction.valueOf(getString(key).uppercase())
     }
 
     @Throws(IllegalArgumentException::class)

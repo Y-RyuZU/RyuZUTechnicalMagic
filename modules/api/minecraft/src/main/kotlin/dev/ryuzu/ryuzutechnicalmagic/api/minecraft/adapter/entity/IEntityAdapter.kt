@@ -1,10 +1,10 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.entity
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredDoubleLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredDoubleVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredIntLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredIntVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.util.effect.display.IConfiguredDisplay
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredIntLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredIntVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.effect.display.IConfiguredDisplay
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IEntity
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.ILivingEntity
 

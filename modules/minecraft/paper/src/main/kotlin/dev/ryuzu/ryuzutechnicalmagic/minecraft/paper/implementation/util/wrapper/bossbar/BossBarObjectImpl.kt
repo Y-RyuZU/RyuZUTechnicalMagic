@@ -1,6 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.implementation.util.wrapper.bossbar
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.util.bossbar.ConfiguredBossBar
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.bossbar.ConfiguredBossBar
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISchedulerFactory
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISimpleScheduler

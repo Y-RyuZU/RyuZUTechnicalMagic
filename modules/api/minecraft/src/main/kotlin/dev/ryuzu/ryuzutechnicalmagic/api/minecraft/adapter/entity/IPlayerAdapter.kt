@@ -1,6 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.entity
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.util.gui.GuiAction
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.gui.GuiAction
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.gui.GuiType
 

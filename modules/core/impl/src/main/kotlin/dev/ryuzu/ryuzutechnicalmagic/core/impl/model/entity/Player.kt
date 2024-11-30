@@ -1,5 +1,7 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.entity
 
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredIntVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.effect.particle.set.IConfiguredParticleSet
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntLocation
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.effect.sound.ConfiguredSoundSet
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.gui.GuiAction
@@ -8,7 +10,7 @@ import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.gui.GuiType
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.IBukkitAdapter
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.gamemode.IGameModeService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.location.ILocationService
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.location.ILocationAdapter
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IParticleService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.ISoundService
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.teleport.ITeleportService
@@ -21,7 +23,7 @@ class Player(
 ) : IPlayer, ILivingEntity by livingEntity, KoinComponent {
     private val bukkitAdapter: IBukkitAdapter by inject()
     private val teleportService: ITeleportService by inject()
-    private val locationService: ILocationService by inject()
+    private val locationService: ILocationAdapter by inject()
 //    private val messageService: IMessageService by inject()
     private val gameModeService: IGameModeService by inject()
     private val soundService: ISoundService by inject()
@@ -44,7 +46,7 @@ class Player(
         teleportService.teleport(location, this)
     }
 
-    override fun teleport(vector: dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredIntVector) {
+    override fun teleport(vector: ConfiguredIntVector) {
         teleportService.teleport(vector, this)
     }
 
@@ -64,7 +66,7 @@ class Player(
         titleService.sendTitle(title, subtitle, this)
     }
 
-    override fun spawnParticle(particleSets: Set<dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.util.effect.particle.set.IConfiguredParticleSet.ConfiguredParticleSet>) {
+    override fun spawnParticle(particleSets: Set<IConfiguredParticleSet.ConfiguredParticleSet>) {
         particleService.spawnParticle(particleSets, this)
     }
 

@@ -23,8 +23,8 @@ abstract class AbstractGeneratorService(
     protected val effectService: IEffectService by inject()
     protected val parameter: ConfiguredGeneralParameter by inject()
 
-    private val starStocks: MutableMap<dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.game.generator.ConfiguredStarGenerator, StarStockData> = mutableMapOf()
-    private val itemStocks: MutableMap<dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.game.generator.ConfiguredItemGenerator, MutableSet<IEntity>> = mutableMapOf()
+    private val starStocks: MutableMap<dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.game.generator.ConfiguredStarGenerator, StarStockData> = mutableMapOf()
+    private val itemStocks: MutableMap<dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.game.generator.ConfiguredItemGenerator, MutableSet<IEntity>> = mutableMapOf()
 
     protected val scheduler: ISimpleScheduler =
         schedulerFactory.createSimpleScheduler().whileSchedule { _, count ->

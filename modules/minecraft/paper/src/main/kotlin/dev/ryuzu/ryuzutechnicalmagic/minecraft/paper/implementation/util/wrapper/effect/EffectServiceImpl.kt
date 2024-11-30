@@ -1,8 +1,8 @@
 package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.implementation.util.wrapper.effect
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredDoubleLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredDoubleVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.util.effect.ConfiguredEffect
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.effect.ConfiguredEffect
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IEffectService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IParticleService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.ISoundService

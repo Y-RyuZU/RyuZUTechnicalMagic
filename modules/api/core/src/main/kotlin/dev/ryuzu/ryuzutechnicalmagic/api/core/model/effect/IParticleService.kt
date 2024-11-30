@@ -1,8 +1,8 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredDoubleLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredDoubleVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.util.effect.particle.set.IConfiguredParticleSet
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.skill.effect.particle.set.IConfiguredParticleSet
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.IParticleScheduler

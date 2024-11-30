@@ -11,6 +11,7 @@
         </toc-element>
         <toc-element topic="BlockState.md"/>
     </toc-element>
+    <toc-element topic="アイテム管理に関して.md"/>
     <toc-element topic="タスク.md"/>
     <toc-element topic="コンテンツ案一覧.md"/>
 </instance-profile>

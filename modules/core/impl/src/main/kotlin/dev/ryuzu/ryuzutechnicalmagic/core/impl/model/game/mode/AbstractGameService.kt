@@ -11,7 +11,7 @@ import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.IGameData
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.IGameService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.stage.generator.IGeneratorService
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.item.IItemManager
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.item.IItemAdapter
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.placeholder.IPlaceholdable
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISchedulerFactory
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISimpleScheduler
@@ -20,7 +20,7 @@ import dev.ryuzu.ryuzutechnicalmagic.api.core.util.StringUtility.Companion.tickT
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.block.IBlockAdapter
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IEffectService
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.gamemode.IGameModeService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.location.ILocationService
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.location.ILocationAdapter
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.message.IMessageService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IParticleService
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.scoreboard.IScoreboardObject
@@ -51,17 +51,17 @@ abstract class AbstractGameService(
     protected val soundService: ISoundService by inject()
     protected val blockService: IBlockAdapter by inject()
     protected val structureService: IStructureService by inject()
-    protected val itemManager: IItemManager by inject()
+    protected val itemManager: IItemAdapter by inject()
     protected val teleportService: ITeleportService by inject()
     protected val gameModeService: IGameModeService by inject()
-    protected val locationService: ILocationService by inject()
+    protected val locationService: ILocationAdapter by inject()
     protected val scoreboardFactory: ScoreboardFactory by inject()
 
     protected val parameter: ConfiguredGeneralParameter by inject()
     protected val players: MutableSet<IGamePlayer> = entryPlayers.map { createPlayer(it) }.toMutableSet()
 
     protected abstract val gameModeParameter: IConfiguredGameModeParameter
-    protected abstract val gameModeProperty: dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.game.stage.IConfiguredStageGameModeProperty
+    protected abstract val gameModeProperty: dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.game.stage.IConfiguredStageGameModeProperty
     protected abstract val gameData: IGameData
     protected abstract fun createPlayer(player: IPlayer): IGamePlayer
 

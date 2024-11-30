@@ -1,9 +1,9 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.util.wrapper.particle
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredDoubleLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredDoubleVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.effect.particle.CircleParticleSetData
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.util.effect.particle.set.IConfiguredParticleSet
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.skill.effect.particle.CircleParticleSetData
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.effect.particle.set.IConfiguredParticleSet
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.IParticleScheduler
@@ -66,7 +66,7 @@ class ParticleServiceImpl : IParticleService, KoinComponent {
             val directionVector = particleSet.angle.getVector(vector)
             when (particleSet) {
                 is IConfiguredParticleSet.ConfiguredCircleParticleSet -> {
-                    val data = scheduler.getData(particleSet, index) as CircleParticleSetData
+                    val data = scheduler.getData(particleSet, index) as dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.skill.effect.particle.CircleParticleSetData
                     val orthonormalBasis = data.getOrthonormalBasis(directionVector)
                     (0 until particleSet.period).flatMap { count ->
                         particleSet.particles.map { particle ->

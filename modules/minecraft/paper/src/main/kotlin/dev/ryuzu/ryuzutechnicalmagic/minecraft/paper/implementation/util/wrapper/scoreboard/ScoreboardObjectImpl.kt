@@ -1,6 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.implementation.util.wrapper.scoreboard
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.game.mode.ConfiguredScoreboard
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.game.mode.ConfiguredScoreboard
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISchedulerFactory
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISimpleScheduler
@@ -22,7 +22,7 @@ class ScoreboardObjectImpl : IScoreboardObject, KoinComponent {
     private val schedulerFactory: ISchedulerFactory by inject()
     private lateinit var scheduler: ISimpleScheduler
 
-    override fun initialize(scoreboard: List<ConfiguredScoreboard>, placeholders: Map<String, () -> String>, period: UpdatePeriod): IScoreboardObject {
+    override fun initialize(scoreboard: List<dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.game.mode.ConfiguredScoreboard>, placeholders: Map<String, () -> String>, period: UpdatePeriod): IScoreboardObject {
         scoreboardLibrary.createSidebar()
         this.scoreboard = scoreboardLibrary.createSidebar()
         update(scoreboard.first().title, scoreboard.first().lines, placeholders)

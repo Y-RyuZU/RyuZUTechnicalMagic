@@ -10,7 +10,7 @@ import dev.ryuzu.ryuzutechnicalmagic.api.core.model.skill.service.SkillState
 import dev.ryuzu.ryuzutechnicalmagic.api.core.util.TypedMap
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.damage.IDamageService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IEffectService
-import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.location.ILocationService
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.location.ILocationAdapter
 import dev.ryuzu.ryuzutechnicalmagic.core.impl.model.scheduler.SimpleSchedulerFactory
 import org.joml.Vector3d
 import org.koin.core.component.KoinComponent
@@ -19,7 +19,7 @@ import org.koin.core.component.inject
 
 class SimpleShoot : ISkill, KoinComponent {
     private val schedulerFactory: SimpleSchedulerFactory by inject()
-    private val locationService: ILocationService by inject()
+    private val locationService: ILocationAdapter by inject()
     private val effectService: IEffectService by inject()
     private val damageService: IDamageService by inject()
 

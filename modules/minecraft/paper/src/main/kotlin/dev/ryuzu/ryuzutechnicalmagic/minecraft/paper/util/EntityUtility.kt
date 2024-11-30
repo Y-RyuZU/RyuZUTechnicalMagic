@@ -1,8 +1,8 @@
 package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.util
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IEntity
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.ILivingEntity
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.entity.IPlayer
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IEntity
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.ILivingEntity
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import org.bukkit.Bukkit
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity

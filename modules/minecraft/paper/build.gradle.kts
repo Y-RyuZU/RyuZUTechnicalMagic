@@ -43,6 +43,10 @@ repositories {
         url = uri("https://repo.codemc.org/repository/maven-public/")
         name = "commandlib"
     }
+    maven {
+        url = uri("https://repo.codemc.io/repository/maven-releases/")
+        name = "packetevents"
+    }
 //    maven(name = "bkcommonlib") {
 //        url = uri("https://ci.mg-dev.eu/plugin/repository/everything")
 //    }
@@ -87,6 +91,7 @@ dependencies {
     runtimeOnly("com.github.megavexnetwork.scoreboard-library:scoreboard-library-modern:2.1.3")
 
     compileOnly("io.th0rgal:oraxen:1.170.0")
+    compileOnly("com.github.retrooper:packetevents-spigot:2.6.0")
     compileOnly("me.clip:placeholderapi:2.11.5")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
     compileOnly("com.frengor:ultimateadvancementapi:2.2.8")

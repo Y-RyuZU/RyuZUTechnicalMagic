@@ -1,11 +1,11 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.game.mode.carrytnt
 
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.base.ConfiguredIntVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredIntVector
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.mode.ConfiguredGameMode
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.mode.IConfiguredGameModeParameter
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.stage.ConfiguredStage
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.game.stage.IConfiguredStageGameModeProperty
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.game.stage.IConfiguredStageGameModeProperty
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.team.ConfiguredTeam
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.entry.IEntryGameService
@@ -37,8 +37,8 @@ class CarryTntServiceImpl(
     override val gameData: IGameData.ITeamGameData.CarryTntData = IGameData.ITeamGameData.CarryTntData()
     override val gameModeParameter: IConfiguredGameModeParameter.ConfiguredCarryTNTParameter =
         config.parameter as IConfiguredGameModeParameter.ConfiguredCarryTNTParameter
-    override val gameModeProperty: IConfiguredStageGameModeProperty.ConfiguredStageCarryTNTProperty =
-        stage.gameProperty as IConfiguredStageGameModeProperty.ConfiguredStageCarryTNTProperty
+    override val gameModeProperty: dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.game.stage.IConfiguredStageGameModeProperty.ConfiguredStageCarryTNTProperty =
+        stage.gameProperty as dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.game.stage.IConfiguredStageGameModeProperty.ConfiguredStageCarryTNTProperty
     private var tntBlockLocation: ConfiguredIntVector? = gameModeProperty.tntSpawnPoint
     private var tryCarryTNTScheduler: ISimpleScheduler? = null
 
