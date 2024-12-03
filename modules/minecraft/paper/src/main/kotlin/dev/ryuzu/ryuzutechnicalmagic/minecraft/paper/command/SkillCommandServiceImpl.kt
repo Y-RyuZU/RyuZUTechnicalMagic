@@ -1,11 +1,11 @@
 package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.command
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.command.ICommandService
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.skill.service.ISkillService
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.CommandPermission
 import dev.jorel.commandapi.arguments.MultiLiteralArgument
 import dev.jorel.commandapi.executors.CommandExecutor
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.command.ICommandService
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.skill.service.ISkillService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

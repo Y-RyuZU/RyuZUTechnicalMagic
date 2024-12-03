@@ -1,9 +1,10 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.skill.weapon
 
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.skill.ConfiguredSkillParams
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.skill.param.SimpleShootParams
 import dev.ryuzu.ryuzutechnicalmagic.api.core.event.data.skill.IEntitySkillCastEvent
 import dev.ryuzu.ryuzutechnicalmagic.api.core.event.data.skill.ISkillActivateEvent
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredDoubleVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.skill.ConfiguredSkillParams
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IEntity
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.skill.ISkill
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.skill.service.SkillState
@@ -30,11 +31,11 @@ class SimpleShoot : ISkill, KoinComponent {
         state: SkillState?
     ): () -> TypedMap {
         val performance = skillParams.performance
-        require(performance is dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.param.SimpleShootParams) { "Invalid skill params" }
+        require(performance is SimpleShootParams) { "Invalid skill params" }
 
         val world = eventParams.skillCastLocation.world
-        var projectilePoint = eventParams.skillCastLocation.vector
-        val projectileVector = eventParams.direction
+        var projectilePoint: ConfiguredDoubleVector = eventParams.skillCastLocation.vector
+        val projectileVector: ConfiguredDoubleVector = eventParams.direction
         fun location() = projectilePoint.toLocation(world)
         var repeatCount = 0
         val hitEntities = mutableSetOf<IEntity>()

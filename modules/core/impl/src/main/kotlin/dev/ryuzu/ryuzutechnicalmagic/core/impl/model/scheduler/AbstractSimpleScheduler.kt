@@ -3,9 +3,10 @@ package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.scheduler
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISimpleScheduler
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.TaskUnit
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.UpdatePeriod
+import java.util.concurrent.PriorityBlockingQueue
 
 abstract class AbstractSimpleScheduler(val updatePeriod: UpdatePeriod) : ISimpleScheduler {
-    private val tasks: MutableList<TaskUnit> = mutableListOf()
+    private val tasks: PriorityBlockingQueue<TaskUnit> = PriorityBlockingQueue(10, compareBy { it.delay + it.period })
     private val additionalTasks: MutableList<TaskUnit> = mutableListOf()
     protected var endTask: () -> Unit = {}
     protected var finalTask: (Boolean) -> Unit = {}
@@ -22,7 +23,7 @@ abstract class AbstractSimpleScheduler(val updatePeriod: UpdatePeriod) : ISimple
         }
         else {
             this.tasks.addAll(tasks)
-            this.tasks.sortWith(compareBy { it.delay + it.period })
+//            this.tasks.sortWith(compareBy { it.delay + it.period })
         }
     }
 

@@ -1,9 +1,7 @@
 package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.implementation.util.scheduler
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.RyuZUTechnicalMagicCore
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.AbstractSimpleScheduler
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.ISimpleScheduler
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.scheduler.UpdatePeriod
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISimpleScheduler
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.UpdatePeriod
 import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitTask
 import org.koin.core.annotation.Factory

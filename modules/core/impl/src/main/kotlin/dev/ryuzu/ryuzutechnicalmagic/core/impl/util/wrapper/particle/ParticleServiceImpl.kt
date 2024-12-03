@@ -2,15 +2,14 @@ package dev.ryuzu.ryuzutechnicalmagic.core.impl.util.wrapper.particle
 
 import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleLocation
 import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.skill.effect.particle.CircleParticleSetData
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.effect.particle.set.IConfiguredParticleSet
+import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.skill.effect.particle.set.IConfiguredParticleSet
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IParticleService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.IParticleScheduler
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.TaskUnit
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.effect.IEffectAdapter
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.entity.IEntityAdapter
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IParticleService
 import org.joml.Vector3d
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
@@ -74,6 +73,7 @@ class ParticleServiceImpl : IParticleService, KoinComponent {
                                 for (i in 0 until particleSet.acceleration) {
                                     val radian = Math.toRadians(data.nextDegree().toDouble())
                                     val radius = data.nextRadius()
+
                                     val point: ConfiguredDoubleVector = ConfiguredDoubleVector(
                                         Vector3d(location.vector)
                                             .add(Vector3d(orthonormalBasis.u).mul(cos(radian) * radius))

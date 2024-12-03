@@ -11,5 +11,4 @@ dependencies {
     implementation(project(":modules:api:minecraft"))
 
     implementation("com.charleskorn.kaml:kaml:0.61.0")
-
 }

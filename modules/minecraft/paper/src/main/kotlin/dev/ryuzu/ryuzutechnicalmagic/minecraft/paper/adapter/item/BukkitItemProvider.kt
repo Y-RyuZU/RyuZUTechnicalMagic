@@ -1,6 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.adapter.item
 
-import com.github.ryuzu.ryuzutechnicalmagiccore.core.model.storage.Item
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.storage.Item
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.koin.core.annotation.Single
