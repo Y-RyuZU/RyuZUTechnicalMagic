@@ -25,6 +25,6 @@ interface ISimpleScheduler {
     fun runSync(alwaysTimer: Boolean = false): ISimpleScheduler
     fun runAsync(alwaysTimer: Boolean = false): ISimpleScheduler
     fun cancel()
-    fun abbreviate()
+    fun skip()
     fun stop()
 }

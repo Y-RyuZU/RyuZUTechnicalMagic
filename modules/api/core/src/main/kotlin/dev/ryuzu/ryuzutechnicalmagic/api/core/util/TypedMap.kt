@@ -1,7 +1,7 @@
 package  dev.ryuzu.ryuzutechnicalmagic.api.core.util
 
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredIntVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerIntVector
 import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.effect.display.EasingFunction
 import java.util.*
 
@@ -44,8 +44,8 @@ class TypedMap(map: MutableMap<String, Any> = mutableMapOf()) : MutableMap<Strin
     }
 
     @Throws(IllegalArgumentException::class, NumberFormatException::class)
-    fun getVector(key: String): ConfiguredIntVector {
-        return ConfiguredIntVector(getString(key))
+    fun getVector(key: String): SerIntVector {
+        return SerIntVector(getString(key))
     }
 
     @Throws(IllegalArgumentException::class)

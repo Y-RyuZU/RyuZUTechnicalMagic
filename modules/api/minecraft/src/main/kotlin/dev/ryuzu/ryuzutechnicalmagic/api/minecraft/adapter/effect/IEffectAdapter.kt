@@ -1,26 +1,26 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.effect
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.skill.effect.particle.IConfiguredParticle
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.skill.effect.sound.ConfiguredSound
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.skill.effect.sound.ConfiguredSoundSet
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.effect.particle.IConfiguredParticle
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.effect.sound.SerSound
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.effect.sound.SerSoundSet
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 
 interface IEffectAdapter {
     fun spawnParticle(
         particle: IConfiguredParticle,
-        location: ConfiguredDoubleLocation,
-        vector: ConfiguredDoubleVector,
+        location: SerDoubleLocation,
+        vector: SerDoubleVector,
         receivers: Set<IPlayer>
     )
 
     fun spawnParticle(
         particle: IConfiguredParticle,
-        location: ConfiguredDoubleLocation,
-        vector: ConfiguredDoubleVector
+        location: SerDoubleLocation,
+        vector: SerDoubleVector
     )
 
-    fun playSound(soundSet: ConfiguredSoundSet, sound: ConfiguredSound, player: IPlayer)
-    fun playSound(soundSet: ConfiguredSoundSet, sound: ConfiguredSound, location: ConfiguredDoubleLocation)
+    fun playSound(soundSet: SerSoundSet, sound: SerSound, player: IPlayer)
+    fun playSound(soundSet: SerSoundSet, sound: SerSound, location: SerDoubleLocation)
 }

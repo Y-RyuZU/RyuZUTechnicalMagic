@@ -1,6 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.entity
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredIntVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerIntVector
 import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.effect.particle.set.IConfiguredParticleSet
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntLocation
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.effect.sound.ConfiguredSoundSet
@@ -46,7 +46,7 @@ class Player(
         teleportService.teleport(location, this)
     }
 
-    override fun teleport(vector: ConfiguredIntVector) {
+    override fun teleport(vector: SerIntVector) {
         teleportService.teleport(vector, this)
     }
 

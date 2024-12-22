@@ -6,8 +6,8 @@ import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.UpdatePeriod
 import java.util.concurrent.PriorityBlockingQueue
 
 abstract class AbstractSimpleScheduler(val updatePeriod: UpdatePeriod) : ISimpleScheduler {
-    private val tasks: PriorityBlockingQueue<TaskUnit> = PriorityBlockingQueue(10, compareBy { it.delay + it.period })
-    private val additionalTasks: MutableList<TaskUnit> = mutableListOf()
+    private val tasks = PriorityBlockingQueue<TaskUnit>(10, compareBy { it.delay })
+    private val additionalTasks = PriorityBlockingQueue<TaskUnit>(10, compareBy { it.delay })
     protected var endTask: () -> Unit = {}
     protected var finalTask: (Boolean) -> Unit = {}
     private var currentTick: Long = 0
@@ -17,14 +17,9 @@ abstract class AbstractSimpleScheduler(val updatePeriod: UpdatePeriod) : ISimple
     private var alwaysTimer = false
 
     override fun schedule(tasks: Set<TaskUnit>): ISimpleScheduler = apply {
-        if (started){
-            this.additionalTasks.addAll(tasks.map { it.copy(delay = currentTick + it.delay) })
-            this.additionalTasks.sortWith(compareBy { it.delay + it.period })
-        }
-        else {
-            this.tasks.addAll(tasks)
-//            this.tasks.sortWith(compareBy { it.delay + it.period })
-        }
+        val absoluteTasks = tasks.map { it.copy(delay = currentTick + it.delay) }
+        this.tasks.addAll(absoluteTasks)
+        this.additionalTasks.addAll(absoluteTasks)
     }
 
     override fun end(task: () -> Unit): ISimpleScheduler = apply { endTask = task }
@@ -39,7 +34,7 @@ abstract class AbstractSimpleScheduler(val updatePeriod: UpdatePeriod) : ISimple
         stop()
     }
 
-    override fun abbreviate() {
+    override fun skip() {
         abbreviated = true
         endTask()
         finalTask(true)
@@ -62,7 +57,6 @@ abstract class AbstractSimpleScheduler(val updatePeriod: UpdatePeriod) : ISimple
 
     protected fun runnable() = Runnable {
         processTasks(tasks)
-        processTasks(additionalTasks)
 
         if(abbreviated)
             tasks.clear()
@@ -78,19 +72,25 @@ abstract class AbstractSimpleScheduler(val updatePeriod: UpdatePeriod) : ISimple
         if(getEndTime() < getAdditionalEndTime() && additionalTasks.isEmpty())
             stop()
 
+        additionalTasks.clear()
         currentTick++
     }
 
     protected fun getEndTime(): Long = tasks.maxOfOrNull { it.delay + it.period } ?: 0
     private fun getAdditionalEndTime(): Long = additionalTasks.maxOfOrNull { it.delay + it.period } ?: 0
 
-    private fun processTasks(tasks: MutableList<TaskUnit>) {
-        tasks.removeIf { task ->
-            val isInTimeRange = currentTick in task.delay until task.delay + task.period
-            if (isInTimeRange && task.condition(currentTick))
-                task.task(this, currentTick)
+    private fun processTasks(tasks: PriorityBlockingQueue<TaskUnit>) {
+        val stayTasks = mutableListOf<TaskUnit>()
+        while (tasks.isNotEmpty()) {
+            if(currentTick < tasks.peek().delay)
+                break
 
-            currentTick == task.delay + task.period - 1
+            val task = tasks.poll()
+            task.task(this, currentTick)
+
+            if (currentTick < task.getAbsolutePeriod() - 1)
+                stayTasks.add(task)
         }
+        tasks.addAll(stayTasks)
     }
 }

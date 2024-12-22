@@ -5,4 +5,8 @@ data class TaskUnit(
     val period: Long = 1,
     val condition: (Long) -> Boolean = { true },
     val task: (ISimpleScheduler, Long) -> Unit
-)
+) {
+    fun getAbsolutePeriod(): Long =
+        delay + period
+
+}

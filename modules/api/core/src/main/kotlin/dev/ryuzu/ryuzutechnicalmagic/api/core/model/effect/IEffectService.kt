@@ -1,35 +1,35 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.skill.effect.ConfiguredEffect
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.effect.SerEffect
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.IParticleScheduler
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.TaskUnit
 
 interface IEffectService {
     fun convertTaskUnits(
-        effect: ConfiguredEffect,
+        effect: SerEffect,
         id: String,
-        location: ConfiguredDoubleLocation,
-        vector: ConfiguredDoubleVector,
+        location: SerDoubleLocation,
+        vector: SerDoubleVector,
         scheduler: IParticleScheduler
     ): Set<TaskUnit>
 
     fun playEffect(
-        effect: ConfiguredEffect,
+        effect: SerEffect,
         id: String,
-        location: ConfiguredDoubleLocation,
-        vector: ConfiguredDoubleVector,
+        location: SerDoubleLocation,
+        vector: SerDoubleVector,
         scheduler: IParticleScheduler
     )
 
     fun convertTaskUnits(
-        effect: ConfiguredEffect,
+        effect: SerEffect,
         id: String,
         scheduler: IParticleScheduler,
         vararg players: IPlayer
     ): Set<TaskUnit>
 
-    fun playEffect(effect: ConfiguredEffect, id: String, vararg players: IPlayer)
+    fun playEffect(effect: SerEffect, id: String, vararg players: IPlayer)
 }

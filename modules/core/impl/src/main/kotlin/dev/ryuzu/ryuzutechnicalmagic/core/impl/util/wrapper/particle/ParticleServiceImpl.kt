@@ -1,8 +1,12 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.util.wrapper.particle
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.skill.effect.particle.set.IConfiguredParticleSet
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.effect.particle.set.CircleParticleSetData
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.effect.particle.IConfiguredParticle
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.effect.particle.set.ConfiguredCircleParticleSet
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.effect.particle.set.IConfiguredParticleSet
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.effect.particle.set.OrthonormalBasis
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IParticleService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer
@@ -10,12 +14,9 @@ import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.IParticleScheduler
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.TaskUnit
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.effect.IEffectAdapter
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.entity.IEntityAdapter
-import org.joml.Vector3d
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import kotlin.math.cos
-import kotlin.math.sin
 
 @Single([IParticleService::class])
 class ParticleServiceImpl : IParticleService, KoinComponent {
@@ -43,62 +44,83 @@ class ParticleServiceImpl : IParticleService, KoinComponent {
 
     override fun convertTaskUnits(
         particleSets: Set<IConfiguredParticleSet>,
-        location: ConfiguredDoubleLocation,
-        vector: ConfiguredDoubleVector,
+        location: SerDoubleLocation,
+        vector: SerDoubleVector,
         scheduler: IParticleScheduler
     ): Set<TaskUnit> =
         particleSets.flatMap { particleSet ->
             processParticleSet(particleSet, particleSet.angle.getVector(vector), location, scheduler)
         }.toSet()
 
-    override fun getReceivers(player: IGamePlayer, location: ConfiguredDoubleLocation): Set<IPlayer> {
+    override fun getReceivers(player: IGamePlayer, location: SerDoubleLocation): Set<IPlayer> {
         TODO()
     }
 
     private fun processParticleSet(
         particleSet: IConfiguredParticleSet,
-        vector: ConfiguredDoubleVector,
-        location: ConfiguredDoubleLocation,
+        vector: SerDoubleVector,
+        location: SerDoubleLocation,
         scheduler: IParticleScheduler
-    ): Set<TaskUnit> =
-        (0 until particleSet.amount).flatMap { index ->
+    ): Set<TaskUnit> {
+        return (0 until particleSet.amount).flatMap { index ->
             val directionVector = particleSet.angle.getVector(vector)
-            when (particleSet) {
-                is IConfiguredParticleSet.ConfiguredCircleParticleSet -> {
-                    val data = scheduler.getData(particleSet, index) as dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.skill.effect.particle.CircleParticleSetData
-                    val orthonormalBasis = data.getOrthonormalBasis(directionVector)
-                    (0 until particleSet.period).flatMap { count ->
-                        particleSet.particles.map { particle ->
-                            TaskUnit(particleSet.delay + particle.delay + count) { _, _ ->
-                                for (i in 0 until particleSet.acceleration) {
-                                    val radian = Math.toRadians(data.nextDegree().toDouble())
-                                    val radius = data.nextRadius()
 
-                                    val point: ConfiguredDoubleVector = ConfiguredDoubleVector(
-                                        Vector3d(location.vector)
-                                            .add(Vector3d(orthonormalBasis.u).mul(cos(radian) * radius))
-                                            .add(Vector3d(orthonormalBasis.w).mul(sin(radian) * radius))
-                                    )
-
-                                    val circleExtraVector = ConfiguredDoubleVector(
-                                        if (particle.count == 0)
-                                            Vector3d(point).sub(location.vector).normalize()
-                                        else
-                                            orthonormalBasis.u
-                                    )
-
-                                    effectAdapter.spawnParticle(particle, point.toLocation(location.world), circleExtraVector)
-                                }
-                            }
-                        }
-                    }
+            when(particleSet) {
+                is ConfiguredCircleParticleSet -> {
+                    processCircleParticleSet(particleSet, index, directionVector, location, scheduler)
                 }
-
-                else -> particleSet.particles.map { particle ->
-                    TaskUnit(particleSet.delay + particle.delay) { _, _ ->
-                        effectAdapter.spawnParticle(particle, location, directionVector)
-                    }
+                else -> {
+                    processDefaultParticleSet(particleSet, location, directionVector)
                 }
             }
         }.toSet()
+    }
+
+    private fun processCircleParticleSet(
+        particleSet: ConfiguredCircleParticleSet,
+        index: Int,
+        directionVector: SerDoubleVector,
+        location: SerDoubleLocation,
+        scheduler: IParticleScheduler
+    ): List<TaskUnit> {
+        val data = scheduler.getData(particleSet, index) as CircleParticleSetData
+        val orthonormalBasis = data.getOrthonormalBasis(directionVector)
+
+        return (0 until particleSet.period).flatMap { count ->
+            particleSet.particles.map { particle ->
+                createCircleTaskUnit(particleSet, particle, count, orthonormalBasis, location, data)
+            }
+        }
+    }
+
+    private fun createCircleTaskUnit(
+        particleSet: ConfiguredCircleParticleSet,
+        particle: IConfiguredParticle,
+        count: Long,
+        orthonormalBasis: OrthonormalBasis,
+        location: SerDoubleLocation,
+        data: CircleParticleSetData
+    ): TaskUnit {
+        return TaskUnit(particleSet.delay + particle.delay + count) { _, _ ->
+            repeat(particleSet.acceleration) {
+                val radian = Math.toRadians(data.nextDegree().toDouble())
+                val radius = data.nextRadius()
+                val point = location.vector.calculateCirclePoint(orthonormalBasis, radian, radius)
+                val extraVector = location.vector.calculateCircleExtraVector(particle, point, orthonormalBasis)
+                effectAdapter.spawnParticle(particle, point.toLocation(location.world), extraVector)
+            }
+        }
+    }
+
+    private fun processDefaultParticleSet(
+        particleSet: IConfiguredParticleSet,
+        location: SerDoubleLocation,
+        directionVector: SerDoubleVector
+    ): List<TaskUnit> {
+        return particleSet.particles.map { particle ->
+            TaskUnit(particleSet.delay + particle.delay) { _, _ ->
+                effectAdapter.spawnParticle(particle, location, directionVector)
+            }
+        }
+    }
 }

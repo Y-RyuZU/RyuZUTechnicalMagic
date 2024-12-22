@@ -1,20 +1,5 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.game.mode.carrytnt
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredIntVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.mode.ConfiguredGameMode
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.mode.IConfiguredGameModeParameter
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.stage.ConfiguredStage
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.game.stage.IConfiguredStageGameModeProperty
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.game.team.ConfiguredTeam
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.entry.IEntryGameService
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.IGameData
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.carrytnt.ICarryTntListener
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.mode.carrytnt.ICarryTntService
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer.GamePlayer.ITeamGamePlayer.TeamGamePlayer.ICarryTntPlayer
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.team.IGameTeam
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.team.IGameTeam.IScoreGameTeam.CarryTntTeam
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISimpleScheduler
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.UpdatePeriod
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.bossbar.IBossBarFactory
@@ -35,11 +20,11 @@ class CarryTntServiceImpl(
     entryPlayers: Set<IPlayer>,
 ) : ICarryTntService, AbstractTeamGameService(world, config, stage, entryService, entryPlayers), KoinComponent {
     override val gameData: IGameData.ITeamGameData.CarryTntData = IGameData.ITeamGameData.CarryTntData()
-    override val gameModeParameter: IConfiguredGameModeParameter.ConfiguredCarryTNTParameter =
+    override val gameModeParameter: ConfiguredCarryTNTParameter =
         config.parameter as IConfiguredGameModeParameter.ConfiguredCarryTNTParameter
-    override val gameModeProperty: dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.game.stage.IConfiguredStageGameModeProperty.ConfiguredStageCarryTNTProperty =
-        stage.gameProperty as dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.game.stage.IConfiguredStageGameModeProperty.ConfiguredStageCarryTNTProperty
-    private var tntBlockLocation: ConfiguredIntVector? = gameModeProperty.tntSpawnPoint
+    override val gameModeProperty: dev.ryuzu.ryuzutechnicalmagic.api.core.data.game.stage.IConfiguredStageGameModeProperty.ConfiguredStageCarryTNTProperty =
+        stage.gameProperty as dev.ryuzu.ryuzutechnicalmagic.api.core.data.game.stage.IConfiguredStageGameModeProperty.ConfiguredStageCarryTNTProperty
+    private var tntBlockLocation: SerIntVector? = gameModeProperty.tntSpawnPoint
     private var tryCarryTNTScheduler: ISimpleScheduler? = null
 
     @Suppress("UNCHECKED_CAST")
@@ -157,7 +142,7 @@ class CarryTntServiceImpl(
         bossBars.values.forEach { it.color(player.team.property.id.uppercase()) }
     }
 
-    private fun getEnemyPoint(team: CarryTntTeam): ConfiguredIntVector {
+    private fun getEnemyPoint(team: CarryTntTeam): SerIntVector {
         val enemy = teams.values.first { it != team } as CarryTntTeam
         return gameModeProperty.teamTNTLocations[enemy.property.id]!!
     }

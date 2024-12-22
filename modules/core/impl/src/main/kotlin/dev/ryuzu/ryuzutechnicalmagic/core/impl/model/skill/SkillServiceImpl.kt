@@ -9,6 +9,7 @@ import dev.ryuzu.ryuzutechnicalmagic.api.core.model.skill.service.ISkillService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.storage.Item
 import dev.ryuzu.ryuzutechnicalmagic.core.impl.event.handler.EventHandler
 import dev.ryuzu.ryuzutechnicalmagic.core.impl.model.skill.service.AbstractSkillService
+import event.data.*
 import org.koin.core.annotation.Single
 import org.koin.core.component.inject
 

@@ -7,11 +7,15 @@
 
     <toc-element toc-title="Writerside">
         <toc-element toc-title="topics">
+            <toc-element topic="仕様書.md">
+                <toc-element topic="BlockState.md"/>
+                <toc-element topic="アイテム管理に関して.md"/>
+            </toc-element>
+            <toc-element topic="戦闘.md"/>
+            <toc-element topic="依存方向.md"/>
+            <toc-element topic="タスク.md"/>
+            <toc-element topic="コンテンツ案一覧.md"/>
             <toc-element topic="Starter.md"/>
         </toc-element>
-        <toc-element topic="BlockState.md"/>
     </toc-element>
-    <toc-element topic="アイテム管理に関して.md"/>
-    <toc-element topic="タスク.md"/>
-    <toc-element topic="コンテンツ案一覧.md"/>
 </instance-profile>

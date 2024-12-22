@@ -1,0 +1,3 @@
+package event.data
+
+interface IPlayerSkillCastClickAirEvent : IPlayerSkillCastClickEvent

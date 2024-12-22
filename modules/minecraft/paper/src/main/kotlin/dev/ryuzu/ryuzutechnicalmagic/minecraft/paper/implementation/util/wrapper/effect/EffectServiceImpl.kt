@@ -1,8 +1,7 @@
 package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.implementation.util.wrapper.effect
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.effect.ConfiguredEffect
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleVector
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IEffectService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IParticleService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.ISoundService
@@ -10,9 +9,6 @@ import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.IParticleScheduler
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISchedulerFactory
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.TaskUnit
-import org.koin.core.annotation.Single
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 @Single([IEffectService::class])
 class EffectServiceImpl : IEffectService, KoinComponent {
@@ -23,8 +19,8 @@ class EffectServiceImpl : IEffectService, KoinComponent {
     override fun convertTaskUnits(
         effect: ConfiguredEffect,
         id: String,
-        location: ConfiguredDoubleLocation,
-        vector: ConfiguredDoubleVector,
+        location: SerDoubleLocation,
+        vector: SerDoubleVector,
         scheduler: IParticleScheduler
     ): Set<TaskUnit> =
         sequenceOf(
@@ -35,8 +31,8 @@ class EffectServiceImpl : IEffectService, KoinComponent {
     override fun playEffect(
         effect: ConfiguredEffect,
         id: String,
-        location: ConfiguredDoubleLocation,
-        vector: ConfiguredDoubleVector,
+        location: SerDoubleLocation,
+        vector: SerDoubleVector,
         scheduler: IParticleScheduler
     ) {
         schedulerFactory.createSimpleScheduler().schedule(convertTaskUnits(effect, id, location, vector, scheduler)).runSync()

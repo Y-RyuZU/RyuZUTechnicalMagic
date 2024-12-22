@@ -1,7 +1,7 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.model.skill.service
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.event.data.skill.IEntitySkillCastEvent
-import dev.ryuzu.ryuzutechnicalmagic.api.core.event.data.skill.IPlayerSkillCastEvent
+import event.data.IEntitySkillCastEvent
+import event.data.IPlayerSkillCastEvent
 import dev.ryuzu.ryuzutechnicalmagic.api.core.event.data.skill.ISkillActivateEvent
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.skill.ConfiguredSkillParams
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.skill.ConfiguredSkillSet

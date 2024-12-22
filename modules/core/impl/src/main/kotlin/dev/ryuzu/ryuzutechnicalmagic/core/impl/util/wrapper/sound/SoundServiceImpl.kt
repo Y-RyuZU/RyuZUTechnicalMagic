@@ -1,6 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.core.impl.util.wrapper.sound
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredDoubleLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleLocation
 import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.effect.sound.ConfiguredSoundSet
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.TaskUnit
@@ -29,7 +29,7 @@ class SoundServiceImpl : ISoundService, KoinComponent {
         }.toSet()
     }
 
-    override fun convertTaskUnits(soundSets: Set<ConfiguredSoundSet>, location: ConfiguredDoubleLocation): Set<TaskUnit> {
+    override fun convertTaskUnits(soundSets: Set<ConfiguredSoundSet>, location: SerDoubleLocation): Set<TaskUnit> {
         return soundSets.flatMap { soundSet ->
             soundSet.sounds.map { sound ->
                 TaskUnit(sound.delay) { _, _ ->
@@ -43,7 +43,7 @@ class SoundServiceImpl : ISoundService, KoinComponent {
         schedulerFactory.createSimpleScheduler().schedule(convertTaskUnits(soundSets, *players)).runSync()
     }
 
-    override fun playSound(soundSets: Set<ConfiguredSoundSet>, location: ConfiguredDoubleLocation) {
+    override fun playSound(soundSets: Set<ConfiguredSoundSet>, location: SerDoubleLocation) {
         schedulerFactory.createSimpleScheduler().schedule(convertTaskUnits(soundSets, location)).runSync()
     }
 }

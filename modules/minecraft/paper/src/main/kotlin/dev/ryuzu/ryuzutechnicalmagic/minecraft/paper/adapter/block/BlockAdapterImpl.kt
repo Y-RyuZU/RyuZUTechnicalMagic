@@ -3,7 +3,7 @@ package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.adapter.block
 import com.github.retrooper.packetevents.PacketEvents
 import com.github.retrooper.packetevents.util.Vector3i
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerBlockBreakAnimation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.base.ConfiguredIntLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerIntLocation
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.block.IBlockAdapter
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.location.ILocationAdapter
 import dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.util.EntityUtility.Companion.toPlayer
@@ -18,16 +18,16 @@ class BlockAdapterImpl : IBlockAdapter, KoinComponent {
     private val locationAdapter: ILocationAdapter by inject()
 
 
-    override fun setBlock(location: ConfiguredIntLocation, id: String) =
+    override fun setBlock(location: SerIntLocation, id: String) =
         blockProviders.firstOrNull { it.existsId(id) }?.setBlock(location, id) ?: throw IllegalArgumentException("Block not found with id $id")
 
-    override fun getBlockId(location: ConfiguredIntLocation): String =
+    override fun getBlockId(location: SerIntLocation): String =
         blockProviders.firstNotNullOfOrNull { it.getBlockId(location) } ?: throw IllegalArgumentException("Block not found at $location")
 
     override fun getHardness(id: String): Int =
         blockProviders.firstOrNull { it.existsId(id) }?.getHardness(id) ?: throw IllegalArgumentException("Block not found with id $id")
 
-    override fun setBlockDestroyState(location: ConfiguredIntLocation, destroyState: Byte) {
+    override fun setBlockDestroyState(location: SerIntLocation, destroyState: Byte) {
         val animationId = Random.nextInt() // ナゾのID
         val vector = Vector3i(location.vector.x, location.vector.y, location.vector.z)
         val packet = WrapperPlayServerBlockBreakAnimation(animationId, vector, destroyState)

@@ -61,7 +61,7 @@ abstract class AbstractGameService(
     protected val players: MutableSet<IGamePlayer> = entryPlayers.map { createPlayer(it) }.toMutableSet()
 
     protected abstract val gameModeParameter: IConfiguredGameModeParameter
-    protected abstract val gameModeProperty: dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.game.stage.IConfiguredStageGameModeProperty
+    protected abstract val gameModeProperty: dev.ryuzu.ryuzutechnicalmagic.api.core.data.game.stage.IConfiguredStageGameModeProperty
     protected abstract val gameData: IGameData
     protected abstract fun createPlayer(player: IPlayer): IGamePlayer
 

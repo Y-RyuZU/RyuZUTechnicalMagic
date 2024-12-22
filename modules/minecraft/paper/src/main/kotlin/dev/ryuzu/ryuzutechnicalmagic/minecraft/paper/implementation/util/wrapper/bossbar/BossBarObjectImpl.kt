@@ -1,6 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.implementation.util.wrapper.bossbar
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.data.bossbar.ConfiguredBossBar
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.bossbar.SerBossBar
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISchedulerFactory
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISimpleScheduler
@@ -25,7 +25,7 @@ class BossBarObjectImpl : IBossBarObject, KoinComponent {
     private lateinit var bossBar: BossBar
     private val players: MutableSet<IPlayer> = mutableSetOf()
 
-    override fun initialize(config: ConfiguredBossBar, placeholders: Map<String, () -> String>, period: UpdatePeriod) {
+    override fun initialize(config: SerBossBar, placeholders: Map<String, () -> String>, period: UpdatePeriod) {
         this.bossBar = bossBarBuilder
             .color(BossBar.Color.valueOf(config.color.uppercase()))
             .style(BossBar.Overlay.valueOf(config.style.uppercase()))
