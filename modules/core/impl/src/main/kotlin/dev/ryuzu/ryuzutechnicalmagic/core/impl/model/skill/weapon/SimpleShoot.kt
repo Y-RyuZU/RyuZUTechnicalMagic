@@ -6,7 +6,7 @@ import data.skill.param.SerSimpleShootParams
 import event.data.IEntitySkillCastEvent
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IEntity
 import dev.ryuzu.ryuzutechnicalmagic.api.core.util.TypedMap
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.damage.IDamageService
+import service.damage.IDamageService
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.effect.IEffectService
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.location.ILocationAdapter
 import dev.ryuzu.ryuzutechnicalmagic.core.impl.model.scheduler.SimpleSchedulerFactory

@@ -1,8 +1,8 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.core.data.base
 
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.SerializableObjectUtil.fromStringPart
 import kotlinx.serialization.Serializable
 import org.joml.AxisAngle4f
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.util.ConfiguredParserUtil.fromStringPart
 
 @Serializable
 data class SerAxisAngle4f(

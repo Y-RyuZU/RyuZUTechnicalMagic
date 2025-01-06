@@ -1,6 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.game.service.mode
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.gui.GuiAction
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.gui.GuiAction
 
 enum class GameMode {
     CarryTnt,
@@ -13,13 +13,13 @@ enum class GameMode {
 
     fun getGuiAction(): GuiAction {
         return when(this) {
-            dev.ryuzu.ryuzutechnicalmagic.api.game.service.mode.GameMode.CarryTnt -> GuiAction.CHANGE_CARRY_TNT
-            dev.ryuzu.ryuzutechnicalmagic.api.game.service.mode.GameMode.CarrySmallTnt -> GuiAction.CHANGE_CARRY_MINI_TNT
-            dev.ryuzu.ryuzutechnicalmagic.api.game.service.mode.GameMode.CaptureWool -> GuiAction.CHANGE_CAPTURE_FOOL
-            dev.ryuzu.ryuzutechnicalmagic.api.game.service.mode.GameMode.SteelJewelry -> GuiAction.CHANGE_STEEL_JEWELRY
-            dev.ryuzu.ryuzutechnicalmagic.api.game.service.mode.GameMode.BreakCore -> GuiAction.CHANGE_BREAK_CORE
-            dev.ryuzu.ryuzutechnicalmagic.api.game.service.mode.GameMode.CarryBigTnt -> GuiAction.CHANGE_PAYLOAD
-            dev.ryuzu.ryuzutechnicalmagic.api.game.service.mode.GameMode.BattleRoyale -> GuiAction.CHANGE_BATTLE_ROYALE
+            CarryTnt -> GuiAction.CHANGE_CARRY_TNT
+            CarrySmallTnt -> GuiAction.CHANGE_CARRY_MINI_TNT
+            CaptureWool -> GuiAction.CHANGE_CAPTURE_FOOL
+            SteelJewelry -> GuiAction.CHANGE_STEEL_JEWELRY
+            BreakCore -> GuiAction.CHANGE_BREAK_CORE
+            CarryBigTnt -> GuiAction.CHANGE_PAYLOAD
+            BattleRoyale -> GuiAction.CHANGE_BATTLE_ROYALE
         }
     }
     

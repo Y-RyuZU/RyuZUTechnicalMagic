@@ -1,6 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.core.data.effect.particle.set
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredDoubleVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleVector
 import org.joml.Vector3d
 import kotlin.random.Random
 
@@ -10,14 +10,14 @@ enum class ParticleAngle {
     VERTICAL,
     RANDOM;
 
-    fun getVector(v: ConfiguredDoubleVector): ConfiguredDoubleVector {
+    fun getVector(v: SerDoubleVector): SerDoubleVector {
         return when (this) {
-            dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.effect.particle.set.ParticleAngle.RAW -> v
-            dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.effect.particle.set.ParticleAngle.HORIZONTAL -> ConfiguredDoubleVector(
+            RAW -> v
+            HORIZONTAL -> SerDoubleVector(
                 if (v.y == 0.0) randomHorizontalVector() else v.copy(y = 0.0).normalize()
             )
-            dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.effect.particle.set.ParticleAngle.VERTICAL -> ConfiguredDoubleVector(0.0, 1.0, 0.0)
-            dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.effect.particle.set.ParticleAngle.RANDOM -> ConfiguredDoubleVector(randomVector())
+            VERTICAL -> SerDoubleVector(0.0, 1.0, 0.0)
+            RANDOM -> SerDoubleVector(randomVector())
         }
     }
 

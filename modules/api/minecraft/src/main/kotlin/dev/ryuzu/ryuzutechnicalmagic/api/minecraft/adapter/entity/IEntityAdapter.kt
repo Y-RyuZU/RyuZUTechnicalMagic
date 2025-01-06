@@ -4,12 +4,12 @@ import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleLocation
 import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleVector
 import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerIntLocation
 import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerIntVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.effect.display.IConfiguredDisplay
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.effect.display.ISerDisplay
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IEntity
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.ILivingEntity
 
 interface IEntityAdapter {
-    fun spawnDisplay(configuredLocation: SerDoubleLocation, configuredDisplay: IConfiguredDisplay)
+    fun spawnDisplay(configuredLocation: SerDoubleLocation, configuredDisplay: ISerDisplay)
     fun getIntLocation(entity: IEntity): SerIntLocation
     fun getDoubleLocation(entity: IEntity): SerDoubleLocation
     fun getEyeLocation(entity: ILivingEntity): SerDoubleLocation

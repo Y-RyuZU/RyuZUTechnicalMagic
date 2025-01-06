@@ -1,8 +1,10 @@
 package service
 
+import data.skill.SkillTrigger
+import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
+import dev.ryuzu.ryuzutechnicalmagic.api.core.util.TypedMap
 import event.data.IPlayerSkillCastEvent
-import dev.ryuzu.ryuzutechnicalmagic.api.core.event.data.skill.ISkillActivateEvent
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.skill.SkillTrigger
+import event.data.ISkillActivateEvent
 
 data class SkillState(
     val event: ISkillActivateEvent,
@@ -10,9 +12,9 @@ data class SkillState(
     val relationExpirationTime: Long,
     val before: SkillState? = null,
 ) {
-    lateinit var dataCaller: () -> dev.ryuzu.ryuzutechnicalmagic.api.core.util.TypedMap
+    lateinit var dataCaller: () -> TypedMap
 
-    fun setDataCaller(dataCaller: () -> dev.ryuzu.ryuzutechnicalmagic.api.core.util.TypedMap): SkillState {
+    fun setDataCaller(dataCaller: () -> TypedMap): SkillState {
         this.dataCaller = dataCaller
         return this
     }
@@ -27,7 +29,7 @@ data class SkillState(
         return index
     }
 
-    fun getOriginalCasterPlayer(): dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer? {
+    fun getOriginalCasterPlayer(): IPlayer? {
         var state: SkillState = this
         while (state.before != null) {
             state = state.before!!

@@ -9,7 +9,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("gradle-plugin"))
-    implementation("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:2.1.0-RC2-1.0.28")
+    implementation("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:2.1.0-1.0.29")
     implementation("org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin:2.1.0-RC2")
     implementation("org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:2.1.0")
 //    implementation("com.gradleup.shadow:shadow-gradle-plugin:8.3.5")

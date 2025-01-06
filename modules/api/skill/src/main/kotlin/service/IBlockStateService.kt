@@ -1,4 +1,0 @@
-package service
-
-interface IBlockStateService {
-}

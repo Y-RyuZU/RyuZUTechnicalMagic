@@ -1,5 +1,6 @@
 plugins {
     id("dev.ryuzu.shared-build")
+    id("com.google.devtools.ksp")
 }
 
 dependencies {
@@ -13,3 +14,7 @@ dependencies {
 
     implementation("com.charleskorn.kaml:kaml:0.61.0")
 }
+
+//sourceSets.named("main") {
+//    java.srcDir("build/generated/ksp/main/kotlin")
+//}

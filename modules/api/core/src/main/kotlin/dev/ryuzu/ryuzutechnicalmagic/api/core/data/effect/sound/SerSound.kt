@@ -1,6 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.core.data.effect.sound
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.util.ConfiguredParserUtil.fromStringPart
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.SerializableObjectUtil.fromStringPart
 import kotlinx.serialization.Serializable
 
 @Serializable

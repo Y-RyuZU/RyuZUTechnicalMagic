@@ -39,19 +39,19 @@ class ItemAdapterImpl : IItemAdapter, KoinComponent {
     override fun hasEnoughSpace(item: Item, player: IPlayer): Boolean =
         player.toPlayer().inventory.firstEmpty() != -1
 
-    private fun getItemStack(item: Item): ItemStack =
+    fun getItemStack(item: Item): ItemStack =
         itemProviders.firstNotNullOfOrNull { it.getItemStack(item) }
             ?: throw IllegalArgumentException("Item not found: ${item.id}")
 
-    private fun getItemStack(id: String): ItemStack =
+    fun getItemStack(id: String): ItemStack =
         itemProviders.firstNotNullOfOrNull { it.getItemStack(id) }
             ?: throw IllegalArgumentException("Item not found: $id")
 
-    private fun getId(itemStack: ItemStack): String =
+    fun getId(itemStack: ItemStack): String =
         itemProviders.firstNotNullOfOrNull { it.getId(itemStack) }
             ?: throw IllegalArgumentException("Item not found: ${itemStack.type}")
 
-    private fun getItem(itemStack: ItemStack): Item =
+    fun getItem(itemStack: ItemStack): Item =
         Item(
             getId(itemStack), itemStack.amount
         )

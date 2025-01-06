@@ -4,3 +4,7 @@ plugins {
 
 group = "dev.ryuzu"
 version = "1.0.0"
+
+dependencies {
+    implementation(project(":modules:api:core"))
+}

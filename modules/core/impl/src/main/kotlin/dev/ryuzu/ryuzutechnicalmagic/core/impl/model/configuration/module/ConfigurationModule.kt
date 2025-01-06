@@ -10,16 +10,6 @@ import java.io.File
 
 @Module
 class ConfigurationModule : KoinComponent {
-//    private val instance: RyuZUTechnicalMagicCore by inject()
-
-    @Named("dataFolder")
-    @Single
-    fun provideDataFolder(): File = instance.dataFolder
-
-    @Named("worldContainer")
-    @Single
-    fun provideWorldContainer(): File = instance.server.worldContainer
-
     @Single
     fun provideSnakeYaml(): Yaml = Yaml.default
 }

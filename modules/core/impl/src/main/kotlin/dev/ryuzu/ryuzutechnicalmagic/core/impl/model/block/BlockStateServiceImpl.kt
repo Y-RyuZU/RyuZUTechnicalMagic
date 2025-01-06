@@ -6,7 +6,7 @@ import dev.ryuzu.ryuzutechnicalmagic.api.core.data.general.SerGeneralParameter
 import data.block.BlockDamageData
 import data.block.BlockState
 import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.block.IBlockAdapter
-import service.IBlockStateService
+import service.block.IBlockStateService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named

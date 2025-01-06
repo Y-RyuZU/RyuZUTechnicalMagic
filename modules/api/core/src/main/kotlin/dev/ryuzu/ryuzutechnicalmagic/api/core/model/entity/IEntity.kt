@@ -1,17 +1,17 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredDoubleLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredDoubleVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerIntLocation
 import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerIntVector
 import java.util.*
 
 interface IEntity {
     val id: UUID
 
-    fun getDirection(): ConfiguredDoubleVector
-    fun teleport(location: ConfiguredIntLocation)
+    fun getDirection(): SerDoubleVector
+    fun teleport(location: SerIntLocation)
     fun teleport(vector: SerIntVector)
-    fun getIntLocation(): ConfiguredIntLocation
-    fun getDoubleLocation(): ConfiguredDoubleLocation
+    fun getIntLocation(): SerIntLocation
+    fun getDoubleLocation(): SerDoubleLocation
 }

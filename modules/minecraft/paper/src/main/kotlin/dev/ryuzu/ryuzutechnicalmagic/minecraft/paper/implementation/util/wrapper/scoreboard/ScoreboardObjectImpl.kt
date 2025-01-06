@@ -1,7 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.implementation.util.wrapper.scoreboard
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.data.game.mode.ConfiguredScoreboard
-import dev.ryuzu.ryuzutechnicalmagic.api.core.data.scoreboard.SerScoreBoard
+import dev.ryuzu.ryuzutechnicalmagic.api.minecraft.adapter.scoreboard.SerScoreBoard
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISchedulerFactory
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.scheduler.ISimpleScheduler

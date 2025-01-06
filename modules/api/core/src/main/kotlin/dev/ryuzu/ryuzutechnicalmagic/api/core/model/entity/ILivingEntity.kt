@@ -1,9 +1,9 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredDoubleLocation
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredDoubleVector
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerDoubleVector
 
 interface ILivingEntity : IEntity {
-    fun getEyeLocation(): ConfiguredDoubleLocation
-    fun getEyeDirection(): ConfiguredDoubleVector
+    fun getEyeLocation(): SerDoubleLocation
+    fun getEyeDirection(): SerDoubleVector
 }

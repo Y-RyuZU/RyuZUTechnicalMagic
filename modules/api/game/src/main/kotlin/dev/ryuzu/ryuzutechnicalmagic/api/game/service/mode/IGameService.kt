@@ -1,7 +1,7 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.game.service.mode
 
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.entity.IPlayer
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.game.player.IGamePlayer
+import dev.ryuzu.ryuzutechnicalmagic.api.game.service.player.IGamePlayer
 
 interface IGameService {
     val world: String

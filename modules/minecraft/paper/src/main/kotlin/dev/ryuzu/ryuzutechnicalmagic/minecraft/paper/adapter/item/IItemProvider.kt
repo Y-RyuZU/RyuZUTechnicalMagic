@@ -9,4 +9,6 @@ interface IItemProvider {
     fun getItemStack(item: Item): ItemStack?
     fun getItemStack(id: String): ItemStack?
     fun getId(itemStack: ItemStack): String?
+    fun getItem(itemStack: ItemStack): Item?
+
 }

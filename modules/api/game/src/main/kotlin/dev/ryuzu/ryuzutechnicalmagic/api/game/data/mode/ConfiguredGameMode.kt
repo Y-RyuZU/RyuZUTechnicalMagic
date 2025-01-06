@@ -1,9 +1,9 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.game.data.mode
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.effect.ConfiguredEffect
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.effect.SerEffect
 
 data class ConfiguredGameMode (
-    val display: dev.ryuzu.ryuzutechnicalmagic.api.game.data.mode.ConfiguredGameModeDisplay,
-    val effect: ConfiguredEffect,
-    val parameter: dev.ryuzu.ryuzutechnicalmagic.api.game.data.mode.IConfiguredGameModeParameter,
+    val display: ConfiguredGameModeDisplay,
+    val effect: SerEffect,
+    val parameter: IConfiguredGameModeParameter,
 )

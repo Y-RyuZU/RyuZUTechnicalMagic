@@ -5,9 +5,9 @@ import dev.jorel.commandapi.CommandPermission
 import dev.jorel.commandapi.arguments.MultiLiteralArgument
 import dev.jorel.commandapi.executors.CommandExecutor
 import dev.ryuzu.ryuzutechnicalmagic.api.core.model.command.ICommandService
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.skill.service.ISkillService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import service.ISkillService
 
 class SkillCommandServiceImpl : ICommandService, KoinComponent {
     private val skillService: ISkillService by inject()

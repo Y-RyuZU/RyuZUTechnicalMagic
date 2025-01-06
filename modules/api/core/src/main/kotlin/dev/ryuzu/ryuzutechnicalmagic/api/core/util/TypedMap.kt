@@ -1,8 +1,8 @@
 package  dev.ryuzu.ryuzutechnicalmagic.api.core.util
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.configuration.base.ConfiguredIntLocation
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerIntLocation
 import dev.ryuzu.ryuzutechnicalmagic.api.core.data.base.SerIntVector
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.skill.effect.display.EasingFunction
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.effect.display.EasingFunction
 import java.util.*
 
 class TypedMap(map: MutableMap<String, Any> = mutableMapOf()) : MutableMap<String, Any> by map {
@@ -39,8 +39,8 @@ class TypedMap(map: MutableMap<String, Any> = mutableMapOf()) : MutableMap<Strin
     }
 
     @Throws(IllegalArgumentException::class, NumberFormatException::class)
-    fun getLocation(key: String): ConfiguredIntLocation {
-        return ConfiguredIntLocation(getString(key))
+    fun getLocation(key: String): SerIntLocation {
+        return SerIntLocation(getString(key))
     }
 
     @Throws(IllegalArgumentException::class, NumberFormatException::class)

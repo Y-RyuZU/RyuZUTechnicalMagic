@@ -1,5 +1,5 @@
 plugins {
-    id("dev.ryuzu.shared-build")
+    id("dev.ryuzu.impl-shared-build")
 }
 
 group = "dev.ryuzu"
@@ -7,5 +7,6 @@ version = "1.0.0"
 
 
 dependencies {
+    implementation(project(":modules:api:configuration"))
 }
 

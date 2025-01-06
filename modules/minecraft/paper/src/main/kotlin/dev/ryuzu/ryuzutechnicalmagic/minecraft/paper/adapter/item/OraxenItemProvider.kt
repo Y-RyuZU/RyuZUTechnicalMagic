@@ -14,9 +14,6 @@ class OraxenItemProvider : IItemProvider {
     override fun getItemStack(id: String): ItemStack? =
         OraxenItems.getItemById(id)?.build()
 
-    override fun existsId(id: String): Boolean =
-        OraxenItems.exists(id)
-
     override fun getId(itemStack: ItemStack): String? =
         OraxenItems.getIdByItem(itemStack)
 }

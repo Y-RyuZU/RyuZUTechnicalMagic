@@ -2,9 +2,9 @@ package service
 
 import data.skill.SerSkillParams
 import data.skill.SerSkillSet
+import data.skill.SkillTrigger
 import event.data.IEntitySkillCastEvent
-import dev.ryuzu.ryuzutechnicalmagic.api.core.event.data.skill.ISkillActivateEvent
-import dev.ryuzu.ryuzutechnicalmagic.api.core.model.skill.SkillTrigger
+import event.data.ISkillActivateEvent
 
 interface ISkillService {
     fun use(event: ISkillActivateEvent)

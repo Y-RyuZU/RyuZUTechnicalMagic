@@ -1,5 +1,5 @@
 plugins {
-    id("dev.ryuzu.shared-build")
+    id("dev.ryuzu.impl-shared-build")
     id("com.gradleup.shadow") version "8.3.5"
 }
 
@@ -74,6 +74,7 @@ repositories {
 
 dependencies {
     implementation(project(":modules:api:core"))
+    implementation(project(":modules:api:skill"))
     implementation(project(":modules:api:minecraft"))
 
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")

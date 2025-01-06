@@ -4,14 +4,15 @@ import com.onarandombox.MultiverseCore.MultiverseCore
 import net.megavex.scoreboardlibrary.api.ScoreboardLibrary
 import org.bukkit.Bukkit
 import org.koin.core.annotation.Module
-
+import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.io.File
 
 @Module
 class DependPluginsModule : KoinComponent {
-    private val instance: dev.ryuzu.ryuzutechnicalmagic.minecraft.paper.RyuZUTechnicalMagic by inject()
+    private val instance: RyuZUTechnicalMagic by inject()
 
     @Single(createdAtStart = true)
     fun provideScoreboardLibrary() = ScoreboardLibrary.loadScoreboardLibrary(instance)
@@ -19,4 +20,12 @@ class DependPluginsModule : KoinComponent {
     fun provideMultiverseCore() = Bukkit.getServer().pluginManager.getPlugin("Multiverse-Core") as MultiverseCore
     @Single
     fun provideMVWorldManager() = provideMultiverseCore().mvWorldManager
+
+    @Named("dataFolder")
+    @Single
+    fun provideDataFolder(): File = instance.dataFolder
+
+    @Named("worldContainer")
+    @Single
+    fun provideWorldContainer(): File = instance.server.worldContainer
 }

@@ -1,6 +1,6 @@
 package dev.ryuzu.ryuzutechnicalmagic.api.core.data.base
 
-import dev.ryuzu.ryuzutechnicalmagic.api.core.configuration.util.ConfiguredParserUtil.fromStringPart
+import dev.ryuzu.ryuzutechnicalmagic.api.core.data.SerializableObjectUtil.fromStringPart
 import kotlinx.serialization.Serializable
 
 @Serializable
