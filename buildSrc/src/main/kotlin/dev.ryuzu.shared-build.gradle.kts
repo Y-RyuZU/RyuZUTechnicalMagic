@@ -20,10 +20,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 }
 
-sourceSets.named("main") {
-    java.srcDir("build/generated/ksp/main/kotlin")
-}
-
 tasks.withType<Test> {
     useJUnitPlatform()
 }

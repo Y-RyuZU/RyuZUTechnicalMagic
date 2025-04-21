@@ -1,3 +1,5 @@
+import gradle.kotlin.dsl.accessors._09a53d400d2b5de2bc82b7348e6132fd.sourceSets
+
 plugins {
     id("dev.ryuzu.shared-build")
     id("com.google.devtools.ksp")
@@ -13,6 +15,18 @@ dependencies {
     ksp("io.insert-koin:koin-ksp-compiler:2.0.0-Beta2")
 
     implementation("com.charleskorn.kaml:kaml:0.61.0")
+}
+
+tasks.named<Jar>("jar") {
+    dependsOn(tasks.named("compileKotlin"))
+}
+
+tasks.named("compileKotlin") {
+    dependsOn("kspKotlin")
+}
+
+sourceSets.named("main") {
+    java.srcDir("build/generated/ksp/main/kotlin")
 }
 
 //sourceSets.named("main") {
